@@ -1,0 +1,24 @@
+language: r
+
+sudo: required
+
+warnings_are_errors: false
+
+env:
+ global:
+   - CRAN: http://cran.rstudio.com
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
+apt_packages:
+ - r-cran-rjava
+
+r_packages:
+ - Cairo
+
+os:
+ - linux
+ - osx

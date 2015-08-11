@@ -1,19 +1,42 @@
 #' @useDynLib rvg
 #' @title Create SVG Graphic
-#' @param file filename to create
+#' @param rootname root filename to create. For each plot, a file is produced. 
+#' The name of the file is the concatenation of \code{rootname}, \code{plot_id} 
+#' plot index (it will be incremented for each new plot) and the extention \code{.svg}.
 #' @param width width in pixel
 #' @param height height in pixel
 #' @param ps point size
 #' @param fontname font name
-#' @param canvas_id canvas id
+#' @param plot_id starting plot index. Default to 1.
+#' @examples 
+#' rvg("myplot")
+#' with( iris, plot( Sepal.Length, Petal.Length ) )
+#' dev.off()
+#' 
+#' # an interactive example
+#' rvg("myiplot")
+#'     with( iris, plot( Sepal.Length, Petal.Length , type = "n" ) )
+#'    
+#'    sdata = split( iris, iris$Species )
+#'    
+#'    for(i in names( sdata ) ){
+#'      tempdata = sdata[[i]]
+#'      rvg_tracer_on()
+#'      points(x = tempdata$Sepal.Length , y = tempdata$Petal.Length, pch = 16 )
+#'      ids = rvg_tracer_off()
+#'  
+#'      sendTooltip(as.integer(ids), as.character(tempdata$Petal.Length) )
+#'      sendClick(as.integer(ids), paste0("function(){alert('", tempdata$Species,"')}") )
+#'     }
+#' dev.off()
 #' @export 
-rvg = function( file, width = 504, height = 504, 
+rvg = function( rootname, width = 504, height = 504, 
 		ps = 12, fontname = "Helvetica", 
-		canvas_id = 0 ) {
+		plot_id = 1 ) {
 
-	.Call("R_rvg_Device", file, as.double(width), as.double(height), 
+	.Call("R_rvg_Device", rootname, as.double(width), as.double(height), 
 			as.double(ps), fontname, 
-			as.integer( canvas_id )
+			as.integer( plot_id - 1 )
 	)
 	
 	invisible()

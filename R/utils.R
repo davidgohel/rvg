@@ -1,6 +1,6 @@
-#' @title trace id on signal
+#' @title trace on id colection
 #'
-#' @description trace id on signal to rvg device. Internal use only.
+#' @description Start collecting id of an rvg device. 
 #' @export 
 rvg_tracer_on <- function(){
 	dl <- dev.list()
@@ -11,9 +11,11 @@ rvg_tracer_on <- function(){
 	invisible()
 }
 
-#' @title trace id off signal
+#' @title trace off id colection
 #'
-#' @description trace id off signal to rvg device. Internal use only.
+#' @description get collected id of an rvg device and 
+#' stop collecting. 
+#' @return graphical elements id as integer values.
 #' @export 
 rvg_tracer_off <- function(){
 	dl <- dev.list()
@@ -33,15 +35,17 @@ rvg_tracer_off <- function(){
 
 #' @title send tooltip
 #'
-#' @description add tooltips on points
-#' @param ids integer vector of graphical elements identifiers
-#' @param tooltips tooltip (html is accepted) text
+#' @description add tooltips on graphical elements.
+#' @param ids integer vector of graphical elements identifiers (returned by 
+#' \code{\link{rvg_tracer_off}}).
+#' @param tooltips tooltip (html is accepted) text.
+#' 
 #' @export 
 sendTooltip = function( ids, tooltips ){
 	
 	stopifnot( .Device == "rvg" )
 	if( is.factor(tooltips) )
-		ids = as.character( tooltips )
+		tooltips = as.character( tooltips )
 	
 	stopifnot( is.character(tooltips) )
 	stopifnot( is.numeric(ids) )
@@ -55,9 +59,22 @@ sendTooltip = function( ids, tooltips ){
 
 #' @title send click
 #'
+#' @description add tooltips on graphical elements.
+#' @param ids integer vector of graphical elements identifiers (returned by 
+#' \code{\link{rvg_tracer_off}}).
+#' @param clicks javascript functions to execute on click actions.
+#' 
 #' @export 
 sendClick = function( ids, clicks ){
+	stopifnot( .Device == "rvg" )
+	if( is.factor(clicks) )
+		clicks = as.character( clicks )
+	
+	stopifnot( is.character(clicks) )
+	stopifnot( is.numeric(ids) )
+	stopifnot( length(ids) == length(clicks) )
+	
 	.C("add_click_event", (dev.cur()-1L), as.integer(ids), 
-			as.character( clicks ), length(clicks) )
+			clicks, length(clicks) )
 	invisible()
 }
