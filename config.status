@@ -421,7 +421,7 @@ $config_files
 Configuration headers:
 $config_headers
 
-Report bugs to <Simon.Urbanek@r-project.org>."
+"
 
 ac_cs_config=""
 ac_cs_version="\
