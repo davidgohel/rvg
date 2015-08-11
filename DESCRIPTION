@@ -1,0 +1,20 @@
+Package: rvg
+Type: Package
+Title: R Graphics Device for SVG Output
+Version: 0.0.1
+Date: 2015-07-31
+Authors@R: c(
+    person("David", "Gohel", role = c("aut", "cre"),
+    email = "david.gohel@ardata.fr") )
+Author: David Gohel [aut, cre]
+Maintainer: David Gohel <david.gohel@ardata.fr>
+Description: SVG graphic device with ability to associate with 
+    graphical elements tooltips and click actions. The goal is 
+    to provide interactive vector graphics rendered in web pages.  
+License: GPL-3
+Copyright: See file COPYRIGHTS.
+Depends:
+    R (>= 3.0)
+Imports:
+    graphics, grDevices, utils
+LinkingTo: Cairo
