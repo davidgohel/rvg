@@ -6,7 +6,13 @@
 \usage{
 sendClick(ids, clicks)
 }
+\arguments{
+\item{ids}{integer vector of graphical elements identifiers (returned by
+\code{\link{rvg_tracer_off}}).}
+
+\item{clicks}{javascript functions to execute on click actions.}
+}
 \description{
-send click
+add tooltips on graphical elements.
 }
 

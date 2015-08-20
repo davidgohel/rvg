@@ -7,11 +7,12 @@
 sendTooltip(ids, tooltips)
 }
 \arguments{
-\item{ids}{integer vector of graphical elements identifiers}
+\item{ids}{integer vector of graphical elements identifiers (returned by
+\code{\link{rvg_tracer_off}}).}
 
-\item{tooltips}{tooltip (html is accepted) text}
+\item{tooltips}{tooltip (html is accepted) text.}
 }
 \description{
-add tooltips on points
+add tooltips on graphical elements.
 }
 

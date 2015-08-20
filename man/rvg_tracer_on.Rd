@@ -2,11 +2,11 @@
 % Please edit documentation in R/utils.R
 \name{rvg_tracer_on}
 \alias{rvg_tracer_on}
-\title{trace id on signal}
+\title{trace on id colection}
 \usage{
 rvg_tracer_on()
 }
 \description{
-trace id on signal to rvg device. Internal use only.
+Start collecting id of an rvg device.
 }
 

@@ -4,11 +4,13 @@
 \alias{rvg}
 \title{Create SVG Graphic}
 \usage{
-rvg(file, width = 504, height = 504, ps = 12, fontname = "Helvetica",
-  canvas_id = 0)
+rvg(rootname, width = 504, height = 504, ps = 12,
+  fontname = "Helvetica", plot_id = 1)
 }
 \arguments{
-\item{file}{filename to create}
+\item{rootname}{root filename to create. For each plot, a file is produced.
+The name of the file is the concatenation of \code{rootname}, \code{plot_id}
+plot index (it will be incremented for each new plot) and the extention \code{.svg}.}
 
 \item{width}{width in pixel}
 
@@ -18,9 +20,31 @@ rvg(file, width = 504, height = 504, ps = 12, fontname = "Helvetica",
 
 \item{fontname}{font name}
 
-\item{canvas_id}{canvas id}
+\item{plot_id}{starting plot index. Default to 1.}
 }
 \description{
 Create SVG Graphic
+}
+\examples{
+rvg("myplot")
+with( iris, plot( Sepal.Length, Petal.Length ) )
+dev.off()
+
+# an interactive example
+rvg("myiplot")
+    with( iris, plot( Sepal.Length, Petal.Length , type = "n" ) )
+
+   sdata = split( iris, iris$Species )
+
+   for(i in names( sdata ) ){
+     tempdata = sdata[[i]]
+     rvg_tracer_on()
+     points(x = tempdata$Sepal.Length , y = tempdata$Petal.Length, pch = 16 )
+     ids = rvg_tracer_off()
+
+     sendTooltip(as.integer(ids), as.character(tempdata$Petal.Length) )
+     sendClick(as.integer(ids), paste0("function(){alert('", tempdata$Species,"')}") )
+    }
+dev.off()
 }
 

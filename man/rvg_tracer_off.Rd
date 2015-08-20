@@ -2,11 +2,15 @@
 % Please edit documentation in R/utils.R
 \name{rvg_tracer_off}
 \alias{rvg_tracer_off}
-\title{trace id off signal}
+\title{trace off id colection}
 \usage{
 rvg_tracer_off()
 }
+\value{
+graphical elements id as integer values.
+}
 \description{
-trace id off signal to rvg device. Internal use only.
+get collected id of an rvg device and
+stop collecting.
 }
 
