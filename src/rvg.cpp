@@ -82,6 +82,7 @@ static Rboolean rvgDeviceDriver(pDevDesc dev, const char* filename,
 	dev->polyline = rvg_Polyline;
 	dev->polygon = rvg_Polygon;
 	dev->metricInfo = rvg_MetricInfo;
+	dev->raster = rvg_Raster;
 	dev->hasTextUTF8 = (Rboolean) TRUE;
 	dev->wantSymbolUTF8 = (Rboolean) TRUE;
 	dev->useRotatedTextInContour = (Rboolean) FALSE;
@@ -660,6 +661,78 @@ static double rvg_StrWidth(const char *str, const pGEcontext gc, pDevDesc dev) {
 	cairo_text_extents(cc, str, &te);
 
 	return te.x_advance;
+}
+
+/* Could support 'colormodel = "cmyk"' */
+static void rvg_writeRaster(unsigned int *raster, int w, int h,
+			   double x, double y,
+			   double width, double height,
+			   double rot,
+			   Rboolean interpolate,
+			   pDevDesc dd)
+{
+	DOCDesc *pd = (DOCDesc *) dd->deviceSpecific;
+	Rprintf("w:%d, h:%d, x:%.2f, y:%.2f, width:%.2f, height:%.2f\n", w, h, x, y, width, height);
+
+	double steph = height / h;
+	double stepw = width / w;
+	Rprintf("stepw:%.2f, steph:%.2f\n", stepw, steph);
+
+	if( fabs(rot ) < 1 )
+		fputs( "<g>", pd->dmlFilePointer);
+	else{
+		fputs( "<g ", pd->dmlFilePointer);
+		fprintf(pd->dmlFilePointer, " transform=\"rotate(%.0f,0,0)\">\n", -rot );
+	}
+
+	int i = -1;
+    for (int r = 0; r < h; r++){
+    	for (int c = 0; c < w; c++){
+    		i++;
+    		fprintf(pd->dmlFilePointer, "\t<rect x=\"%.5f\" y=\"%.5f\"", x+(c*stepw), y-((r+1)*steph) );
+    		fprintf(pd->dmlFilePointer, " width=\"%.5f\" height=\"%.5f\"", stepw, steph);
+
+    		fputs(" stroke-width=\"0\"", pd->dmlFilePointer );
+    		float alpha =  R_ALPHA(raster[i])/255.0;
+    		if (alpha > 0) {
+    			fprintf(pd->dmlFilePointer, " fill=\"rgb(%d,%d,%d)\"", CREDC(raster[i]), CGREENC(raster[i]), CBLUEC(raster[i]) );
+    			if( alpha < .9999 )
+    				fprintf(pd->dmlFilePointer, " fill-opacity=\"%.3f\"", alpha );
+    		}
+    		fputs(" />\n", pd->dmlFilePointer);
+    	}
+    }
+    fputs( "\n</g>\n", pd->dmlFilePointer);
+}
+
+/* see comments above */
+static void rvg_Raster(unsigned int *raster, int w, int h,
+		      double x, double y,
+		      double width, double height,
+		      double rot,
+		      Rboolean interpolate,
+		      const pGEcontext gc, pDevDesc dev)
+{
+	if (height < 0)
+		height = -height;
+
+	int newW = (int) width;
+	int newH = (int) height;
+
+	if (interpolate) {
+		unsigned int *newRaster =
+				(unsigned int *) R_alloc(newW * newH, sizeof(unsigned int));
+
+		R_GE_rasterInterpolate(raster, w, h,
+				newRaster, newW, newH);
+		rvg_writeRaster(newRaster, newW, newH,
+				x, y, width, height, rot, FALSE, dev);
+	} else {
+		Rprintf("not interpolate\n");
+		rvg_writeRaster(raster, w, h,
+				x, y, newW, newH, rot, FALSE, dev);
+	}
+
 }
 
 

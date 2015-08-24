@@ -64,7 +64,12 @@ static void rvg_Size(double *left, double *right, double *bottom, double *top,
 		pDevDesc dev);
 
 static double rvg_StrWidth(const char *str, const pGEcontext gc, pDevDesc dev);
-
+static void rvg_Raster(unsigned int *raster, int w, int h,
+		      double x, double y,
+		      double width, double height,
+		      double rot,
+		      Rboolean interpolate,
+		      const pGEcontext gc, pDevDesc dev);
 //SEXP setDimensions(SEXP devNumber, SEXP ext, SEXP off);
 
 SEXP R_rvg_Device(SEXP filename, SEXP width, SEXP height,
