@@ -577,7 +577,7 @@ static void rvg_NewPage(const pGEcontext gc, pDevDesc dev) {
 		Rf_error("error while opening %s\n", filename);
 	}
 
-	fprintf(pd->dmlFilePointer, "<svg height=\"%.0f\" width=\"%.0f\">\n",
+	fprintf(pd->dmlFilePointer, "<svg width=\"%.0f\" height=\"%.0f\">\n",
 			dev->right, dev->bottom);
 	updateFontInfo(dev, gc);
 	free(filename);
@@ -682,7 +682,7 @@ static void rvg_writeRaster(unsigned int *raster, int w, int h,
 		fputs( "<g>", pd->dmlFilePointer);
 	else{
 		fputs( "<g ", pd->dmlFilePointer);
-		fprintf(pd->dmlFilePointer, " transform=\"rotate(%.0f,0,0)\">\n", -rot );
+		fprintf(pd->dmlFilePointer, " transform=\"rotate(%.0f,%.5f,%.5f)\">\n", -rot, x + width/2, y - height/2 );
 	}
 
 	int i = -1;
