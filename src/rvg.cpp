@@ -577,8 +577,8 @@ static void rvg_NewPage(const pGEcontext gc, pDevDesc dev) {
 		Rf_error("error while opening %s\n", filename);
 	}
 
-	fprintf(pd->dmlFilePointer, "<svg width=\"%.0f\" height=\"%.0f\">\n",
-			dev->right, dev->bottom);
+	fprintf(pd->dmlFilePointer, "<svg width=\"%.0f\" height=\"%.0f\" id=\"svg_%d\">\n",
+			dev->right, dev->bottom, pd->canvas_id);
 	updateFontInfo(dev, gc);
 	free(filename);
 }
@@ -672,11 +672,11 @@ static void rvg_writeRaster(unsigned int *raster, int w, int h,
 			   pDevDesc dd)
 {
 	DOCDesc *pd = (DOCDesc *) dd->deviceSpecific;
-	Rprintf("w:%d, h:%d, x:%.2f, y:%.2f, width:%.2f, height:%.2f\n", w, h, x, y, width, height);
+/*	Rprintf("w:%d, h:%d, x:%.2f, y:%.2f, width:%.2f, height:%.2f\n", w, h, x, y, width, height);
+	Rprintf("stepw:%.2f, steph:%.2f\n", stepw, steph);*/
 
 	double steph = height / h;
 	double stepw = width / w;
-	Rprintf("stepw:%.2f, steph:%.2f\n", stepw, steph);
 
 	if( fabs(rot ) < 1 )
 		fputs( "<g>", pd->dmlFilePointer);
@@ -689,6 +689,7 @@ static void rvg_writeRaster(unsigned int *raster, int w, int h,
     for (int r = 0; r < h; r++){
     	for (int c = 0; c < w; c++){
     		i++;
+
     		fprintf(pd->dmlFilePointer, "\t<rect x=\"%.5f\" y=\"%.5f\"", x+(c*stepw), y-((r+1)*steph) );
     		fprintf(pd->dmlFilePointer, " width=\"%.5f\" height=\"%.5f\"", stepw, steph);
 

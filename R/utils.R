@@ -28,8 +28,8 @@ rvg_tracer_off <- function(){
 		ids = .C("collect_id", (dev.cur()-1L), integer(2))[[2]]
 		.C("set_tracer_off", (dev.cur()-1L))
 	} else ids = integer(0)
-	
-	if( length( ids ) < 1 || any( ids ) < 0 )
+
+	if( length( ids ) < 1 || any( ids < 0 ) )
 		return( integer(0) )
 
 	seq(from = ids[1], to = ids[2])
@@ -44,7 +44,7 @@ rvg_tracer_off <- function(){
 #' @param tooltips tooltip (html is accepted) text.
 #' 
 #' @export 
-sendTooltip = function( ids, tooltips ){
+send_tooltip = function( ids, tooltips ){
 	
 	stopifnot( .Device == "rvg" )
 	if( is.factor(tooltips) )
@@ -68,7 +68,7 @@ sendTooltip = function( ids, tooltips ){
 #' @param clicks javascript functions to execute on click actions.
 #' 
 #' @export 
-sendClick = function( ids, clicks ){
+send_click = function( ids, clicks ){
 	stopifnot( .Device == "rvg" )
 	if( is.factor(clicks) )
 		clicks = as.character( clicks )
@@ -79,5 +79,27 @@ sendClick = function( ids, clicks ){
 	
 	.C("add_click_event", (dev.cur()-1L), as.integer(ids), 
 			clicks, length(clicks) )
+	invisible()
+}
+
+#' @title add id
+#'
+#' @description add id to graphical elements.
+#' @param ids integer vector of graphical elements identifiers (returned by 
+#' \code{\link{rvg_tracer_off}}).
+#' @param datid user id to be associated with \code{ids}.
+#' 
+#' @export 
+set_data_id = function( ids, datid ){
+	stopifnot( .Device == "rvg" )
+	if( is.factor(datid) )
+		datid = as.character( datid )
+	
+	stopifnot( is.character(datid) )
+	stopifnot( is.numeric(ids) )
+	stopifnot( length(ids) == length(datid) )
+	
+	.C("add_data_id", (dev.cur()-1L), as.integer(ids), 
+			datid, length(datid) )
 	invisible()
 }

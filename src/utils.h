@@ -29,11 +29,6 @@ extern "C" {
 	void collect_id(int *dn, int *res);
 	void add_tooltip(int *dn, int *id, char **str, int *l);
 	void add_click_event(int *dn, int *id, char **str, int *l);
-/*
-	void add_popup(int *dn, int *id, char **str, int *l);
-	void add_click(int *dn, int *id, char **str, int *l);
-	void add_dblclick(int *dn, int *id, char **str, int *l);
-	void add_post_commands( int *dn, int *id, char **str, int *l);
-	void trigger_last_post_commands( int *dn );
-	*/
+	void add_data_id(int *dn, int *id, char **datid, int *l);
+
 }

@@ -63,8 +63,8 @@ void add_tooltip(int *dn, int *id, char **str, int *l){
 	fputs("<script type=\"text/javascript\"><![CDATA[", pd->dmlFilePointer);
 
 	for( i = 0 ; i < nb_elts ; i++ ){
-		fprintf(pd->dmlFilePointer, "$(\"#elt_%d\").attr(\"data-toggle\", \"tooltip\").attr(\"title\",\"%s\")",
-				id[i], str[i] );
+		fprintf(pd->dmlFilePointer, "$(\"#svg_%d\").find(\"#elt_%d\").attr(\"data-toggle\", \"tooltip\").attr(\"title\",\"%s\")",
+				pd->canvas_id, id[i], str[i] );
 		fputs(".attr(\"data-html\",\"true\").tooltip({'container': 'body','placement': 'bottom'});\n", pd->dmlFilePointer);
 	}
 	fputs("]]></script>", pd->dmlFilePointer);
@@ -79,120 +79,24 @@ void add_click_event(int *dn, int *id, char **str, int *l){
 	DOCDesc *pd = (DOCDesc *) dev->dev->deviceSpecific;
 	fputs("<script type=\"text/javascript\"><![CDATA[", pd->dmlFilePointer);
 	for( i = 0 ; i < nb_elts ; i++ ){
-		fprintf(pd->dmlFilePointer, "$(\"#elt_%d\").on(\"click\", %s);\n",
-				id[i], str[i] );
+		fprintf(pd->dmlFilePointer, "$(\"#svg_%d\").find(\"#elt_%d\").click(%s);\n",
+				pd->canvas_id, id[i], str[i] );
 	}
 	fputs("]]></script>", pd->dmlFilePointer);
 
 }
-/*
-
-void add_click(int *dn, int *id, char **str, int *l){
+void add_data_id(int *dn, int *id, char **datid, int *l){
 	int nb_elts = *l;
 	int i;
 	pGEDevDesc dev= GEgetDevice(*dn);
 	if (!dev) return;
 
 	DOCDesc *pd = (DOCDesc *) dev->dev->deviceSpecific;
-
+	fputs("<script type=\"text/javascript\"><![CDATA[", pd->dmlFilePointer);
 	for( i = 0 ; i < nb_elts ; i++ ){
-		fprintf(pd->dmlFilePointer, "elt_%d.click(function(){%s});\n", id[i], str[i] );
+		fprintf(pd->dmlFilePointer, "$(\"#svg_%d\").find(\"#elt_%d\").attr(\"data-id\", \"%s\");\n",
+				pd->canvas_id, id[i], datid[i] );
 	}
+	fputs("]]></script>", pd->dmlFilePointer);
 
 }
-void add_dblclick(int *dn, int *id, char **str, int *l){
-	int nb_elts = *l;
-	int i;
-	pGEDevDesc dev= GEgetDevice(*dn);
-	if (!dev) return;
-
-	DOCDesc *pd = (DOCDesc *) dev->dev->deviceSpecific;
-
-	for( i = 0 ; i < nb_elts ; i++ ){
-		fprintf(pd->dmlFilePointer, "elt_%d.dblclick(function(){%s});\n", id[i], str[i] );
-	}
-
-}
-
-void add_post_commands( int *dn, int *id, char **str, int *l) {
-	int nb_elts = *l;
-	int i;
-
-	pGEDevDesc dev= GEgetDevice(*dn);
-	if (!dev) return;
-
-	if (dev) {//addPostCommand
-		DOCDesc *pd = (DOCDesc *) dev->dev->deviceSpecific;
-
-		SEXP repPackage;
-		PROTECT(
-				repPackage = eval(
-						lang2(install("getNamespace"),
-								ScalarString(mkChar("ReporteRs"))),
-						R_GlobalEnv));
-
-		SEXP RCallBack;
-		PROTECT(RCallBack = allocVector(LANGSXP, 4));
-		SETCAR(RCallBack, findFun(install("addPostCommand"), repPackage));
-
-		SEXP cmdSexp = PROTECT(allocVector(STRSXP, nb_elts));
-		for( i = 0 ; i < nb_elts ; i++ ){
-			SET_STRING_ELT(cmdSexp, i, mkChar(str[i]));
-		}
-		SETCADR( RCallBack, cmdSexp );
-		SET_TAG( CDR( RCallBack ), install("labels") );
-
-		SEXP cmdSexp2 = PROTECT(allocVector(INTSXP, nb_elts));
-		for( i = 0 ; i < nb_elts ; i++ ){
-			INTEGER(cmdSexp2)[i] = id[i];
-		}
-		SETCADDR( RCallBack, cmdSexp2 );
-		SET_TAG( CDDR( RCallBack ), install("ids") );
-
-		SEXP env;
-		PROTECT(env = coerceVector(pd->env, ENVSXP));
-		SETCADDDR( RCallBack, env );
-		SET_TAG( CDR(CDDR( RCallBack )), install("env") );
-
-		PROTECT(eval( RCallBack, repPackage ));
-	    UNPROTECT(6);
-
-	};
-}
-
-void trigger_last_post_commands(int *dn) {
-
-	pGEDevDesc dev = GEgetDevice(*dn);
-	if (!dev)
-		return;
-
-	if (dev) {
-		DOCDesc *pd = (DOCDesc *) dev->dev->deviceSpecific;
-
-		SEXP repPackage;
-		PROTECT(
-				repPackage = eval(
-						lang2(install("getNamespace"),
-								ScalarString(mkChar("ReporteRs"))),
-						R_GlobalEnv));
-
-		SEXP RCallBack;
-		PROTECT(RCallBack = allocVector(LANGSXP, 2));
-		SETCAR(RCallBack, findFun(install("triggerPostCommand"), repPackage));
-
-		SEXP env;
-
-		PROTECT(env = coerceVector(pd->env, ENVSXP));
-
-		SETCADR(RCallBack, env);
-		SET_TAG(CDR(RCallBack), install("env"));
-
-		PROTECT(eval(RCallBack, repPackage));
-
-		UNPROTECT(4);
-
-	};
-
-}
-
-*/

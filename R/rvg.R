@@ -25,8 +25,8 @@
 #'      points(x = tempdata$Sepal.Length , y = tempdata$Petal.Length, pch = 16 )
 #'      ids = rvg_tracer_off()
 #'  
-#'      sendTooltip(as.integer(ids), as.character(tempdata$Petal.Length) )
-#'      sendClick(as.integer(ids), paste0("function(){alert('", tempdata$Species,"')}") )
+#'      send_tooltip(as.integer(ids), as.character(tempdata$Petal.Length) )
+#'      send_click(as.integer(ids), paste0("function(){alert('", tempdata$Species,"')}") )
 #'     }
 #' dev.off()
 #' @export 
