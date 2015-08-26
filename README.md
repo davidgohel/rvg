@@ -1,3 +1,5 @@
+[![Travis-CI Build Status](https://travis-ci.org/davidgohel/rvg.svg?branch=master)](https://travis-ci.org/davidgohel/rvg)
+
 # rvg
 
 `rvg` is an svg graphical driver with options to add tooltips and click actions on 
@@ -24,7 +26,3 @@ graphical elements.
       print(ids)
     }
 
-# State / todo list
-
-- need raster funtion
-- 
