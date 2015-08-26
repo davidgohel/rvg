@@ -13,10 +13,7 @@ notifications:
     on_success: change
     on_failure: change
 
-apt_packages:
- - r-cran-rjava
-
-r_packages:
+r_binary_packages:
  - Cairo
 
 os:
