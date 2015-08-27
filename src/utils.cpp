@@ -63,9 +63,9 @@ void add_tooltip(int *dn, int *id, char **str, int *l){
 	fputs("<script type=\"text/javascript\"><![CDATA[", pd->dmlFilePointer);
 
 	for( i = 0 ; i < nb_elts ; i++ ){
-		fprintf(pd->dmlFilePointer, "$(\"#svg_%d\").find(\"#elt_%d\").attr(\"data-toggle\", \"tooltip\").attr(\"title\",\"%s\")",
+		fprintf(pd->dmlFilePointer, "$(\"#svg_%d\").find(\"#elt_%d\").attr(\"data-toggle\",\"tooltip\").attr(\"title\",\"%s\")",
 				pd->canvas_id, id[i], str[i] );
-		fputs(".attr(\"data-html\",\"true\").tooltip({'container': 'body','placement': 'bottom'});\n", pd->dmlFilePointer);
+		fputs(".attr(\"data-html\",\"true\").tooltip({'container':'body','placement':'bottom'});", pd->dmlFilePointer);
 	}
 	fputs("]]></script>", pd->dmlFilePointer);
 
@@ -75,11 +75,10 @@ void add_click_event(int *dn, int *id, char **str, int *l){
 	int i;
 	pGEDevDesc dev= GEgetDevice(*dn);
 	if (!dev) return;
-
 	DOCDesc *pd = (DOCDesc *) dev->dev->deviceSpecific;
 	fputs("<script type=\"text/javascript\"><![CDATA[", pd->dmlFilePointer);
 	for( i = 0 ; i < nb_elts ; i++ ){
-		fprintf(pd->dmlFilePointer, "$(\"#svg_%d\").find(\"#elt_%d\").click(%s);\n",
+		fprintf(pd->dmlFilePointer, "$(\"#svg_%d\").find(\"#elt_%d\").click(%s);",
 				pd->canvas_id, id[i], str[i] );
 	}
 	fputs("]]></script>", pd->dmlFilePointer);
@@ -94,9 +93,8 @@ void add_data_id(int *dn, int *id, char **datid, int *l){
 	DOCDesc *pd = (DOCDesc *) dev->dev->deviceSpecific;
 	fputs("<script type=\"text/javascript\"><![CDATA[", pd->dmlFilePointer);
 	for( i = 0 ; i < nb_elts ; i++ ){
-		fprintf(pd->dmlFilePointer, "$(\"#svg_%d\").find(\"#elt_%d\").attr(\"data-id\", \"%s\");\n",
+		fprintf(pd->dmlFilePointer, "$(\"#svg_%d\").find(\"#elt_%d\").attr(\"data-id\",\"%s\");",
 				pd->canvas_id, id[i], datid[i] );
 	}
 	fputs("]]></script>", pd->dmlFilePointer);
-
 }

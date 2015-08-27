@@ -87,19 +87,19 @@ send_click = function( ids, clicks ){
 #' @description add id to graphical elements.
 #' @param ids integer vector of graphical elements identifiers (returned by 
 #' \code{\link{rvg_tracer_off}}).
-#' @param datid user id to be associated with \code{ids}.
+#' @param data_id user id to be associated with \code{ids}.
 #' 
 #' @export 
-set_data_id = function( ids, datid ){
+set_data_id = function( ids, data_id ){
 	stopifnot( .Device == "rvg" )
-	if( is.factor(datid) )
-		datid = as.character( datid )
+	if( is.factor(data_id) )
+		data_id = as.character( data_id )
 	
-	stopifnot( is.character(datid) )
+	stopifnot( is.character(data_id) )
 	stopifnot( is.numeric(ids) )
-	stopifnot( length(ids) == length(datid) )
+	stopifnot( length(ids) == length(data_id) )
 	
 	.C("add_data_id", (dev.cur()-1L), as.integer(ids), 
-			datid, length(datid) )
+			data_id, length(data_id) )
 	invisible()
 }

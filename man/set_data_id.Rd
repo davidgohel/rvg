@@ -4,13 +4,13 @@
 \alias{set_data_id}
 \title{add id}
 \usage{
-set_data_id(ids, datid)
+set_data_id(ids, data_id)
 }
 \arguments{
 \item{ids}{integer vector of graphical elements identifiers (returned by
 \code{\link{rvg_tracer_off}}).}
 
-\item{datid}{user id to be associated with \code{ids}.}
+\item{data_id}{user id to be associated with \code{ids}.}
 }
 \description{
 add id to graphical elements.
