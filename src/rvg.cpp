@@ -30,6 +30,7 @@
 #include "datastruct.h"
 #include "common.h"
 #include "utils.h"
+#include "str_width.h"
 
 #define CREDC(C) (((unsigned int)(C))&0xff)
 #define CGREENC(C) ((((unsigned int)(C))&0xff00)>>8)
@@ -510,8 +511,7 @@ static void rvg_Text(double x, double y, const char *str, double rot,
 	int idx = get_and_increment_idx(dev);
 	register_element( dev);
 	double w = rvg_StrWidth(str, gc, dev);
-	//double h = getFontHeight(str, gc, dev);
-	//Rprintf("TEXT:\t%s\n", str);
+
  	fprintf(pd->dmlFilePointer, "<text id=\"elt_%d\"", idx );
  	fprintf(pd->dmlFilePointer, " x=\"%.5f\" y=\"%.5f\"", x-hadj*w, y );
 
@@ -569,9 +569,6 @@ static void rvg_NewPage(const pGEcontext gc, pDevDesc dev) {
 	char *filename={0};
 	filename = get_svg_filename(pd->filename, pd->canvas_id);
 
-	pd->surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, dev->right, dev->bottom);
-	pd->cr = cairo_create (pd->surface);
-
 	pd->dmlFilePointer = (FILE *) fopen(filename, "w");
 	if (pd->dmlFilePointer == NULL) {
 		Rf_error("error while opening %s\n", filename);
@@ -608,8 +605,6 @@ static void rvg_MetricInfo(int c, const pGEcontext gc, double* ascent,
 
 	int Unicode = mbcslocale;
 
-	cairo_t *cc;
-	cc = pd->cr;
 	//Rprintf("\tMetricInfo\n" );
 	if (!c) {
 		//Rprintf("\tnon c\n");
@@ -631,15 +626,12 @@ static void rvg_MetricInfo(int c, const pGEcontext gc, double* ascent,
 		/* Here, we assume that c < 256 */
 	}
 
+	double fs = gc->cex * gc->ps + 0.5;
+	double *info = str_info(str, 0, 0, pd->fi->fontname, (int)fs );
 
-
-	cairo_text_extents_t te;
-	cairo_text_extents (cc, str, &te);
-	//Rprintf("\tcairo_text_extents ok \n");
-	*ascent = -te.y_bearing;
-	*descent = te.height+te.y_bearing;
-	cairo_text_extents (cc, M, &te);
-	*width = te.width;
+	*ascent = info[1];
+	*descent = info[2];
+	*width = info[0];
 }
 
 static void rvg_Size(double *left, double *right, double *bottom, double *top,
@@ -655,12 +647,13 @@ static void rvg_Size(double *left, double *right, double *bottom, double *top,
 static double rvg_StrWidth(const char *str, const pGEcontext gc, pDevDesc dev) {
 	DOCDesc *pd = (DOCDesc *) dev->deviceSpecific;
 	updateFontInfo(dev, gc);
+	int bold = 0;
+	int italic = 0;
+	if (gc->fontface==3 || gc->fontface==4) italic=1;
+	if (gc->fontface==2 || gc->fontface==4) bold=1;
 
-	cairo_t *cc = pd->cr;
-	cairo_text_extents_t te;
-	cairo_text_extents(cc, str, &te);
-
-	return te.x_advance;
+	double fs = gc->cex * gc->ps + 0.5;
+	return str_width(str, bold, italic, pd->fi->fontname, (int)fs );
 }
 
 /* Could support 'colormodel = "cmyk"' */

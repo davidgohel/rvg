@@ -21,7 +21,6 @@
 #include <Rinternals.h>
 #include <R.h>
 #include <string.h>
-#include <cairo.h>
 #include <R_ext/GraphicsEngine.h>
 #include <R_ext/GraphicsDevice.h>
 
@@ -32,24 +31,7 @@ double getFontSize(double cex, double fontsize) {
 	return size;
 }
 
-double getFontHeight(const char *str, const pGEcontext gc, pDevDesc dev) {
-	DOCDesc *pd = (DOCDesc *) dev->deviceSpecific;
 
-	cairo_t *cc;
-	cc = pd->cr;
-
-	cairo_text_extents_t te;
-	cairo_text_extents (cc, str, &te);
-
-	return te.height;
-}
-
-static void set_cf_antialias(cairo_t *cc) {
-	cairo_font_options_t *fo = cairo_font_options_create();
-	cairo_font_options_set_antialias(fo, CAIRO_ANTIALIAS_SUBPIXEL);
-	cairo_set_font_options(cc, fo);
-	cairo_font_options_destroy(fo);
-}
 
 void updateFontInfo(pDevDesc dev, R_GE_gcontext *gc) {
 	DOCDesc *pd = (DOCDesc *) dev->deviceSpecific;
@@ -63,20 +45,6 @@ void updateFontInfo(pDevDesc dev, R_GE_gcontext *gc) {
 	}
 	pd->fi->fontname = fontname;
 
-	cairo_t *cc;
-	cc = pd->cr;
-	const char *Cfontface= pd->fi->fontname;
-	cairo_font_slant_t slant = CAIRO_FONT_SLANT_NORMAL;
-	cairo_font_weight_t wght  = CAIRO_FONT_WEIGHT_NORMAL;
-	if (gc->fontface==5) Cfontface=strdup("Symbol");
-
-	if (gc->fontface==3 || gc->fontface==4) slant=CAIRO_FONT_SLANT_ITALIC;
-	if (gc->fontface==2 || gc->fontface==4) wght=CAIRO_FONT_WEIGHT_BOLD;
-
-	  cairo_select_font_face (cc, Cfontface, slant, wght);
-	  set_cf_antialias(cc);
-
-	cairo_set_font_size (cc, gc->cex * gc->ps );
 }
 
 

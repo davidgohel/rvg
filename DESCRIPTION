@@ -8,12 +8,14 @@ Authors@R: c(
     email = "david.gohel@ardata.fr") )
 Author: David Gohel [aut, cre]
 Maintainer: David Gohel <david.gohel@ardata.fr>
-Description: SVG graphic device with ability to associate with 
-    graphical elements tooltips and click actions. The goal is 
-    to provide interactive vector graphics rendered in web pages.  
+Description: SVG graphic device with ability to associate with
+    graphical elements tooltips and click actions. The goal is
+    to provide interactive vector graphics rendered in web pages.
 License: GPL-3
 Copyright: See file COPYRIGHTS.
 Depends:
     R (>= 3.0)
 Imports:
-    graphics, grDevices
+    graphics, grDevices,
+    Rcpp, gdtools
+LinkingTo: Rcpp, gdtools
