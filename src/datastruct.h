@@ -18,7 +18,6 @@
 
 #include <Rinternals.h>
 #include <R.h>
-#include <cairo.h>
 
 typedef struct {
 	char *fontname;
@@ -50,8 +49,6 @@ typedef struct {
 	double width;
 	double height;
 	FontInfo *fi;
-	cairo_surface_t *surface;
-	cairo_t *cr;
 	ElementTracer *elt_tracer;
 
 } DOCDesc;

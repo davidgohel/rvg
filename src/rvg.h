@@ -23,8 +23,6 @@
 #include "R_ext/GraphicsDevice.h"
 #include <R_ext/Boolean.h>
 
-#include <cairo.h>
-
 extern "C" {
 
 static Rboolean rvgDeviceDriver(pDevDesc dev, const char* filename, double width,
