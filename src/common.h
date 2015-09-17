@@ -26,7 +26,6 @@
 
 double getFontSize(double cex, double fontsize);
 
-double getFontHeight(const char *str, const pGEcontext gc, pDevDesc dev);
 int get_and_increment_idx(pDevDesc dev);
 void register_element(pDevDesc dev);
 void updateFontInfo(pDevDesc dev, R_GE_gcontext *gc);

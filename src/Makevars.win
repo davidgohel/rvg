@@ -1,9 +1,0 @@
-ifeq "$(WIN)" "64"
-BITS=64
-else
-BITS=32
-endif
-
-PKG_CPPFLAGS=-I. -Iwin$(BITS) $(XTRA_PKG_CPPFLAGS)
-PKG_LIBS=win$(BITS)/libcairo.a win$(BITS)/libpixman-1.a win$(BITS)/libpng.a win$(BITS)/libz.a -lgdi32 -lmsimg32 $(GRAPHAPP_LIB)
-

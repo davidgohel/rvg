@@ -13,9 +13,10 @@ notifications:
     on_success: change
     on_failure: change
 
-r_binary_packages:
- - Cairo
+r_github_packages:
+  - davidgohel/gdtools
 
 os:
  - linux
  - osx
+
