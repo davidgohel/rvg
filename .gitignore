@@ -4,8 +4,5 @@
 src/*.o
 src/*.so
 src/*.dll
-<<<<<<< HEAD
-=======
 .Rbuildignore
 rvg.Rproj
->>>>>>> testgdtools
