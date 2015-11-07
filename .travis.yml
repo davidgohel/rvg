@@ -8,9 +8,9 @@ os:
  - linux
  - osx
 
+
 before_install:
-  - brew update
-  - brew install cairo
+if [[ "$os" == "osx" ]]; then brew update; brew install cairo; f
 
 env:
  global:
