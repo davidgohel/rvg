@@ -20,3 +20,8 @@ os:
  - linux
  - osx
 
+env:
+  matrix:
+    - RVERSION=oldrel
+    - RVERSION=release
+    - RVERSION=devel
