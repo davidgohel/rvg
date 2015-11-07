@@ -2,7 +2,7 @@
 % Please edit documentation in R/dsvg.R
 \name{dsvg}
 \alias{dsvg}
-\title{A SVG Graphics Driver}
+\title{An SVG Graphics Driver}
 \usage{
 dsvg(file = "Rplots.svg", width = 10, height = 8, bg = "white",
   pointsize = 12, standalone = TRUE, canvas_id = 1)
@@ -22,10 +22,7 @@ xml header and default namespace.}
 \item{canvas_id}{svg id within HTML page.}
 }
 \description{
-This function produces graphics suitable the current w3 svg XML standard.
-It currently does not have any font metric information, so the use of
-\code{\link{plotmath}} is not supported. The driver output is currently NOT
-specifying a DOCTYPE DTD
+An SVG Graphics Driver
 }
 \examples{
 dsvg()

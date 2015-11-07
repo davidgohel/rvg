@@ -18,5 +18,5 @@ Imports:
 LinkingTo:
   Rcpp,
   gdtools
-Suggests: htmltools
+Suggests: htmltools, xml2
 

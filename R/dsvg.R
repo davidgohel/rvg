@@ -45,7 +45,7 @@ htmlDSVG <- function(code, ...) {
            finally = dev.off()
   )
   htmltools::browsable(
-    htmltools::HTML(paste0(readLines(tmp), collapse = "\n"))
+    htmltools::HTML(paste0(readLines(path), collapse = "\n"))
   )
 }
 
