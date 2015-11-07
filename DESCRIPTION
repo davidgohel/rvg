@@ -19,3 +19,4 @@ LinkingTo:
   Rcpp,
   gdtools
 Suggests: htmltools
+
