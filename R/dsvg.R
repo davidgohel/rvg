@@ -1,9 +1,5 @@
-#' A SVG Graphics Driver
+#' An SVG Graphics Driver
 #'
-#' This function produces graphics suitable the current w3 svg XML standard.
-#' It currently does not have any font metric information, so the use of
-#' \code{\link{plotmath}} is not supported. The driver output is currently NOT
-#' specifying a DOCTYPE DTD
 #'
 #' @param file the file where output will appear.
 #' @param height,width Height and width in inches.
@@ -29,18 +25,6 @@ dsvg <- function(file = "Rplots.svg", width = 10, height = 8, bg = "white",
   invisible(devSVG_(file, bg, width, height, pointsize, standalone, canvas_id))
 }
 
-mini_plot <- function(...) plot(..., axes = FALSE, xlab = "", ylab = "")
-
-inlineDSVG <- function(code, ..., path = tempfile()) {
-
-  dsvg(path, ...)
-  tryCatch(code,
-           finally = dev.off()
-  )
-
-  path
-}
-
 #' Run plotting code and view svg in RStudio Viewer or web broswer.
 #'
 #' This is useful primarily for testing. Requires the \code{htmltools}
@@ -55,7 +39,11 @@ inlineDSVG <- function(code, ..., path = tempfile()) {
 #'   htmlDSVG(hist(rnorm(100)))
 #' }
 htmlDSVG <- function(code, ...) {
-  tmp <- inlineDSVG(code, ...)
+  path <- tempfile()
+  dsvg(path, ...)
+  tryCatch(code,
+           finally = dev.off()
+  )
   htmltools::browsable(
     htmltools::HTML(paste0(readLines(tmp), collapse = "\n"))
   )
@@ -76,8 +64,12 @@ htmlDSVG <- function(code, ...) {
 #'   xml_find_all(x, ".//text")
 #' }
 xmlDSVG <- function(code, ...) {
-  plot <- inlineDSVG(code, ..., standalone = FALSE)
-  xml2::read_xml(plot)
+  path <- tempfile()
+  dsvg(path, ...)
+  tryCatch(code,
+           finally = dev.off()
+  )
+  xml2::read_xml(path)
 }
 
 
