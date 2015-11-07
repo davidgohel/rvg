@@ -8,7 +8,9 @@ os:
  - linux
  - osx
 
-before_install: ./travis-scripts/before_install_${TRAVIS_OS_NAME}.sh
+before_install:
+  - brew update
+  - brew install cairo
 
 env:
  global:
