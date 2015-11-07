@@ -21,3 +21,7 @@ env:
     - RVERSION=oldrel
     - RVERSION=release
     - RVERSION=devel
+
+os:
+ - linux
+ - osx
