@@ -6,10 +6,9 @@ Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
     email = "david.gohel@ardata.fr") )
 Author: David Gohel [aut, cre]
-Maintainer: David Gohel <david.gohel@ardata.fr>
-Description: SVG graphic device with ability to associate with
-    graphical elements tooltips and click actions. The goal is
-    to provide interactive vector graphics rendered in web pages.
+Description: Available vector graphic devices are SVG (with
+    tooltips, click actions and id options), DrawingML
+    for Microsoft Word and DrawingML for Microsoft PowerPoint.
 License: GPL-3
 Depends:
     R (>= 3.0)
@@ -19,4 +18,4 @@ Imports:
 LinkingTo:
   Rcpp,
   gdtools
-Suggests: testthat, xml2
+Suggests: testthat, xml2, htmltools

@@ -47,7 +47,7 @@ inlineDSVG <- function(code, ..., path = tempfile()) {
 #' package.
 #'
 #' @param code Plotting code to execute.
-#' @param ... Other arguments passed on to \code{\link{devSVG}}.
+#' @param ... Other arguments passed on to \code{\link{dsvg}}.
 #' @export
 #' @examples
 #' if (require("htmltools")) {
@@ -67,7 +67,7 @@ htmlDSVG <- function(code, ...) {
 #'
 #' @return A \code{xml2::xml_document} object.
 #' @param code Plotting code to execute.
-#' @param ... Other arguments passed on to \code{\link{devSVG}}.
+#' @param ... Other arguments passed on to \code{\link{dsvg}}.
 #' @export
 #' @examples
 #' if (require("xml2")) {

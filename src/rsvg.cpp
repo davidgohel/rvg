@@ -525,7 +525,7 @@ bool devSVG_(std::string file, std::string bg_, int width, int height,
       Rcpp::stop("Failed to start SVG2 device");
 
     pGEDevDesc dd = GEcreateDevDesc(dev);
-    GEaddDevice2(dd, "devRVG");
+    GEaddDevice2(dd, "dsvg");
     GEinitDisplayList(dd);
 
   } END_SUSPEND_INTERRUPTS;

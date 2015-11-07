@@ -11,7 +11,7 @@ rvg_tracer_on <- function(){
   if( length( dl ) < 1 )
     stop("cannot find any open graphical device")
   dev_num <- as.integer(dev.cur()-1L)
-  if( .Device == "devRVG" ) set_tracer_on(dn = dev_num)
+  if( .Device == "dsvg" ) set_tracer_on(dn = dev_num)
   invisible()
 }
 
@@ -26,7 +26,7 @@ rvg_tracer_off <- function(){
   dl <- dev.list()
   if( length( dl ) < 1 )
     stop("cannot find any open graphical device")
-  if( .Device == "devRVG" ) {
+  if( .Device == "dsvg" ) {
     dev_num <- as.integer(dev.cur()-1L)
     ids <- collect_id(dev_num)
     set_tracer_off(dn = dev_num)
@@ -47,7 +47,7 @@ rvg_tracer_off <- function(){
 #' @export
 send_tooltip = function( ids, tooltips ){
 
-	stopifnot( .Device == "devRVG" )
+	stopifnot( .Device == "dsvg" )
 	if( is.factor(tooltips) )
 		tooltips = as.character( tooltips )
 
@@ -69,7 +69,7 @@ send_tooltip = function( ids, tooltips ){
 #'
 #' @export
 send_click = function( ids, clicks ){
-	stopifnot( .Device == "devRVG" )
+	stopifnot( .Device == "dsvg" )
 	if( is.factor(clicks) )
 		clicks = as.character( clicks )
 
@@ -92,7 +92,7 @@ send_click = function( ids, clicks ){
 #'
 #' @export
 set_data_id = function( ids, data_id ){
-	stopifnot( .Device == "devRVG" )
+	stopifnot( .Device == "dsvg" )
 	if( is.factor(data_id) )
 		data_id = as.character( data_id )
 
@@ -101,8 +101,16 @@ set_data_id = function( ids, data_id ){
 	stopifnot( length(ids) == length(data_id) )
 
 	dev_num <- as.integer(dev.cur()-1L)
-	add_data_id(dn = dev_num, id = as.integer( ids ), str = data_id )
+	add_data_id(dn = dev_num, id = as.integer( ids ), data_id = data_id )
 
 	invisible()
 }
 
+.onLoad= function(libname, pkgname){
+
+  options("rvg_fonts" = list(fontname_serif="Times New Roman",
+    fontname_sans = "Calibri", fontname_mono = "Courier New",
+    fontname_symbol = "Symbol") )
+
+  invisible()
+}
