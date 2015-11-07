@@ -4,6 +4,12 @@ sudo: required
 
 warnings_are_errors: false
 
+os:
+ - linux
+ - osx
+
+before_install: ./travis-scripts/before_install_${TRAVIS_OS_NAME}.sh
+
 env:
  global:
    - CRAN: http://cran.rstudio.com
@@ -22,9 +28,6 @@ env:
     - RVERSION=release
     - RVERSION=devel
 
-os:
- - linux
- - osx
 
 matrix:
   allow_failures:
