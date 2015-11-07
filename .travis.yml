@@ -16,3 +16,8 @@ notifications:
 r_github_packages:
   - davidgohel/gdtools
 
+env:
+  matrix:
+    - RVERSION=oldrel
+    - RVERSION=release
+    - RVERSION=devel
