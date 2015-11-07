@@ -4,14 +4,6 @@ sudo: required
 
 warnings_are_errors: false
 
-os:
- - linux
- - osx
-
-
-before_install:
-if [[ "$os" == "osx" ]]; then brew update; brew install cairo; f
-
 env:
  global:
    - CRAN: http://cran.rstudio.com
@@ -30,7 +22,3 @@ env:
     - RVERSION=release
     - RVERSION=devel
 
-
-matrix:
-  allow_failures:
-    - os: osx
