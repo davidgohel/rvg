@@ -358,27 +358,19 @@ void write_a_ppr(pDevDesc dev, double hadj) {
   else
     fputs(" algn=\"r\"", dml_dev->file );
   fputs(" marL=\"0\" marR=\"0\" indent=\"0\" >", dml_dev->file );
-//   fprintf(dml_dev->file, "<a:lnSpc><a:spcPts val=\"%.0f\"/></a:lnSpc>", fontsize*100);
-//   fputs("<a:spcBef><a:spcPts val=\"0\"/></a:spcBef>", dml_dev->file );
-//   fputs("<a:spcAft><a:spcPts val=\"0\"/></a:spcAft>", dml_dev->file );
-
   fputs("</a:pPr>", dml_dev->file );
 
 }
 
-void write_w_ppr(pDevDesc dev, R_GE_gcontext *gc, double hadj) {
+void write_w_ppr(pDevDesc dev, R_GE_gcontext *gc, double hadj, double h) {
   PPTXdesc *dml_dev = (PPTXdesc *) dev->deviceSpecific;
 
   fputs("<w:pPr>", dml_dev->file );
-  if (hadj < 0.25)
-    fputs("<w:jc w:val=\"left\"/>", dml_dev->file );
-  else if (hadj < 0.75)
-    fputs("<w:jc w:val=\"center\"/>", dml_dev->file );
-  else
-    fputs("<w:jc w:val=\"right\"/>", dml_dev->file );
-
-  fputs("<w:textAlignment w:val=\"auto\"/>", dml_dev->file );
-
+  fputs("<w:jc w:val=\"center\"/>", dml_dev->file );
+  fprintf(dml_dev->file, "<w:spacing w:after=\"0\" w:before=\"0\" w:line=\"%.0f\" w:lineRule=\"exact\" />", h*20);
+  fputs("<w:ind w:left=\"0\" w:right=\"0\" w:firstLine=\"0\" w:hanging=\"0\"/>", dml_dev->file );
+  fputs("<w:textAlignment w:val=\"baseline\"/>", dml_dev->file );
+  write_w_rpr(dev, gc, h);
   fputs("</w:pPr>", dml_dev->file );
 
 }
@@ -524,7 +516,7 @@ void write_text_body(pDevDesc dd, R_GE_gcontext *gc, const char* text, double ha
   } else if( dml_dev->type == "wps" ){
     fprintf(dml_dev->file, "<%s:txbx><w:txbxContent>", dml_dev->type.c_str());
     fputs("<w:p>", dml_dev->file );
-    write_w_ppr(dd, gc, hadj);
+    write_w_ppr(dd, gc, hadj, fontheight);
     fputs("<w:r>", dml_dev->file );
     write_w_rpr(dd, gc, fontsize);
     write_t(dd, text);
@@ -768,8 +760,8 @@ static void dml_text(double x, double y, const char *str, double rot,
   double fs = gc->cex * gc->ps;
   if( h < 1.0 ) return;
 
-  double corrected_offx = translate_rotate_x(x, y, rot, h*1.5, w, hadj) ;
-  double corrected_offy = translate_rotate_y(x, y, rot, h*1.5, w, hadj) ;
+  double corrected_offx = translate_rotate_x(x, y, rot, h, w, hadj) ;
+  double corrected_offy = translate_rotate_y(x, y, rot, h, w, hadj) ;
 
 
   write_sp_opening(dd);
@@ -777,7 +769,7 @@ static void dml_text(double x, double y, const char *str, double rot,
     write_nv_pr(dd, gc, "tx");
 
     write_sppr_opening(dd);
-      write_xfrm(dd, corrected_offx, corrected_offy, w, h*1.5, rot);
+      write_xfrm(dd, corrected_offx, corrected_offy, w, h, rot);
       write_preset_geom(dd, "rect");
     write_sppr_closing(dd);
 
