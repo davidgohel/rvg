@@ -13,9 +13,13 @@ License: GPL-3
 Depends:
     R (>= 3.0)
 Imports:
-  graphics, grDevices, Rcpp,
-  gdtools
-LinkingTo:
-  Rcpp,
-  gdtools
-Suggests: htmltools, xml2
+    graphics,
+    grDevices,
+    Rcpp,
+    gdtools
+LinkingTo: Rcpp,
+    gdtools
+Suggests:
+    htmltools,
+    xml2
+RoxygenNote: 5.0.1

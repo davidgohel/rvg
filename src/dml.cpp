@@ -357,7 +357,10 @@ void write_a_ppr(pDevDesc dev, double hadj) {
     fputs(" algn=\"ctr\"", dml_dev->file );
   else
     fputs(" algn=\"r\"", dml_dev->file );
-  fputs(" marL=\"0\" marR=\"0\" indent=\"0\" >", dml_dev->file );
+  fputs(" marL=\"0\" marR=\"0\" indent=\"0\" fontAlgn=\"b\">", dml_dev->file );
+  fputs("<a:lnSpc><a:spcPts val=\"0\"/></a:lnSpc>", dml_dev->file );
+  fputs("<a:spcAft><a:spcPts val=\"1200\"/></a:spcAft>", dml_dev->file );
+  fputs("<a:spcBef><a:spcPts val=\"1200\"/></a:spcBef>", dml_dev->file );
   fputs("</a:pPr>", dml_dev->file );
 
 }
@@ -369,7 +372,7 @@ void write_w_ppr(pDevDesc dev, R_GE_gcontext *gc, double hadj, double h) {
   fputs("<w:jc w:val=\"center\"/>", dml_dev->file );
   fprintf(dml_dev->file, "<w:spacing w:after=\"0\" w:before=\"0\" w:line=\"%.0f\" w:lineRule=\"exact\" />", h*20);
   fputs("<w:ind w:left=\"0\" w:right=\"0\" w:firstLine=\"0\" w:hanging=\"0\"/>", dml_dev->file );
-  fputs("<w:textAlignment w:val=\"baseline\"/>", dml_dev->file );
+  fputs("<w:textAlignment w:val=\"bottom\"/>", dml_dev->file );
   write_w_rpr(dev, gc, h);
   fputs("</w:pPr>", dml_dev->file );
 
@@ -379,7 +382,7 @@ void write_w_ppr(pDevDesc dev, R_GE_gcontext *gc, double hadj, double h) {
 void write_body_pr(pDevDesc dev) {
   PPTXdesc *dml_dev = (PPTXdesc *) dev->deviceSpecific;
   if( dml_dev->type == "p")
-    fputs("<a:bodyPr lIns=\"0\" tIns=\"0\" rIns=\"0\" bIns=\"0\" anchor=\"ctr\"></a:bodyPr><a:lstStyle/>", dml_dev->file );
+    fputs("<a:bodyPr lIns=\"0\" tIns=\"0\" rIns=\"0\" bIns=\"0\" anchorCtr=\"1\" anchor=\"b\"></a:bodyPr><a:lstStyle/>", dml_dev->file );
   else if( dml_dev->type == "wps")
     fputs("<wps:bodyPr lIns=\"0\" tIns=\"0\" rIns=\"0\" bIns=\"0\" anchor=\"ctr\" spcFirstLastPara=\"1\"/>", dml_dev->file );
 
@@ -757,7 +760,7 @@ static void dml_text(double x, double y, const char *str, double rot,
 
   double w = dml_strwidth(str, gc, dd);
   double h = dml_strheight(str, gc, dd);
-  double fs = gc->cex * gc->ps;
+  double fs = gc->cex * gc->ps ;
   if( h < 1.0 ) return;
 
   double corrected_offx = translate_rotate_x(x, y, rot, h, w, hadj) ;

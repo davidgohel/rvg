@@ -13,8 +13,8 @@ notifications:
     on_success: change
     on_failure: change
 
-r_github_packages:
-  - davidgohel/gdtools
+r_binary_packages:
+ - gdtools
 
 env:
   matrix:
