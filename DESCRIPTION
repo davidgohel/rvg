@@ -16,12 +16,10 @@ Imports:
     graphics,
     grDevices,
     Rcpp,
+    xml2,
     gdtools
 LinkingTo: Rcpp,
     gdtools
 Suggests:
-    htmltools,
-    xml2,
-    testthat,
-    grid
+    htmltools
 RoxygenNote: 5.0.1

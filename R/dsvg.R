@@ -63,6 +63,7 @@ htmlDSVG <- function(code, ...) {
 #'   x
 #'   xml_find_all(x, ".//text")
 #' }
+#' @import xml2
 xmlDSVG <- function(code, ...) {
   path <- tempfile()
   dsvg(path, ...)
