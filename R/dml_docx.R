@@ -1,13 +1,24 @@
-#' A Microsoft Word DrawingML file
+#' @title DrawingML graphic device for Microsoft Word
 #'
-#' @param file the file where output will appear.
+#' @description
+#' Graphics devices for Microsoft Word DrawingML format.
+#'
+#' @param file DrawingML file.
 #' @param height,width Height and width in inches.
 #' @param bg Default background color for the plot (defaults to "white").
-#' @param fontname_serif,fontname_sans,fontname_mono,fontname_symbol font names for font faces
+#' @param fontname_serif,fontname_sans,fontname_mono,fontname_symbol font
+#' names for font faces
 #' @param pointsize default point size.
-#' @param init_id this id must will be used as the first unique id of graphical elements
-#' to produce within a word document.
-#' @param editable should vector graphics elements (points, text, etc.) be editable.
+#' @param editable should vector graphics elements (points, text, etc.)
+#' be editable.
+#' @param id specifies a unique identifier (integer) within the document
+#' that will contain the DrawingML instructions.
+#' @param next_rels_id specifies the next unique identifier (integer)
+#' within relationship file that will be used to reference embedded
+#' raster images if any.
+#' @param raster_prefix string value used as prefix for png
+#' files produced when raster objects are printed on the
+#' graphical device.
 #' @examples
 #' dml_docx( file = tempfile() )
 #' plot(1:11,(-5:5)^2, type='b', main="Simple Example")
@@ -15,16 +26,23 @@
 #' @keywords device
 #' @export
 #' @export
-dml_docx <- function(file = "Rplots.dml", width = 10, height = 8, bg = "white",
-                 fontname_serif = getOption("rvg_fonts")$fontname_serif,
-                 fontname_sans = getOption("rvg_fonts")$fontname_sans,
-                 fontname_mono = getOption("rvg_fonts")$fontname_mono,
-                 fontname_symbol = getOption("rvg_fonts")$fontname_symbol,
-                 pointsize = 12, init_id = 1, editable = TRUE ) {
+dml_docx <- function(file = "Rplots.dml", width = 10, height = 8,
+                     bg = "white",
+                     fontname_serif = getOption("rvg_fonts")$fontname_serif,
+                     fontname_sans = getOption("rvg_fonts")$fontname_sans,
+                     fontname_mono = getOption("rvg_fonts")$fontname_mono,
+                     fontname_symbol = getOption("rvg_fonts")$fontname_symbol,
+                     pointsize = 12, editable = TRUE,
+                     id = 1L,
+                     next_rels_id = 1L,
+                     raster_prefix = "raster_" ) {
 
-  invisible(devDML_(file, bg, width, height, offx = 0, offy = 0,
-          pointsize = pointsize, fontname_serif = fontname_serif,
-          fontname_sans = fontname_sans, fontname_mono = fontname_mono,
-          fontname_symbol = fontname_symbol,
-          type = "wps", editable = editable, id = init_id ))
+  invisible(DOCX_(file, bg, width, height,
+                  pointsize = pointsize, fontname_serif = fontname_serif,
+                  fontname_sans = fontname_sans, fontname_mono = fontname_mono,
+                  fontname_symbol = fontname_symbol,
+                  editable = editable, id = id, raster_prefix = raster_prefix,
+                  next_rels_id = next_rels_id
+  ))
 }
+

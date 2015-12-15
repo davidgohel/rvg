@@ -5,9 +5,32 @@
 
 using namespace Rcpp;
 
-// devDML_
-bool devDML_(std::string file, std::string bg_, int width, int height, double offx, double offy, int pointsize, std::string fontname_serif, std::string fontname_sans, std::string fontname_mono, std::string fontname_symbol, std::string type, bool editable, int id);
-RcppExport SEXP rvg_devDML_(SEXP fileSEXP, SEXP bg_SEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP offxSEXP, SEXP offySEXP, SEXP pointsizeSEXP, SEXP fontname_serifSEXP, SEXP fontname_sansSEXP, SEXP fontname_monoSEXP, SEXP fontname_symbolSEXP, SEXP typeSEXP, SEXP editableSEXP, SEXP idSEXP) {
+// DOCX_
+bool DOCX_(std::string file, std::string bg_, int width, int height, int pointsize, std::string fontname_serif, std::string fontname_sans, std::string fontname_mono, std::string fontname_symbol, bool editable, int id, std::string raster_prefix, int next_rels_id);
+RcppExport SEXP rvg_DOCX_(SEXP fileSEXP, SEXP bg_SEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP pointsizeSEXP, SEXP fontname_serifSEXP, SEXP fontname_sansSEXP, SEXP fontname_monoSEXP, SEXP fontname_symbolSEXP, SEXP editableSEXP, SEXP idSEXP, SEXP raster_prefixSEXP, SEXP next_rels_idSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::string >::type file(fileSEXP);
+    Rcpp::traits::input_parameter< std::string >::type bg_(bg_SEXP);
+    Rcpp::traits::input_parameter< int >::type width(widthSEXP);
+    Rcpp::traits::input_parameter< int >::type height(heightSEXP);
+    Rcpp::traits::input_parameter< int >::type pointsize(pointsizeSEXP);
+    Rcpp::traits::input_parameter< std::string >::type fontname_serif(fontname_serifSEXP);
+    Rcpp::traits::input_parameter< std::string >::type fontname_sans(fontname_sansSEXP);
+    Rcpp::traits::input_parameter< std::string >::type fontname_mono(fontname_monoSEXP);
+    Rcpp::traits::input_parameter< std::string >::type fontname_symbol(fontname_symbolSEXP);
+    Rcpp::traits::input_parameter< bool >::type editable(editableSEXP);
+    Rcpp::traits::input_parameter< int >::type id(idSEXP);
+    Rcpp::traits::input_parameter< std::string >::type raster_prefix(raster_prefixSEXP);
+    Rcpp::traits::input_parameter< int >::type next_rels_id(next_rels_idSEXP);
+    __result = Rcpp::wrap(DOCX_(file, bg_, width, height, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id));
+    return __result;
+END_RCPP
+}
+// PPTX_
+bool PPTX_(std::string file, std::string bg_, int width, int height, double offx, double offy, int pointsize, std::string fontname_serif, std::string fontname_sans, std::string fontname_mono, std::string fontname_symbol, bool editable, int id, std::string raster_prefix, int next_rels_id);
+RcppExport SEXP rvg_PPTX_(SEXP fileSEXP, SEXP bg_SEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP offxSEXP, SEXP offySEXP, SEXP pointsizeSEXP, SEXP fontname_serifSEXP, SEXP fontname_sansSEXP, SEXP fontname_monoSEXP, SEXP fontname_symbolSEXP, SEXP editableSEXP, SEXP idSEXP, SEXP raster_prefixSEXP, SEXP next_rels_idSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -22,10 +45,11 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::string >::type fontname_sans(fontname_sansSEXP);
     Rcpp::traits::input_parameter< std::string >::type fontname_mono(fontname_monoSEXP);
     Rcpp::traits::input_parameter< std::string >::type fontname_symbol(fontname_symbolSEXP);
-    Rcpp::traits::input_parameter< std::string >::type type(typeSEXP);
     Rcpp::traits::input_parameter< bool >::type editable(editableSEXP);
     Rcpp::traits::input_parameter< int >::type id(idSEXP);
-    __result = Rcpp::wrap(devDML_(file, bg_, width, height, offx, offy, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, type, editable, id));
+    Rcpp::traits::input_parameter< std::string >::type raster_prefix(raster_prefixSEXP);
+    Rcpp::traits::input_parameter< int >::type next_rels_id(next_rels_idSEXP);
+    __result = Rcpp::wrap(PPTX_(file, bg_, width, height, offx, offy, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id));
     return __result;
 END_RCPP
 }

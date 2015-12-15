@@ -2,7 +2,7 @@
 % Please edit documentation in R/dml_pptx.R
 \name{dml_pptx}
 \alias{dml_pptx}
-\title{A Microsoft PowerPoint DrawingML file}
+\title{DrawingML graphic device for Microsoft PowerPoint}
 \usage{
 dml_pptx(file = "Rplots.dml", width = 10, height = 8, offx = 1,
   offy = 1, bg = "white",
@@ -10,7 +10,8 @@ dml_pptx(file = "Rplots.dml", width = 10, height = 8, offx = 1,
   fontname_sans = getOption("rvg_fonts")$fontname_sans,
   fontname_mono = getOption("rvg_fonts")$fontname_mono,
   fontname_symbol = getOption("rvg_fonts")$fontname_symbol, pointsize = 12,
-  editable = TRUE)
+  editable = TRUE, id = 1L, next_rels_id = 1L,
+  raster_prefix = "raster_")
 }
 \arguments{
 \item{file}{the file where output will appear.}
@@ -26,9 +27,20 @@ dml_pptx(file = "Rplots.dml", width = 10, height = 8, offx = 1,
 \item{pointsize}{default point size.}
 
 \item{editable}{should vector graphics elements (points, text, etc.) be editable.}
+
+\item{id}{specifies a unique identifier (integer) within the slide
+that will contain the DrawingML instructions.}
+
+\item{next_rels_id}{specifies the next unique identifier (integer)
+within relationship file that will be used to reference embedded
+raster images if any.}
+
+\item{raster_prefix}{string value used as prefix for png
+files produced when raster objects are printed on the
+graphical device.}
 }
 \description{
-A Microsoft PowerPoint DrawingML file
+Graphics devices for Microsoft PowerPoint DrawingML format.
 }
 \examples{
 dml_pptx( file = tempfile() )

@@ -2,33 +2,44 @@
 % Please edit documentation in R/dml_docx.R
 \name{dml_docx}
 \alias{dml_docx}
-\title{A Microsoft Word DrawingML file}
+\title{DrawingML graphic device for Microsoft Word}
 \usage{
 dml_docx(file = "Rplots.dml", width = 10, height = 8, bg = "white",
   fontname_serif = getOption("rvg_fonts")$fontname_serif,
   fontname_sans = getOption("rvg_fonts")$fontname_sans,
   fontname_mono = getOption("rvg_fonts")$fontname_mono,
   fontname_symbol = getOption("rvg_fonts")$fontname_symbol, pointsize = 12,
-  init_id = 1, editable = TRUE)
+  editable = TRUE, id = 1L, next_rels_id = 1L,
+  raster_prefix = "raster_")
 }
 \arguments{
-\item{file}{the file where output will appear.}
+\item{file}{DrawingML file.}
 
 \item{height, width}{Height and width in inches.}
 
 \item{bg}{Default background color for the plot (defaults to "white").}
 
-\item{fontname_serif, fontname_sans, fontname_mono, fontname_symbol}{font names for font faces}
+\item{fontname_serif, fontname_sans, fontname_mono, fontname_symbol}{font
+names for font faces}
 
 \item{pointsize}{default point size.}
 
-\item{init_id}{this id must will be used as the first unique id of graphical elements
-to produce within a word document.}
+\item{editable}{should vector graphics elements (points, text, etc.)
+be editable.}
 
-\item{editable}{should vector graphics elements (points, text, etc.) be editable.}
+\item{id}{specifies a unique identifier (integer) within the document
+that will contain the DrawingML instructions.}
+
+\item{next_rels_id}{specifies the next unique identifier (integer)
+within relationship file that will be used to reference embedded
+raster images if any.}
+
+\item{raster_prefix}{string value used as prefix for png
+files produced when raster objects are printed on the
+graphical device.}
 }
 \description{
-A Microsoft Word DrawingML file
+Graphics devices for Microsoft Word DrawingML format.
 }
 \examples{
 dml_docx( file = tempfile() )
