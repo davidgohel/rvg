@@ -1,5 +1,11 @@
-#' An SVG Graphics Driver
+#' @title SVG Graphics Driver
 #'
+#' @description This function produces SVG files (compliant to the current w3 svg XML standard)
+#' where elements can be made interactive.
+#'
+#' @details Graphic elements are made interactive with \code{jQuery} code. To embed
+#' an interactive svg file into a web page, check that \code{jQuery} javascript file
+#' is included.
 #'
 #' @param file the file where output will appear.
 #' @param height,width Height and width in inches.
@@ -8,10 +14,10 @@
 #' @param standalone Produce a stand alone svg file? If \code{FALSE}, omits
 #'   xml header and default namespace.
 #' @param canvas_id svg id within HTML page.
-#' @seealso \code{\link{pictex}}, \code{\link{postscript}}, \code{\link{Devices}}
+#' @seealso \code{\link{Devices}}
 #' @examples
 #' dsvg()
-#' plot(1:11,(-5:5)^2, type='b', main="Simple Example")
+#' plot(rnorm(10), main="Simple Example", xlab = "", ylab = "")
 #' dev.off()
 #' @keywords device
 #' @useDynLib rvg
@@ -48,30 +54,4 @@ htmlDSVG <- function(code, ...) {
     htmltools::HTML(paste0(readLines(path), collapse = "\n"))
   )
 }
-
-#' Run plotting code and return svg
-#'
-#' This is useful primarily for testing. Requires the \code{xml2} package.
-#'
-#' @return A \code{xml2::xml_document} object.
-#' @param code Plotting code to execute.
-#' @param ... Other arguments passed on to \code{\link{dsvg}}.
-#' @export
-#' @examples
-#' if (require("xml2")) {
-#'   x <- xmlDSVG(plot(1, axes = FALSE))
-#'   x
-#'   xml_find_all(x, ".//text")
-#' }
-#' @import xml2
-xmlDSVG <- function(code, ...) {
-  path <- tempfile()
-  dsvg(path, ...)
-  tryCatch(code,
-           finally = dev.off()
-  )
-  xml2::read_xml(path)
-}
-
-
 

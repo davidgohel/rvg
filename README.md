@@ -6,7 +6,9 @@
 
 rvg is a set of graphics devices that produces svg and DrawingML outputs.
 
-# Installation
+## Installation
+
+Install the development version:
 
     devtools::install_github("davidgohel/rvg")
 
