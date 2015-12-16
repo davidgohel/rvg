@@ -7,7 +7,7 @@ using namespace Rcpp;
 std::string a_color::solid_fill()
 {
 
-  char col_buf[ 6 ];
+  char col_buf[ 100 ];
   sprintf( col_buf, "%02X%02X%02X", R_RED(this->col), R_GREEN(this->col), R_BLUE(this->col));
   std::string col_str = col_buf;
 
@@ -23,7 +23,7 @@ std::string a_color::solid_fill()
 std::string a_color::solid_fill_w14()
 {
 
-  char col_buf[ 6 ];
+  char col_buf[ 100 ];
   sprintf( col_buf, "%02X%02X%02X", R_RED(this->col), R_GREEN(this->col), R_BLUE(this->col));
   std::string col_str = col_buf;
 
@@ -38,7 +38,7 @@ std::string a_color::solid_fill_w14()
 std::string a_color::w_color()
 {
 
-  char col_buf[ 6 ];
+  char col_buf[ 100 ];
   sprintf( col_buf, "%02X%02X%02X", R_RED(this->col), R_GREEN(this->col), R_BLUE(this->col));
   std::string col_str = col_buf;
 
