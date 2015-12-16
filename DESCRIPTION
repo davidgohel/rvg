@@ -21,5 +21,8 @@ Imports:
 LinkingTo: Rcpp,
     gdtools
 Suggests:
-    htmltools
+    htmltools,
+    testthat
+URL: https://github.com/davidgohel/rvg
+BugReports: https://github.com/davidgohel/rvg/issues
 RoxygenNote: 5.0.1
