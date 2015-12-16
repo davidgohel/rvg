@@ -15,6 +15,7 @@ notifications:
 
 r_packages:
  - gdtools
+ - covr
 
 env:
   matrix:
@@ -22,3 +23,9 @@ env:
     - RVERSION=release
     - RVERSION=devel
 
+os:
+- linux
+- osx
+
+after_success:
+  - Rscript -e 'covr::codecov()'
