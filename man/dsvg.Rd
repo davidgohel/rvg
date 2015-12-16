@@ -2,7 +2,7 @@
 % Please edit documentation in R/dsvg.R
 \name{dsvg}
 \alias{dsvg}
-\title{An SVG Graphics Driver}
+\title{SVG Graphics Driver}
 \usage{
 dsvg(file = "Rplots.svg", width = 10, height = 8, bg = "white",
   pointsize = 12, standalone = TRUE, canvas_id = 1)
@@ -22,15 +22,21 @@ xml header and default namespace.}
 \item{canvas_id}{svg id within HTML page.}
 }
 \description{
-An SVG Graphics Driver
+This function produces SVG files (compliant to the current w3 svg XML standard)
+where elements can be made interactive.
+}
+\details{
+Graphic elements are made interactive with \code{jQuery} code. To embed
+an interactive svg file into a web page, check that \code{jQuery} javascript file
+is included.
 }
 \examples{
 dsvg()
-plot(1:11,(-5:5)^2, type='b', main="Simple Example")
+plot(rnorm(10), main="Simple Example", xlab = "", ylab = "")
 dev.off()
 }
 \seealso{
-\code{\link{pictex}}, \code{\link{postscript}}, \code{\link{Devices}}
+\code{\link{Devices}}
 }
 \keyword{device}
 
