@@ -5,7 +5,7 @@ test_that("rect dimensions", {
 
   file <- tempfile()
 
-  dml_pptx( file = file )
+  dml_pptx( file = file, bg = "transparent" )
   plot.new()
   rect(0.2, 0.2, 0.8, 0.8)
   dev.off()
@@ -32,7 +32,7 @@ test_that("lines dimensions", {
 
   file <- tempfile()
 
-  dml_pptx( file = file )
+  dml_pptx( file = file, bg = "transparent" )
   plot.new()
   lines(par("usr")[1:2], par("usr")[3:4], lwd = 1)
   dev.off()
@@ -59,7 +59,7 @@ test_that("polygon dimensions", {
 
   file <- tempfile()
 
-  dml_pptx( file = file )
+  dml_pptx( file = file, bg = "transparent" )
   plot.new()
   x <- par("usr")[1:2]
   y <- par("usr")[3:4]

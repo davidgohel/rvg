@@ -4,7 +4,7 @@ library(xml2)
 test_that("segments don't have fill", {
 
   file <- tempfile()
-  dml_pptx( file = file )
+  dml_pptx( file = file, bg = "transparent" )
   plot.new()
   segments(0.5, 0.5, 1, 1)
   dev.off()
@@ -17,7 +17,7 @@ test_that("segments don't have fill", {
 test_that("lines don't have fill", {
 
   file <- tempfile()
-  dml_pptx( file = file )
+  dml_pptx( file = file, bg = "transparent" )
   plot.new()
   lines(c(0.5, 1, 0.5), c(0.5, 1, 1))
   dev.off()
@@ -29,7 +29,7 @@ test_that("lines don't have fill", {
 
 test_that("polygons do have fill", {
   file <- tempfile()
-  dml_pptx( file = file )
+  dml_pptx( file = file, bg = "transparent" )
   plot.new()
   polygon(c(0.5, 1, 0.5), c(0.5, 1, 1), col = "red", border = "blue")
   dev.off()
@@ -41,7 +41,7 @@ test_that("polygons do have fill", {
 
 test_that("polygons without border", {
   file <- tempfile()
-  dml_pptx( file = file )
+  dml_pptx( file = file, bg = "transparent" )
   plot.new()
   polygon(c(0.5, 1, 0.5), c(0.5, 1, 1), col = "red", border = NA)
   dev.off()
@@ -59,7 +59,7 @@ mini_plot <- function(...) graphics::plot(..., axes = FALSE, xlab = "", ylab = "
 
 dash_array <- function(...) {
   file <- tempfile()
-  dml_pptx( file = file )
+  dml_pptx( file = file, bg = "transparent" )
   mini_plot(1:3, ..., type = "l")
   dev.off()
 
@@ -69,7 +69,7 @@ dash_array <- function(...) {
 }
 custom_dash_array <- function(...) {
   file <- tempfile()
-  dml_pptx( file = file )
+  dml_pptx( file = file, bg = "transparent" )
   mini_plot(1:3, ..., type = "l")
   dev.off()
 
@@ -97,7 +97,7 @@ test_that("lty scales with lwd", {
 
 test_that("line join shapes", {
   file <- tempfile()
-  dml_pptx( file = file )
+  dml_pptx( file = file, bg = "transparent" )
   plot.new()
   lines(c(0.3, 0.5, 0.7), c(0.1, 0.9, 0.1), lwd = 15, ljoin = "round")
   dev.off()
@@ -107,7 +107,7 @@ test_that("line join shapes", {
   expect_false( inherits(join_shape, "try-error") )
 
   file <- tempfile()
-  dml_pptx( file = file )
+  dml_pptx( file = file, bg = "transparent" )
   plot.new()
   lines(c(0.3, 0.5, 0.7), c(0.1, 0.9, 0.1), lwd = 15, ljoin = "mitre")
   dev.off()
@@ -117,7 +117,7 @@ test_that("line join shapes", {
   expect_false( inherits(join_shape, "try-error") )
 
   file <- tempfile()
-  dml_pptx( file = file )
+  dml_pptx( file = file, bg = "transparent" )
   plot.new()
   lines(c(0.3, 0.5, 0.7), c(0.1, 0.9, 0.1), lwd = 15, ljoin = "bevel")
   dev.off()

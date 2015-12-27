@@ -1,4 +1,4 @@
-context("PPTX raster generation")
+context("DOCX raster generation")
 library(grid)
 library(xml2)
 
@@ -6,7 +6,7 @@ test_that("raster is generated", {
 
   file <- tempfile()
   uid <- basename( tempfile( ))
-  dml_pptx( file = file, raster_prefix = uid, bg = "transparent" )
+  dml_docx( file = file, raster_prefix = uid, bg = "transparent" )
   pushViewport(viewport(width=0.8, height=0.5, name="vp1"))
   grid.rect( )
   pushViewport(viewport(width=0.8, height=0.5, name="vp2",angle=10))
@@ -23,7 +23,7 @@ test_that("pic tag can be found", {
 
   file <- tempfile()
 
-  dml_pptx( file = file, bg = "transparent" )
+  dml_docx( file = file, bg = "transparent" )
   pushViewport(viewport(width=0.8, height=0.5, name="vp1"))
   grid.rect( )
   pushViewport(viewport(width=0.8, height=0.5, name="vp2",angle=10))
@@ -33,7 +33,7 @@ test_that("pic tag can be found", {
 
 
   doc <- read_xml(file)
-  pic_node <- try( xml_find_one(doc, ".//p:pic", ns = xml_ns( doc )), silent = TRUE )
+  pic_node <- try( xml_find_one(doc, ".//a:blipFill", ns = xml_ns( doc )), silent = TRUE )
   expect_false( inherits(pic_node, "try-error") )
 
   blip_node <- try( xml_find_one(pic_node, ".//a:blip", ns = xml_ns( doc )), silent = TRUE )
