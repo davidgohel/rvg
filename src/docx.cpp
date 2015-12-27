@@ -177,24 +177,6 @@ static void docx_clip(double x0, double x1, double y0, double y1, pDevDesc dd) {
   docx_obj->cliptop = y1;
 }
 
-static void docx_new_page(const pGEcontext gc, pDevDesc dd) {
-  DOCX_dev *docx_obj = (DOCX_dev*) dd->deviceSpecific;
-
-  if (docx_obj->pageno > 0) {
-    Rf_error("docx device only supports one page");
-  }
-
-  main_tree mt(docx_obj->new_id(),
-               docx_obj->new_id(),
-               0.0, 0.0,
-               dd->right,
-               dd->bottom);
-
-  fprintf(docx_obj->file, "%s", mt.w_opening_tag().c_str() );
-
-  docx_obj->pageno++;
-}
-
 static void docx_close(pDevDesc dd) {
   DOCX_dev *docx_obj = (DOCX_dev*) dd->deviceSpecific;
   fprintf( docx_obj->file, "%s", main_tree::w_closing_tag().c_str() );
@@ -410,56 +392,82 @@ static void docx_size(double *left, double *right, double *bottom, double *top,
   *top = dd->top;
 }
 
-// static void docx_raster(unsigned int *raster, int w, int h,
-//                        double x, double y,
-//                        double width, double height,
-//                        double rot,
-//                        Rboolean interpolate,
-//                        const pGEcontext gc, pDevDesc dd)
-// {
-//   DOCX_dev *docx_obj = (DOCX_dev*) dd->deviceSpecific;
-//   docx_obj->img_id++;
-//   std::stringstream os;
-//   int idx = docx_obj->new_id();
-//   int id_img_rel = docx_obj->nex_id_rel();
-//
-//   os << docx_obj->raster_prefix << "rId";
-//   os.fill('0');
-//   os.width(6);
-//   os << id_img_rel;
-//   os << ".png";
-//
-//
-//   if (height < 0)
-//     height = -height;
-//   xfrm xfrm_(x, y - height, width, height, -rot );
-//
-//   std::vector<unsigned int> raster_(w*h);
-//   for (std::vector<unsigned int>::size_type i = 0 ; i < raster_.size(); ++i) {
-//     raster_[i] = raster[i] ;
-//   }
-//   gdtools::raster_to_file(raster_, w, h, width, height, (Rboolean) interpolate, os.str());
-//   fputs("<pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">", docx_obj->file);
-//     fputs("<pic:nvPicPr>", docx_obj->file);
-//       fprintf(docx_obj->file,
-//         "<pic:cNvPr id=\"%d\" name=\"pic%d\"/><pic:cNvPicPr/>",
-//         idx, idx );
-//       fputs("<pic:cNvPicPr><a:picLocks noChangeAspect=\"1\"/></pic:cNvPicPr>", docx_obj->file);
-//       fputs("<pic:nvPr/>", docx_obj->file);
-//     fputs("</pic:nvPicPr>", docx_obj->file);
-//     fputs("<pic:blipFill>", docx_obj->file);
-//     fprintf(docx_obj->file,
-//       "<a:blip r:embed=\"rId%d\" cstate=\"print\"/>",
-//       id_img_rel);
-//     fputs("<a:stretch><a:fillRect/></a:stretch>", docx_obj->file);
-//     fputs("</pic:blipFill>", docx_obj->file);
-//
-//     fputs("<wps:spPr>", docx_obj->file);
-//     fprintf(docx_obj->file, "%s", xfrm_.xml().c_str());
-//     fprintf(docx_obj->file,"%s", a_prstgeom::a_tag("rect").c_str());
-//     fputs("</wps:spPr>", docx_obj->file);
-//   fputs("</pic:pic>", docx_obj->file);
-// }
+static void docx_raster(unsigned int *raster, int w, int h,
+                       double x, double y,
+                       double width, double height,
+                       double rot,
+                       Rboolean interpolate,
+                       const pGEcontext gc, pDevDesc dd)
+{
+  DOCX_dev *docx_obj = (DOCX_dev*) dd->deviceSpecific;
+  docx_obj->img_id++;
+  std::stringstream os;
+  int id_img_rel = docx_obj->nex_id_rel();
+
+  os << docx_obj->raster_prefix << "rId";
+  os.fill('0');
+  os.width(6);
+  os << id_img_rel;
+  os << ".png";
+
+
+  if (height < 0)
+    height = -height;
+  xfrm xfrm_(x, y - height, width, height, -rot );
+  line_style line_style_(0, 0, gc->lty, gc->ljoin);
+
+  std::vector<unsigned int> raster_(w*h);
+  for (std::vector<unsigned int>::size_type i = 0 ; i < raster_.size(); ++i) {
+    raster_[i] = raster[i] ;
+  }
+  gdtools::raster_to_file(raster_, w, h, width, height, (Rboolean) interpolate, os.str());
+
+  fputs("<wps:wsp>", docx_obj->file);
+  write_nv_pr_docx(dd, "rs");
+  fputs("<wps:spPr>", docx_obj->file);
+  fprintf(docx_obj->file, "%s", xfrm_.xml().c_str());
+  fprintf(docx_obj->file,"%s", a_prstgeom::a_tag("rect").c_str());
+  fputs("<a:blipFill rotWithShape=\"1\">", docx_obj->file);
+  fprintf(docx_obj->file,
+          "<a:blip r:embed=\"rId%d\"/>",
+          id_img_rel);
+  fputs("<a:stretch><a:fillRect/></a:stretch>", docx_obj->file);
+  fputs("</a:blipFill>", docx_obj->file);
+  fprintf(docx_obj->file, "%s", line_style_.a_tag().c_str());
+  fputs("</wps:spPr>", docx_obj->file);
+  fprintf(docx_obj->file, "%s",empty_body_text::wps_tag().c_str());
+  fputs("</wps:wsp>", docx_obj->file);
+}
+
+static void docx_new_page(const pGEcontext gc, pDevDesc dd) {
+  DOCX_dev *docx_obj = (DOCX_dev*) dd->deviceSpecific;
+
+  if (docx_obj->pageno > 0) {
+    Rf_error("docx device only supports one page");
+  }
+
+  main_tree mt(docx_obj->new_id(),
+               docx_obj->new_id(),
+               0.0, 0.0,
+               dd->right,
+               dd->bottom);
+
+  fprintf(docx_obj->file, "%s", mt.w_opening_tag().c_str() );
+
+  a_color bg_color(dd->startfill);
+  if( bg_color.is_transparent() < 1 ){
+    gc->fill = dd->startfill;
+    gc->col = dd->startfill;
+    int fill = gc->fill;
+    int col = gc->col;
+    docx_rect(0, 0, dd->right, dd->bottom, gc, dd);
+    gc->fill = fill;
+    gc->col = col;
+  }
+
+  docx_obj->pageno++;
+}
+
 
 
 pDevDesc docx_driver_new(std::string filename, int bg, double width, double height,
@@ -501,7 +509,7 @@ pDevDesc docx_driver_new(std::string filename, int bg, double width, double heig
   dd->mode = NULL;
   dd->metricInfo = docx_metric_info;
   dd->cap = NULL;
-  dd->raster = NULL;
+  dd->raster = docx_raster;
 
   // UTF-8 support
   dd->wantSymbolUTF8 = (Rboolean) 1;

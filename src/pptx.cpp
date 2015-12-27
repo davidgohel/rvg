@@ -175,21 +175,6 @@ static void pptx_clip(double x0, double x1, double y0, double y1, pDevDesc dd) {
   pptx_obj->cliptop = y1;
 }
 
-static void pptx_new_page(const pGEcontext gc, pDevDesc dd) {
-  PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
-
-  if (pptx_obj->pageno > 0) {
-    Rf_error("pptx device only supports one page");
-  }
-
-  main_tree mt(pptx_obj->new_id(), pptx_obj->new_id(),
-               pptx_obj->offx, pptx_obj->offy,
-               dd->right, dd->bottom);
-
-  fprintf(pptx_obj->file, "%s", mt.a_opening_tag().c_str() );
-
-  pptx_obj->pageno++;
-}
 
 static void pptx_close(pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
@@ -457,6 +442,35 @@ static void pptx_raster(unsigned int *raster, int w, int h,
   fputs("</p:pic>", pptx_obj->file);
 }
 
+
+static void pptx_new_page(const pGEcontext gc, pDevDesc dd) {
+  PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
+
+  if (pptx_obj->pageno > 0) {
+    Rf_error("pptx device only supports one page");
+  }
+
+  main_tree mt(pptx_obj->new_id(), pptx_obj->new_id(),
+               pptx_obj->offx, pptx_obj->offy,
+               dd->right, dd->bottom);
+
+  fprintf(pptx_obj->file, "%s", mt.a_opening_tag().c_str() );
+
+  a_color bg_color(dd->startfill);
+  if( bg_color.is_transparent() < 1 ){
+    gc->fill = dd->startfill;
+    gc->col = dd->startfill;
+    int fill = gc->fill;
+    int col = gc->col;
+    pptx_rect(0, 0, dd->right, dd->bottom, gc, dd);
+    gc->fill = fill;
+    gc->col = col;
+  }
+
+
+
+  pptx_obj->pageno++;
+}
 
 pDevDesc pptx_driver_new(std::string filename, int bg, double width, double height,
                          double offx, double offy,

@@ -60,6 +60,10 @@ int a_color::has_alpha() {
   return (this->alpha < 255);
 }
 
+int a_color::is_transparent() {
+  return (R_ALPHA(this->col) == 0);
+}
+
 a_color::a_color (int col ):
   col(col){
   this->alpha = R_ALPHA(col);
