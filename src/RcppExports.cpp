@@ -6,8 +6,8 @@
 using namespace Rcpp;
 
 // DOCX_
-bool DOCX_(std::string file, std::string bg_, int width, int height, int pointsize, std::string fontname_serif, std::string fontname_sans, std::string fontname_mono, std::string fontname_symbol, bool editable, int id, std::string raster_prefix, int next_rels_id);
-RcppExport SEXP rvg_DOCX_(SEXP fileSEXP, SEXP bg_SEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP pointsizeSEXP, SEXP fontname_serifSEXP, SEXP fontname_sansSEXP, SEXP fontname_monoSEXP, SEXP fontname_symbolSEXP, SEXP editableSEXP, SEXP idSEXP, SEXP raster_prefixSEXP, SEXP next_rels_idSEXP) {
+bool DOCX_(std::string file, std::string bg_, int width, int height, int pointsize, std::string fontname_serif, std::string fontname_sans, std::string fontname_mono, std::string fontname_symbol, bool editable, int id, std::string raster_prefix, int next_rels_id, int standalone);
+RcppExport SEXP rvg_DOCX_(SEXP fileSEXP, SEXP bg_SEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP pointsizeSEXP, SEXP fontname_serifSEXP, SEXP fontname_sansSEXP, SEXP fontname_monoSEXP, SEXP fontname_symbolSEXP, SEXP editableSEXP, SEXP idSEXP, SEXP raster_prefixSEXP, SEXP next_rels_idSEXP, SEXP standaloneSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -24,13 +24,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type id(idSEXP);
     Rcpp::traits::input_parameter< std::string >::type raster_prefix(raster_prefixSEXP);
     Rcpp::traits::input_parameter< int >::type next_rels_id(next_rels_idSEXP);
-    __result = Rcpp::wrap(DOCX_(file, bg_, width, height, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id));
+    Rcpp::traits::input_parameter< int >::type standalone(standaloneSEXP);
+    __result = Rcpp::wrap(DOCX_(file, bg_, width, height, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id, standalone));
     return __result;
 END_RCPP
 }
 // PPTX_
-bool PPTX_(std::string file, std::string bg_, int width, int height, double offx, double offy, int pointsize, std::string fontname_serif, std::string fontname_sans, std::string fontname_mono, std::string fontname_symbol, bool editable, int id, std::string raster_prefix, int next_rels_id);
-RcppExport SEXP rvg_PPTX_(SEXP fileSEXP, SEXP bg_SEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP offxSEXP, SEXP offySEXP, SEXP pointsizeSEXP, SEXP fontname_serifSEXP, SEXP fontname_sansSEXP, SEXP fontname_monoSEXP, SEXP fontname_symbolSEXP, SEXP editableSEXP, SEXP idSEXP, SEXP raster_prefixSEXP, SEXP next_rels_idSEXP) {
+bool PPTX_(std::string file, std::string bg_, int width, int height, double offx, double offy, int pointsize, std::string fontname_serif, std::string fontname_sans, std::string fontname_mono, std::string fontname_symbol, bool editable, int id, std::string raster_prefix, int next_rels_id, int standalone);
+RcppExport SEXP rvg_PPTX_(SEXP fileSEXP, SEXP bg_SEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP offxSEXP, SEXP offySEXP, SEXP pointsizeSEXP, SEXP fontname_serifSEXP, SEXP fontname_sansSEXP, SEXP fontname_monoSEXP, SEXP fontname_symbolSEXP, SEXP editableSEXP, SEXP idSEXP, SEXP raster_prefixSEXP, SEXP next_rels_idSEXP, SEXP standaloneSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -49,7 +50,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type id(idSEXP);
     Rcpp::traits::input_parameter< std::string >::type raster_prefix(raster_prefixSEXP);
     Rcpp::traits::input_parameter< int >::type next_rels_id(next_rels_idSEXP);
-    __result = Rcpp::wrap(PPTX_(file, bg_, width, height, offx, offy, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id));
+    Rcpp::traits::input_parameter< int >::type standalone(standaloneSEXP);
+    __result = Rcpp::wrap(PPTX_(file, bg_, width, height, offx, offy, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id, standalone));
     return __result;
 END_RCPP
 }

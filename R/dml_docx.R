@@ -19,6 +19,8 @@
 #' @param raster_prefix string value used as prefix for png
 #' files produced when raster objects are printed on the
 #' graphical device.
+#' @param standalone produce a standalone drawingml file? If \code{FALSE}, omits
+#'   xml header and namespaces.
 #' @examples
 #' dml_docx( file = tempfile() )
 #' plot(1:11,(-5:5)^2, type='b', main="Simple Example")
@@ -26,7 +28,7 @@
 #' @keywords device
 #' @export
 #' @export
-dml_docx <- function(file = "Rplots.dml", width = 10, height = 8,
+dml_docx <- function(file = "Rplots.dml", width = 6, height = 6,
                      bg = "white",
                      fontname_serif = getOption("rvg_fonts")$fontname_serif,
                      fontname_sans = getOption("rvg_fonts")$fontname_sans,
@@ -35,14 +37,14 @@ dml_docx <- function(file = "Rplots.dml", width = 10, height = 8,
                      pointsize = 12, editable = TRUE,
                      id = 1L,
                      next_rels_id = 1L,
-                     raster_prefix = "raster_" ) {
+                     raster_prefix = "raster_", standalone = FALSE ) {
 
   invisible(DOCX_(file, bg, width, height,
                   pointsize = pointsize, fontname_serif = fontname_serif,
                   fontname_sans = fontname_sans, fontname_mono = fontname_mono,
                   fontname_symbol = fontname_symbol,
                   editable = editable, id = id, raster_prefix = raster_prefix,
-                  next_rels_id = next_rels_id
+                  next_rels_id = next_rels_id, standalone = standalone
   ))
 }
 

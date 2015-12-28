@@ -53,6 +53,7 @@ public:
   std::string fontname_mono;
   std::string fontname_symbol;
   bool editable;
+  int standalone;
   XPtrCairoContext cc;
 
   PPTX_dev(std::string filename_,
@@ -62,7 +63,7 @@ public:
            std::string fontname_symbol_,
            bool editable_, double offx_, double offy_ , int id_,
            std::string raster_prefix_,
-           int next_rels_id_):
+           int next_rels_id_, int standalone_):
       filename(filename_),
       pageno(0),
 	    id(id_),
@@ -73,6 +74,7 @@ public:
 	    fontname_mono(fontname_mono_),
 	    fontname_symbol(fontname_symbol_),
 	    editable(editable_),
+	    standalone(standalone_),
       cc(gdtools::context_create()){
 
     file = fopen(R_ExpandFileName(filename.c_str()), "w");
@@ -452,7 +454,7 @@ static void pptx_new_page(const pGEcontext gc, pDevDesc dd) {
 
   main_tree mt(pptx_obj->new_id(), pptx_obj->new_id(),
                pptx_obj->offx, pptx_obj->offy,
-               dd->right, dd->bottom);
+               dd->right, dd->bottom, pptx_obj->standalone);
 
   fprintf(pptx_obj->file, "%s", mt.a_opening_tag().c_str() );
 
@@ -481,7 +483,8 @@ pDevDesc pptx_driver_new(std::string filename, int bg, double width, double heig
                         std::string fontname_symbol,
                         bool editable, int id,
                         std::string raster_prefix,
-                        int next_rels_id) {
+                        int next_rels_id,
+                        int standalone) {
 
   pDevDesc dd = (DevDesc*) calloc(1, sizeof(DevDesc));
   if (dd == NULL)
@@ -550,7 +553,7 @@ pDevDesc pptx_driver_new(std::string filename, int bg, double width, double heig
     fontname_serif, fontname_sans, fontname_mono, fontname_symbol,
     editable, offx*72, offy*72, id,
     raster_prefix,
-    next_rels_id);
+    next_rels_id, standalone);
   return dd;
 }
 
@@ -564,7 +567,7 @@ bool PPTX_(std::string file, std::string bg_, int width, int height,
     std::string fontname_symbol,
     bool editable, int id,
     std::string raster_prefix,
-    int next_rels_id) {
+    int next_rels_id, int standalone) {
 
   int bg = R_GE_str2col(bg_.c_str());
 
@@ -576,7 +579,7 @@ bool PPTX_(std::string file, std::string bg_, int width, int height,
       editable,
       id,
       raster_prefix,
-      next_rels_id);
+      next_rels_id, standalone);
     if (dev == NULL)
       Rcpp::stop("Failed to start pptx device");
 
