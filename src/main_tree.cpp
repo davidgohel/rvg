@@ -67,24 +67,14 @@ std::string main_tree::w_opening_tag()
 
   std::stringstream os;
   if( this->standalone > 0 ){
-    // os << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
+    os << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
     os << "<w:drawing xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" ";
-    os << "xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" ";
-    os << "xmlns:o=\"urn:schemas-microsoft-com:office:office\" ";
     os << "xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" ";
-    os << "xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" ";
-    os << "xmlns:v=\"urn:schemas-microsoft-com:vml\" ";
-    os << "xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" ";
     os << "xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" ";
-    os << "xmlns:w10=\"urn:schemas-microsoft-com:office:word\" ";
     os << "xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" ";
-    os << "xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" ";
-    os << "xmlns:w15=\"http://schemas.microsoft.com/office/word/2012/wordml\" ";
     os << "xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" ";
-    os << "xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" ";
-    os << "xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" ";
     os << "xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\" ";
-    os << "mc:Ignorable=\"w14 w15 wp14\" >";
+    os << ">";
   } else {
     os << "<w:drawing>";
   }
