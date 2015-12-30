@@ -17,7 +17,7 @@ Imports:
     grDevices,
     Rcpp,
     xml2,
-    gdtools
+    gdtools, utils
 LinkingTo: Rcpp,
     gdtools
 Suggests:
