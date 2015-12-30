@@ -37,7 +37,7 @@ dml_docx <- function(file = "Rplots.dml", width = 6, height = 6,
                      pointsize = 12, editable = TRUE,
                      id = 1L,
                      next_rels_id = 1L,
-                     raster_prefix = "raster_", standalone = FALSE ) {
+                     raster_prefix = "raster_", standalone = TRUE ) {
 
   invisible(DOCX_(file, bg, width, height,
                   pointsize = pointsize, fontname_serif = fontname_serif,

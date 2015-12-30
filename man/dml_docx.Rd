@@ -10,7 +10,7 @@ dml_docx(file = "Rplots.dml", width = 6, height = 6, bg = "white",
   fontname_mono = getOption("rvg_fonts")$fontname_mono,
   fontname_symbol = getOption("rvg_fonts")$fontname_symbol, pointsize = 12,
   editable = TRUE, id = 1L, next_rels_id = 1L,
-  raster_prefix = "raster_", standalone = FALSE)
+  raster_prefix = "raster_", standalone = TRUE)
 }
 \arguments{
 \item{file}{DrawingML file.}
