@@ -25,8 +25,31 @@ read_relationship <- function(filename) {
 
 
 #' @import xml2
+#' @title Microsoft Word Graphics Device
+#'
+#' @description
+#' A graphical device for Microsoft Word documents.
+#' @param file filename of the Microsoft Word document to produce. File
+#' extension must be \code{.docx}.
+#' @param fun Plotting code to execute
+#' @param ... arguments for \code{fun} (passed on to \code{\link{dml_docx}}.)
+#' @param height,width Height and width in inches.
+#' @param pagesize Word document page size in inches.
+#' A named vector (\code{width} and \code{height}).
+#' @param margins Word document margins size in inches.
+#' A named vector (\code{left}, \code{right}, \code{top}, \code{bottom}).
+#' @param bg Default background color for the plot (defaults to "white").
+#' @param fontname_serif,fontname_sans,fontname_mono,fontname_symbol font
+#' names for font faces
+#' @param pointsize default point size.
+#' @param editable should vector graphics elements (points, text, etc.)
+#' be editable.
+#' @examples
+#' docx_device(file = "my_plot_1.docx", fun = function() plot(rnorm(10)))
+#' docx_device(file = "my_plot_2.docx", fun = function() barplot(1:7, col = 1:7))
+#' @keywords device
 #' @export
-docx_wrapper <- function(
+docx_device <- function(
   file, fun,
   pagesize = c(width = 8.5, height = 11),
   margins = c( left = 1, right = 1, top = 1, bottom = 1 ),

@@ -2,7 +2,7 @@
 
 export(dml_docx)
 export(dml_pptx)
-export(docx_wrapper)
+export(docx_device)
 export(dsvg)
 export(htmlDSVG)
 export(rvg_tracer_off)
