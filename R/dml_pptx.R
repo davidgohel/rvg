@@ -27,18 +27,28 @@
 #' @keywords device
 #' @export
 #' @export
-dml_pptx <- function(file = "Rplots.dml", width = 10, height = 8,
+dml_pptx <- function(file = "Rplots.dml", width = 6, height = 6,
                      offx = 1, offy = 1,
                      bg = "white",
                      fontname_serif = getOption("rvg_fonts")$fontname_serif,
                      fontname_sans = getOption("rvg_fonts")$fontname_sans,
                      fontname_mono = getOption("rvg_fonts")$fontname_mono,
                      fontname_symbol = getOption("rvg_fonts")$fontname_symbol,
-                     pointsize = 12, editable = FALSE,
+                     pointsize = 12, editable = TRUE,
                      id = 1L,
                      next_rels_id = 1L,
                      raster_prefix = "raster_", standalone = TRUE ) {
-  invisible(PPTX_(file, bg, width, height, offx = offx, offy = offy,
+
+  if( !font_family_exists(font_family = fontname_serif) )
+    warning("'serif' font ", shQuote(fontname_serif), " can not be found")
+  if( !font_family_exists(font_family = fontname_sans) )
+    warning("'sans' font ", shQuote(fontname_sans), " can not be found")
+  if( !font_family_exists(font_family = fontname_mono) )
+    warning("'mono' font ", shQuote(fontname_mono), " can not be found")
+  if( !font_family_exists(font_family = fontname_symbol) )
+    warning("'symbol' font ", shQuote(fontname_symbol), " can not be found")
+
+    invisible(PPTX_(file, bg, width, height, offx = offx, offy = offy,
               pointsize = pointsize, fontname_serif = fontname_serif,
               fontname_sans = fontname_sans, fontname_mono = fontname_mono,
               fontname_symbol = fontname_symbol,

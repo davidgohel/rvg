@@ -4,13 +4,13 @@
 \alias{dml_pptx}
 \title{DrawingML graphic device for Microsoft PowerPoint}
 \usage{
-dml_pptx(file = "Rplots.dml", width = 10, height = 8, offx = 1,
+dml_pptx(file = "Rplots.dml", width = 6, height = 6, offx = 1,
   offy = 1, bg = "white",
   fontname_serif = getOption("rvg_fonts")$fontname_serif,
   fontname_sans = getOption("rvg_fonts")$fontname_sans,
   fontname_mono = getOption("rvg_fonts")$fontname_mono,
   fontname_symbol = getOption("rvg_fonts")$fontname_symbol, pointsize = 12,
-  editable = FALSE, id = 1L, next_rels_id = 1L,
+  editable = TRUE, id = 1L, next_rels_id = 1L,
   raster_prefix = "raster_", standalone = TRUE)
 }
 \arguments{
