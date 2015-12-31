@@ -21,7 +21,6 @@ std::string rpr::a_tag()
   os << col_.solid_fill();
   os << "<a:latin typeface=\"" << this->fontname << "\"/>";
   os << "<a:cs typeface=\"" << this->fontname << "\"/>";
-  os << "<a:ea typeface=\"" << this->fontname << "\"/>";
 
   os << "</a:rPr>";
 
