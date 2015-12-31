@@ -107,8 +107,9 @@ set_data_id = function( ids, data_id ){
 }
 
 #' @importFrom utils zip
+#' @importFrom R.utils getAbsolutePath
 pack_folder <- function( folder, target ){
-  target <- normalizePath(path.expand(target), mustWork = FALSE, winslash = "/")
+  target <- getAbsolutePath(target, expandTilde = TRUE)
   curr_wd <- getwd()
   zip_dir <- folder
   setwd(zip_dir)
