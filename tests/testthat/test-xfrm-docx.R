@@ -86,3 +86,4 @@ test_that("polygon dimensions", {
   expect_true( grepl("^[0-9]+$", cy ) )
 })
 
+
