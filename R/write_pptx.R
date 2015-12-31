@@ -10,11 +10,11 @@
 #' @param size slide size in inches.
 #' @param ... arguments for \code{fun} (passed on to \code{\link{dml_pptx}}.)
 #' @examples
-#' pptx_device(file = "my_plot_1.pptx", code = plot(rnorm(10)))
-#' pptx_device(file = "my_plot_2.pptx", code = barplot(1:7, col = 1:7))
+#' write_pptx(file = "my_plot_1.pptx", code = plot(rnorm(10)))
+#' write_pptx(file = "my_plot_2.pptx", code = barplot(1:7, col = 1:7))
 #' @keywords device
 #' @export
-pptx_device <- function(
+write_pptx <- function(
   file, code,
   size = c(width = 10, height = 7.5), ...) {
 

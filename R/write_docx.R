@@ -13,11 +13,11 @@
 #' A named vector (\code{left}, \code{right}, \code{top}, \code{bottom}).
 #' @param ... arguments for \code{fun} (passed on to \code{\link{dml_docx}}.)
 #' @examples
-#' docx_device(file = "my_plot_1.docx", code = plot(rnorm(10)) )
-#' docx_device(file = "my_plot_2.docx", code = barplot(1:7, col = 1:7))
+#' write_docx(file = "my_plot_1.docx", code = plot(rnorm(10)) )
+#' write_docx(file = "my_plot_2.docx", code = barplot(1:7, col = 1:7))
 #' @keywords device
 #' @export
-docx_device <- function( file, code,
+write_docx <- function( file, code,
   pagesize = c(width = 8.5, height = 11),
   margins = c( left = 1, right = 1, top = 1, bottom = 1 ),
   ...) {
