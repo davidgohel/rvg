@@ -4,7 +4,23 @@
 
 # rvg
 
-rvg is a set of graphics devices that produces svg and DrawingML outputs.
+rvg is a set of graphics devices that produces svg and DrawingML outputs. 
+
+This package implements `write_docx` and `write_pptx` functions. The first one is producing 
+a Microsoft Word document and the last one a Microsoft PowerPoint document containing R plot 
+results in a vector graphics format. By default, theses graphics are *editable*, element 
+edition can be disabled with option `editable = FALSE`.
+
+```
+library(rvg)
+library(ggplot2)
+
+gg = ggplot( iris, aes(Sepal.Length, Sepal.Width, 
+    color = Petal.Width)) + geom_point()
+
+write_docx(file = "my_plot.docx", code = print( gg ))
+write_pptx(file = "my_plot.pptx", code = print( gg ))
+```
 
 ## Installation
 
