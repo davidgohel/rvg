@@ -425,9 +425,9 @@ static void pptx_raster(unsigned int *raster, int w, int h,
   fputs("<p:pic>", pptx_obj->file);
     fputs("<p:nvPicPr>", pptx_obj->file);
       fprintf(pptx_obj->file,
-        "<p:cNvPr id=\"%d\" name=\"pic%d\"/><p:cNvPicPr/>",
+        "<p:cNvPr id=\"%d\" name=\"pic%d\"/>",
         idx, idx );
-      fputs("<p:cNvPicPr><a:picLocks noChangeAspect=\"1\"/></p:cNvPicPr>", pptx_obj->file);
+      fputs("<p:cNvPicPr/>", pptx_obj->file);
       fputs("<p:nvPr/>", pptx_obj->file);
     fputs("</p:nvPicPr>", pptx_obj->file);
     fputs("<p:blipFill>", pptx_obj->file);
