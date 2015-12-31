@@ -4,47 +4,24 @@
 \alias{pptx_device}
 \title{Microsoft PowerPoint Graphics Device}
 \usage{
-pptx_device(file, fun, pagesize = c(width = 8.5, height = 11),
-  margins = c(left = 1, right = 1, top = 1, bottom = 1), width = 6,
-  height = 6, bg = "white",
-  fontname_serif = getOption("rvg_fonts")$fontname_serif,
-  fontname_sans = getOption("rvg_fonts")$fontname_sans,
-  fontname_mono = getOption("rvg_fonts")$fontname_mono,
-  fontname_symbol = getOption("rvg_fonts")$fontname_symbol, pointsize = 12,
-  editable = TRUE, ...)
+pptx_device(file, code, size = c(width = 10, height = 7.5), ...)
 }
 \arguments{
 \item{file}{filename of the Microsoft PowerPoint document to produce. File
 extension must be \code{.pptx}.}
 
-\item{fun}{Plotting code to execute}
+\item{code}{Plotting code to execute}
 
-\item{pagesize}{Word document page size in inches.
-A named vector (\code{width} and \code{height}).}
+\item{size}{slide size in inches.}
 
-\item{margins}{Word document margins size in inches.
-A named vector (\code{left}, \code{right}, \code{top}, \code{bottom}).}
-
-\item{height, width}{Height and width in inches.}
-
-\item{bg}{Default background color for the plot (defaults to "white").}
-
-\item{fontname_serif, fontname_sans, fontname_mono, fontname_symbol}{font
-names for font faces}
-
-\item{pointsize}{default point size.}
-
-\item{editable}{should vector graphics elements (points, text, etc.)
-be editable.}
-
-\item{...}{arguments for \code{fun} (passed on to \code{\link{dml_docx}}.)}
+\item{...}{arguments for \code{fun} (passed on to \code{\link{dml_pptx}}.)}
 }
 \description{
 A graphical device for Microsoft PowerPoint documents.
 }
 \examples{
-pptx_device(file = "my_plot_1.pptx", fun = function() plot(rnorm(10)))
-pptx_device(file = "my_plot_2.pptx", fun = function() barplot(1:7, col = 1:7))
+pptx_device(file = "my_plot_1.pptx", code = plot(rnorm(10)))
+pptx_device(file = "my_plot_2.pptx", code = barplot(1:7, col = 1:7))
 }
 \keyword{device}
 

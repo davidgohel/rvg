@@ -6,36 +6,25 @@
 #' A graphical device for Microsoft Word documents.
 #' @param file filename of the Microsoft Word document to produce. File
 #' extension must be \code{.docx}.
-#' @param fun Plotting code to execute
-#' @param ... arguments for \code{fun} (passed on to \code{\link{dml_docx}}.)
-#' @param height,width Height and width in inches.
+#' @param code Plotting code to execute
 #' @param pagesize Word document page size in inches.
 #' A named vector (\code{width} and \code{height}).
 #' @param margins Word document margins size in inches.
 #' A named vector (\code{left}, \code{right}, \code{top}, \code{bottom}).
-#' @param bg Default background color for the plot (defaults to "white").
-#' @param fontname_serif,fontname_sans,fontname_mono,fontname_symbol font
-#' names for font faces
-#' @param pointsize default point size.
-#' @param editable should vector graphics elements (points, text, etc.)
-#' be editable.
+#' @param ... arguments for \code{fun} (passed on to \code{\link{dml_docx}}.)
 #' @examples
-#' docx_device(file = "my_plot_1.docx", fun = function() plot(rnorm(10)))
-#' docx_device(file = "my_plot_2.docx", fun = function() barplot(1:7, col = 1:7))
+#' docx_device(file = "my_plot_1.docx", code = plot(rnorm(10)) )
+#' docx_device(file = "my_plot_2.docx", code = barplot(1:7, col = 1:7))
 #' @keywords device
 #' @export
-docx_device <- function(
-  file, fun,
+docx_device <- function( file, code,
   pagesize = c(width = 8.5, height = 11),
   margins = c( left = 1, right = 1, top = 1, bottom = 1 ),
-  width = 6, height = 6,
-  bg = "white",
-  fontname_serif = getOption("rvg_fonts")$fontname_serif,
-  fontname_sans = getOption("rvg_fonts")$fontname_sans,
-  fontname_mono = getOption("rvg_fonts")$fontname_mono,
-  fontname_symbol = getOption("rvg_fonts")$fontname_symbol,
-  pointsize = 12, editable = TRUE,
   ...) {
+
+  .reg = regexpr( paste( "(\\.(?i)(docx))$", sep = "" ), file )
+  if( .reg < 1 ) stop(file , " should have '.docx' as extension.")
+
 
   template_dir <- tempfile()
   unzip( zipfile = file.path( system.file(package = "rvg"), "templates/vanilla.docx" ), exdir = template_dir )
@@ -49,17 +38,17 @@ docx_device <- function(
   img_directory = file.path(getwd(), uid )
 
   dml_file <- tempfile()
-  dml_docx(file = dml_file, width = width, height = height, bg = bg,
-           fontname_serif = fontname_serif, fontname_sans = fontname_sans,
-           fontname_mono = fontname_mono, fontname_symbol = fontname_symbol,
-           pointsize = pointsize, editable = editable,
-           id = 1L,
-           next_rels_id = as.integer( relationships$max_int - 1 ),
-           raster_prefix = img_directory, standalone = FALSE
-           )
-  tryCatch(fun(...),
-           finally = dev.off()
-  )
+
+  pars <- list(...)
+  pars$file <- dml_file
+  pars$id <- 1L
+  pars$next_rels_id <- as.integer( relationships$max_int - 1 )
+  pars$raster_prefix <- img_directory
+  pars$standalone <- FALSE
+
+  do.call("dml_docx", pars)
+
+  tryCatch(code, finally = dev.off() )
 
 
   raster_files <- list.files(path = getwd(), pattern = paste0("^", uid, "(.*)\\.png$"), full.names = TRUE )
@@ -67,12 +56,12 @@ docx_device <- function(
   if( length(raster_files ) > 0 ){
     raster_names <- gsub( pattern = "\\.png$", replacement = "", basename(raster_files) )
 
-
     ids <- seq_along(raster_files) + relationships$max_int
     expected_rels <- data.frame(
       id = paste0("rId", ids ),
       int_id = ids,
-      type = rep("http://schemas.openxmlformats.org/officeDocument/2006/relationships/image", length(ids)),
+      type = rep("http://schemas.openxmlformats.org/officeDocument/2006/relationships/image",
+                 length(ids)),
       target = file.path("media", basename(raster_files) ),
       stringsAsFactors = FALSE )
     new_rels <- rbind( relationships$data, expected_rels)
@@ -156,12 +145,15 @@ docx_device <- function(
   </w:document>")
   sink()
 
-  out_file <- normalizePath(path.expand(file), mustWork = FALSE, winslash = "/")
 
-  unlink(out_file, force = TRUE)
-  pack_folder(template_dir, out_file )
+  # delete out_file if existing
+  if( file.exists(file))
+    unlink(file, force = TRUE)
+  # write out_file
+  out_file <- pack_folder(template_dir, file )
+  # delete temporary dir
   unlink(template_dir, recursive = TRUE, force = TRUE)
-  invisible()
+  out_file
 }
 
 

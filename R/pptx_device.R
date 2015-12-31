@@ -6,36 +6,20 @@
 #' A graphical device for Microsoft PowerPoint documents.
 #' @param file filename of the Microsoft PowerPoint document to produce. File
 #' extension must be \code{.pptx}.
-#' @param fun Plotting code to execute
-#' @param ... arguments for \code{fun} (passed on to \code{\link{dml_docx}}.)
-#' @param height,width Height and width in inches.
-#' @param pagesize Word document page size in inches.
-#' A named vector (\code{width} and \code{height}).
-#' @param margins Word document margins size in inches.
-#' A named vector (\code{left}, \code{right}, \code{top}, \code{bottom}).
-#' @param bg Default background color for the plot (defaults to "white").
-#' @param fontname_serif,fontname_sans,fontname_mono,fontname_symbol font
-#' names for font faces
-#' @param pointsize default point size.
-#' @param editable should vector graphics elements (points, text, etc.)
-#' be editable.
+#' @param code Plotting code to execute
+#' @param size slide size in inches.
+#' @param ... arguments for \code{fun} (passed on to \code{\link{dml_pptx}}.)
 #' @examples
-#' pptx_device(file = "my_plot_1.pptx", fun = function() plot(rnorm(10)))
-#' pptx_device(file = "my_plot_2.pptx", fun = function() barplot(1:7, col = 1:7))
+#' pptx_device(file = "my_plot_1.pptx", code = plot(rnorm(10)))
+#' pptx_device(file = "my_plot_2.pptx", code = barplot(1:7, col = 1:7))
 #' @keywords device
 #' @export
 pptx_device <- function(
-  file, fun,
-  pagesize = c(width = 8.5, height = 11),
-  margins = c( left = 1, right = 1, top = 1, bottom = 1 ),
-  width = 6, height = 6,
-  bg = "white",
-  fontname_serif = getOption("rvg_fonts")$fontname_serif,
-  fontname_sans = getOption("rvg_fonts")$fontname_sans,
-  fontname_mono = getOption("rvg_fonts")$fontname_mono,
-  fontname_symbol = getOption("rvg_fonts")$fontname_symbol,
-  pointsize = 12, editable = TRUE,
-  ...) {
+  file, code,
+  size = c(width = 10, height = 7.5), ...) {
+
+  .reg = regexpr( paste( "(\\.(?i)(pptx))$", sep = "" ), file )
+  if( .reg < 1 ) stop(file , " should have '.pptx' as extension.")
 
   template_dir <- tempfile()
   unzip( zipfile = file.path( system.file(package = "rvg"), "templates/vanilla.pptx" ), exdir = template_dir )
@@ -49,18 +33,17 @@ pptx_device <- function(
   img_directory = file.path(getwd(), uid )
 
   dml_file <- tempfile()
-  dml_pptx(file = dml_file, width = width, height = height, bg = bg,
-           fontname_serif = fontname_serif, fontname_sans = fontname_sans,
-           fontname_mono = fontname_mono, fontname_symbol = fontname_symbol,
-           pointsize = pointsize, editable = editable,
-           id = 0L,
-           next_rels_id = as.integer( relationships$max_int - 1 ),
-           raster_prefix = img_directory, standalone = FALSE
-  )
-  tryCatch(fun(...),
-           finally = dev.off()
-  )
 
+  pars <- list(...)
+  pars$file <- dml_file
+  pars$id <- 0L
+  pars$next_rels_id <- as.integer( relationships$max_int - 1 )
+  pars$raster_prefix <- img_directory
+  pars$standalone <- FALSE
+
+  do.call("dml_pptx", pars)
+
+  tryCatch(code, finally = dev.off() )
 
   raster_files <- list.files(path = getwd(), pattern = paste0("^", uid, "(.*)\\.png$"), full.names = TRUE )
 
@@ -107,7 +90,7 @@ pptx_device <- function(
   cat("xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" ")
   cat("xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" ")
   cat("xmlns:p=\"http://schemas.openxmlformats.org/presentationml/2006/main\" ")
-  # cat("xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"")
+  cat("xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"")
   cat(">")
 
   cat("<p:cSld>")
@@ -116,11 +99,24 @@ pptx_device <- function(
   cat("</p:sld>")
   sink()
 
-  out_file <- normalizePath(path.expand(file), mustWork = FALSE, winslash = "/")
+  # set slide size
+  slide_size_str <- sprintf( "<p:sldSz cx=\"%d\" cy=\"%d\"/>", as.integer(size["width"] * 914400),  as.integer(size["height"] * 914400) )
+  presentation_file <- file.path( template_dir, "ppt", "presentation.xml" )
+  presentation_str <- scan( presentation_file, what = "character", quiet = T, sep = "\n" )
+  presentation_str <- gsub(pattern = "<p:sldSz cx=\"9144000\" cy=\"6858000\" type=\"screen4x3\"/>",
+       replacement =  slide_size_str, x = presentation_str )
+  sink(file = presentation_file )
+  cat(presentation_str, sep = "")
+  sink()
 
-  unlink(out_file, force = TRUE)
-  pack_folder(template_dir, out_file )
-  # unlink(template_dir, recursive = TRUE, force = TRUE)
-  template_dir
+
+  # delete out_file if existing
+  if( file.exists(file))
+    unlink(file, force = TRUE)
+  # write out_file
+  out_file <- pack_folder(template_dir, file )
+  # delete temporary dir
+  unlink(template_dir, recursive = TRUE, force = TRUE)
+  out_file
 }
 
