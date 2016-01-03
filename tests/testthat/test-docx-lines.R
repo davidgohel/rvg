@@ -58,12 +58,10 @@ test_that("polygons without border", {
 
 })
 
-mini_plot <- function(...) graphics::plot(..., axes = FALSE, xlab = "", ylab = "")
-
 dash_array <- function(...) {
   file <- tempfile()
   dml_docx( file = file, bg = "transparent", standalone = TRUE )
-  mini_plot(1:3, ..., type = "l")
+  plot(1:3, ..., axes = FALSE, xlab = "", ylab = "", type = "l")
   dev.off()
 
   doc <- read_xml(file)
@@ -73,7 +71,7 @@ dash_array <- function(...) {
 custom_dash_array <- function(...) {
   file <- tempfile()
   dml_docx( file = file, bg = "transparent", standalone = TRUE )
-  mini_plot(1:3, ..., type = "l")
+  plot(1:3, ..., axes = FALSE, xlab = "", ylab = "", type = "l")
   dev.off()
 
   doc <- read_xml(file)

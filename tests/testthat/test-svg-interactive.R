@@ -2,8 +2,8 @@ context("svg interactive functions")
 library(xml2)
 
 test_that("tracer is working", {
-file <- tempfile(fileext = ".svg")
-  dsvg( file = file, standalone = FALSE )
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, bg = "transparent" )
   plot.new()
   rvg_tracer_on()
   points(c(0.5, .6), c(.4, .3))
