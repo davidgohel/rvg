@@ -49,5 +49,8 @@ dml_docx( file = tempfile() )
 plot(1:11,(-5:5)^2, type='b', main="Simple Example")
 dev.off()
 }
+\seealso{
+\code{\link{Devices}}, \code{\link{dml_docx}}, \code{\link{dsvg}}
+}
 \keyword{device}
 

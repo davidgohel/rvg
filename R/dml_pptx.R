@@ -25,7 +25,7 @@
 #' plot(1:11,(-5:5)^2, type='b', main="Simple Example")
 #' dev.off()
 #' @keywords device
-#' @export
+#' @seealso \code{\link{Devices}}, \code{\link{dml_docx}}, \code{\link{dsvg}}
 #' @export
 dml_pptx <- function(file = "Rplots.dml", width = 6, height = 6,
                      offx = 1, offy = 1,
