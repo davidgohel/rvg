@@ -9,8 +9,8 @@ PPTX_ <- function(file, bg_, width, height, offx, offy, pointsize, fontname_seri
     .Call('rvg_PPTX_', PACKAGE = 'rvg', file, bg_, width, height, offx, offy, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id, standalone)
 }
 
-devSVG_ <- function(file, bg_, width, height, pointsize, standalone, canvas_id) {
-    .Call('rvg_devSVG_', PACKAGE = 'rvg', file, bg_, width, height, pointsize, standalone, canvas_id)
+DSVG_ <- function(file, width, height, bg, pointsize, standalone, canvas_id, fontname_serif, fontname_sans, fontname_mono, fontname_symbol) {
+    .Call('rvg_DSVG_', PACKAGE = 'rvg', file, width, height, bg, pointsize, standalone, canvas_id, fontname_serif, fontname_sans, fontname_mono, fontname_symbol)
 }
 
 set_tracer_on <- function(dn) {

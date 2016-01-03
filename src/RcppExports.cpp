@@ -55,20 +55,24 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// devSVG_
-bool devSVG_(std::string file, std::string bg_, int width, int height, int pointsize, bool standalone, int canvas_id);
-RcppExport SEXP rvg_devSVG_(SEXP fileSEXP, SEXP bg_SEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP pointsizeSEXP, SEXP standaloneSEXP, SEXP canvas_idSEXP) {
+// DSVG_
+bool DSVG_(std::string file, int width, int height, std::string bg, int pointsize, bool standalone, int canvas_id, std::string fontname_serif, std::string fontname_sans, std::string fontname_mono, std::string fontname_symbol);
+RcppExport SEXP rvg_DSVG_(SEXP fileSEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP bgSEXP, SEXP pointsizeSEXP, SEXP standaloneSEXP, SEXP canvas_idSEXP, SEXP fontname_serifSEXP, SEXP fontname_sansSEXP, SEXP fontname_monoSEXP, SEXP fontname_symbolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< std::string >::type file(fileSEXP);
-    Rcpp::traits::input_parameter< std::string >::type bg_(bg_SEXP);
     Rcpp::traits::input_parameter< int >::type width(widthSEXP);
     Rcpp::traits::input_parameter< int >::type height(heightSEXP);
+    Rcpp::traits::input_parameter< std::string >::type bg(bgSEXP);
     Rcpp::traits::input_parameter< int >::type pointsize(pointsizeSEXP);
     Rcpp::traits::input_parameter< bool >::type standalone(standaloneSEXP);
     Rcpp::traits::input_parameter< int >::type canvas_id(canvas_idSEXP);
-    __result = Rcpp::wrap(devSVG_(file, bg_, width, height, pointsize, standalone, canvas_id));
+    Rcpp::traits::input_parameter< std::string >::type fontname_serif(fontname_serifSEXP);
+    Rcpp::traits::input_parameter< std::string >::type fontname_sans(fontname_sansSEXP);
+    Rcpp::traits::input_parameter< std::string >::type fontname_mono(fontname_monoSEXP);
+    Rcpp::traits::input_parameter< std::string >::type fontname_symbol(fontname_symbolSEXP);
+    __result = Rcpp::wrap(DSVG_(file, width, height, bg, pointsize, standalone, canvas_id, fontname_serif, fontname_sans, fontname_mono, fontname_symbol));
     return __result;
 END_RCPP
 }
