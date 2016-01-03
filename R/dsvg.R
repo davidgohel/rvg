@@ -14,7 +14,9 @@
 #' @param standalone Produce a stand alone svg file? If \code{FALSE}, omits
 #'   xml header and default namespace.
 #' @param canvas_id svg id within HTML page.
-#' @seealso \code{\link{Devices}}
+#' @param fontname_serif,fontname_sans,fontname_mono,fontname_symbol font
+#' names for font faces
+#' @seealso \code{\link{Devices}}, \code{\link{dml_docx}}, \code{\link{dml_pptx}}
 #' @examples
 #' dsvg()
 #' plot(rnorm(10), main="Simple Example", xlab = "", ylab = "")
@@ -24,34 +26,28 @@
 #' @importFrom Rcpp sourceCpp
 #' @importFrom gdtools raster_view
 #' @export
-#' @export
 dsvg <- function(file = "Rplots.svg", width = 10, height = 8, bg = "white",
-                pointsize = 12, standalone = TRUE, canvas_id = 1 ) {
+                pointsize = 12, standalone = TRUE, canvas_id = 1,
+                fontname_serif = getOption("rvg_fonts")$fontname_serif,
+                fontname_sans = getOption("rvg_fonts")$fontname_sans,
+                fontname_mono = getOption("rvg_fonts")$fontname_mono,
+                fontname_symbol = getOption("rvg_fonts")$fontname_symbol ) {
 
-  invisible(devSVG_(file, bg, width, height, pointsize, standalone, canvas_id))
-}
+  if( !font_family_exists(font_family = fontname_serif) )
+    warning("'serif' font ", shQuote(fontname_serif), " can not be found")
+  if( !font_family_exists(font_family = fontname_sans) )
+    warning("'sans' font ", shQuote(fontname_sans), " can not be found")
+  if( !font_family_exists(font_family = fontname_mono) )
+    warning("'mono' font ", shQuote(fontname_mono), " can not be found")
+  if( !font_family_exists(font_family = fontname_symbol) )
+    warning("'symbol' font ", shQuote(fontname_symbol), " can not be found")
 
-#' Run plotting code and view svg in RStudio Viewer or web broswer.
-#'
-#' This is useful primarily for testing. Requires the \code{htmltools}
-#' package.
-#'
-#' @param code Plotting code to execute.
-#' @param ... Other arguments passed on to \code{\link{dsvg}}.
-#' @export
-#' @examples
-#' if (require("htmltools")) {
-#'   htmlDSVG(plot(1:10))
-#'   htmlDSVG(hist(rnorm(100)))
-#' }
-htmlDSVG <- function(code, ...) {
-  path <- tempfile()
-  dsvg(path, ...)
-  tryCatch(code,
-           finally = dev.off()
-  )
-  htmltools::browsable(
-    htmltools::HTML(paste0(readLines(path), collapse = "\n"))
-  )
+  invisible(DSVG_(file=file, width=width, height=height, bg=bg, pointsize=pointsize, standalone=standalone,
+                  canvas_id=canvas_id,
+                  fontname_serif = fontname_serif,
+                  fontname_sans = fontname_sans,
+                  fontname_mono = fontname_mono,
+                  fontname_symbol = fontname_symbol)
+            )
 }
 

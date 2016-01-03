@@ -49,6 +49,37 @@ std::string a_color::w_color()
 
   return os.str();
 }
+
+std::string a_color::svg_fill_attr()
+{
+
+  char col_buf[ 100 ];
+  sprintf( col_buf, " fill=\"#%02X%02X%02X\"", R_RED(this->col), R_GREEN(this->col), R_BLUE(this->col));
+  std::string col_str = col_buf;
+
+  std::stringstream os;
+  os << col_str;
+  os.precision(2);
+
+  os << " fill-opacity=\"" << this->alpha / 255.0 << "\"";
+  return os.str();
+}
+
+std::string a_color::svg_stroke_attr()
+{
+
+  char col_buf[ 100 ];
+  sprintf( col_buf, " stroke=\"#%02X%02X%02X\"", R_RED(this->col), R_GREEN(this->col), R_BLUE(this->col));
+  std::string col_str = col_buf;
+
+  std::stringstream os;
+  os << col_str;
+  os.precision(2);
+
+  os << " stroke-opacity=\"" << this->alpha / 255.0 << "\"";
+  return os.str();
+}
+
 int a_color::is_black()
 {
   return (R_RED(this->col) == 0) && (R_GREEN(this->col) == 0) && (R_BLUE(this->col) == 0);
