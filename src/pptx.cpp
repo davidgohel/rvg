@@ -227,7 +227,7 @@ static void pptx_line(double x1, double y1, double x2, double y2,
   y_[1] = y2 + pptx_obj->offy;
   xfrm xfrm_(x_, y_ );
 
-  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin);
+  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
 
 
   fputs("<p:sp>", pptx_obj->file);
@@ -259,7 +259,7 @@ static void pptx_polyline(int n, double *x, double *y, const pGEcontext gc,
     y_[i] = y[i]+pptx_obj->offy;
   }
   xfrm xfrm_(x_, y_ );
-  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin);
+  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fputs("<p:sp>", pptx_obj->file);
     write_nv_pr_pptx(dd, "pl");
     fputs("<p:spPr>", pptx_obj->file);
@@ -288,7 +288,7 @@ static void pptx_polygon(int n, double *x, double *y, const pGEcontext gc,
     y_[i] = y[i]+pptx_obj->offy;
   }
   xfrm xfrm_(x_, y_ );
-  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin);
+  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   a_color fill_( gc->fill );
 
   fputs("<p:sp>", pptx_obj->file);
@@ -319,7 +319,7 @@ static void pptx_rect(double x0, double y0, double x1, double y1,
   x_[1] = x1 + pptx_obj->offx;
   y_[1] = y1 + pptx_obj->offy;
   xfrm xfrm_(x_, y_ );
-  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin);
+  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   a_color fill_( gc->fill );
 
   fputs("<p:sp>", pptx_obj->file);
@@ -338,7 +338,7 @@ static void pptx_rect(double x0, double y0, double x1, double y1,
 static void pptx_circle(double x, double y, double r, const pGEcontext gc,
                        pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
-  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin);
+  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   a_color fill_( gc->fill );
   xfrm xfrm_(pptx_obj->offx + x -r, pptx_obj->offy + y - r, r * 2, r * 2 , 0.0 );
 

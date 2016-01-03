@@ -228,7 +228,7 @@ static void docx_line(double x1, double y1, double x2, double y2,
   y_[1] = y2 ;
   xfrm xfrm_(x_, y_ );
 
-  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin);
+  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
 
 
   fputs("<wps:wsp>", docx_obj->file);
@@ -260,7 +260,7 @@ static void docx_polyline(int n, double *x, double *y, const pGEcontext gc,
     y_[i] = y[i];
   }
   xfrm xfrm_(x_, y_ );
-  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin);
+  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fputs("<wps:wsp>", docx_obj->file);
     write_nv_pr_docx(dd, "pl");
     fputs("<wps:spPr>", docx_obj->file);
@@ -289,7 +289,7 @@ static void docx_polygon(int n, double *x, double *y, const pGEcontext gc,
     y_[i] = y[i];
   }
   xfrm xfrm_(x_, y_ );
-  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin);
+  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   a_color fill_( gc->fill );
 
   fputs("<wps:wsp>", docx_obj->file);
@@ -320,7 +320,7 @@ static void docx_rect(double x0, double y0, double x1, double y1,
   x_[1] = x1;
   y_[1] = y1;
   xfrm xfrm_(x_, y_ );
-  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin);
+  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   a_color fill_( gc->fill );
 
   fputs("<wps:wsp>", docx_obj->file);
@@ -339,7 +339,7 @@ static void docx_rect(double x0, double y0, double x1, double y1,
 static void docx_circle(double x, double y, double r, const pGEcontext gc,
                        pDevDesc dd) {
   DOCX_dev *docx_obj = (DOCX_dev*) dd->deviceSpecific;
-  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin);
+  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   a_color fill_( gc->fill );
   xfrm xfrm_(x - r, y - r, r * 2, r * 2 , 0.0 );
 
@@ -416,7 +416,7 @@ static void docx_raster(unsigned int *raster, int w, int h,
   if (height < 0)
     height = -height;
   xfrm xfrm_(x, y - height, width, height, -rot );
-  line_style line_style_(0, 0, gc->lty, gc->ljoin);
+  line_style line_style_(0, 0, gc->lty, gc->ljoin, gc->lend);
 
   std::vector<unsigned int> raster_(w*h);
   for (std::vector<unsigned int>::size_type i = 0 ; i < raster_.size(); ++i) {
