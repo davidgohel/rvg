@@ -5,7 +5,11 @@
 \title{SVG Graphics Driver}
 \usage{
 dsvg(file = "Rplots.svg", width = 10, height = 8, bg = "white",
-  pointsize = 12, standalone = TRUE, canvas_id = 1)
+  pointsize = 12, standalone = TRUE, canvas_id = 1,
+  fontname_serif = getOption("rvg_fonts")$fontname_serif,
+  fontname_sans = getOption("rvg_fonts")$fontname_sans,
+  fontname_mono = getOption("rvg_fonts")$fontname_mono,
+  fontname_symbol = getOption("rvg_fonts")$fontname_symbol)
 }
 \arguments{
 \item{file}{the file where output will appear.}
@@ -20,6 +24,9 @@ dsvg(file = "Rplots.svg", width = 10, height = 8, bg = "white",
 xml header and default namespace.}
 
 \item{canvas_id}{svg id within HTML page.}
+
+\item{fontname_serif, fontname_sans, fontname_mono, fontname_symbol}{font
+names for font faces}
 }
 \description{
 This function produces SVG files (compliant to the current w3 svg XML standard)
@@ -36,7 +43,7 @@ plot(rnorm(10), main="Simple Example", xlab = "", ylab = "")
 dev.off()
 }
 \seealso{
-\code{\link{Devices}}
+\code{\link{Devices}}, \code{\link{dml_docx}}, \code{\link{dml_pptx}}
 }
 \keyword{device}
 
