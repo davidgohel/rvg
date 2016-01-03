@@ -3,7 +3,7 @@
 export(dml_docx)
 export(dml_pptx)
 export(dsvg)
-export(htmlDSVG)
+export(dsvg_view)
 export(rvg_tracer_off)
 export(rvg_tracer_on)
 export(send_click)

@@ -13,7 +13,6 @@ License: GPL-3
 Depends:
     R (>= 3.0)
 Imports:
-    graphics,
     grDevices,
     Rcpp,
     xml2,
