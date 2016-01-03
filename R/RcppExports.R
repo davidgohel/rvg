@@ -5,10 +5,6 @@ DOCX_ <- function(file, bg_, width, height, pointsize, fontname_serif, fontname_
     .Call('rvg_DOCX_', PACKAGE = 'rvg', file, bg_, width, height, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id, standalone)
 }
 
-PPTX_ <- function(file, bg_, width, height, offx, offy, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id, standalone) {
-    .Call('rvg_PPTX_', PACKAGE = 'rvg', file, bg_, width, height, offx, offy, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id, standalone)
-}
-
 DSVG_ <- function(file, width, height, bg, pointsize, standalone, canvas_id, fontname_serif, fontname_sans, fontname_mono, fontname_symbol) {
     .Call('rvg_DSVG_', PACKAGE = 'rvg', file, width, height, bg, pointsize, standalone, canvas_id, fontname_serif, fontname_sans, fontname_mono, fontname_symbol)
 }
@@ -35,5 +31,9 @@ add_click_event <- function(dn, id, str) {
 
 add_data_id <- function(dn, id, data_id) {
     .Call('rvg_add_data_id', PACKAGE = 'rvg', dn, id, data_id)
+}
+
+PPTX_ <- function(file, bg_, width, height, offx, offy, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id, standalone) {
+    .Call('rvg_PPTX_', PACKAGE = 'rvg', file, bg_, width, height, offx, offy, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id, standalone)
 }
 

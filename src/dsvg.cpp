@@ -151,7 +151,7 @@ static void dsvg_close(pDevDesc dd) {
   DSVG_dev *svgd = (DSVG_dev*) dd->deviceSpecific;
 
   if (svgd->pageno > 0)
-    fputs("</svg>\n", svgd->file);
+    fputs("</svg>", svgd->file);
 
   delete(svgd);
 }
@@ -165,7 +165,7 @@ static void dsvg_line(double x1, double y1, double x2, double y2,
     x1, y1, x2, y2, idx);
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
-  fputs("/>\n", svgd->file);
+  fputs("/>", svgd->file);
 }
 
 void dsvg_poly(int n, double *x, double *y, int filled, const pGEcontext gc,
@@ -187,7 +187,7 @@ void dsvg_poly(int n, double *x, double *y, int filled, const pGEcontext gc,
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
 
-  fputs(" />\n", svgd->file);
+  fputs(" />", svgd->file);
 }
 
 static void dsvg_polyline(int n, double *x, double *y, const pGEcontext gc,
@@ -230,7 +230,7 @@ void dsvg_path(double *x, double *y,
 
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
-  fputs(" />\n", svgd->file);
+  fputs(" />", svgd->file);
 }
 
 static double dsvg_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
@@ -263,7 +263,7 @@ static void dsvg_rect(double x0, double y0, double x1, double y1,
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
 
-  fputs(" />\n", svgd->file);
+  fputs(" />", svgd->file);
 }
 
 static void dsvg_circle(double x, double y, double r, const pGEcontext gc,
@@ -278,7 +278,7 @@ static void dsvg_circle(double x, double y, double r, const pGEcontext gc,
   fprintf(svgd->file, "%s", fill_.svg_fill_attr().c_str());
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
-  fputs(" />\n", svgd->file);
+  fputs(" />", svgd->file);
 }
 
 static void dsvg_text(double x, double y, const char *str, double rot,
@@ -324,7 +324,7 @@ static void dsvg_text(double x, double y, const char *str, double rot,
     }
   }
 
-  fputs("</text>\n", svgd->file);
+  fputs("</text>", svgd->file);
 }
 
 static void dsvg_size(double *left, double *right, double *bottom, double *top,
@@ -379,7 +379,7 @@ static void dsvg_new_page(const pGEcontext gc, pDevDesc dd) {
   svgd->new_canvas_id();
 
   if (svgd->standalone)
-    fputs("<?xml version='1.0' encoding='UTF-8' ?>\n", svgd->file);
+    fputs("<?xml version='1.0' encoding='UTF-8' ?>", svgd->file);
 
   fputs("<svg ", svgd->file);
   if (svgd->standalone){
@@ -388,7 +388,7 @@ static void dsvg_new_page(const pGEcontext gc, pDevDesc dd) {
   }
 
   fprintf(svgd->file, "id='svg_%d' ", svgd->canvas_id);
-  fprintf(svgd->file, "viewBox='0 0 %.2f %.2f'>\n", dd->right, dd->bottom);
+  fprintf(svgd->file, "viewBox='0 0 %.2f %.2f'>", dd->right, dd->bottom);
 
 
   a_color bg_color(dd->startfill);
