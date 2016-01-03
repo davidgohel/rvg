@@ -1,14 +1,15 @@
 Package: rvg
 Type: Package
-Title: R Graphics Device for Vector Graphics Output
+Title: R Graphics Devices for Vector Graphics Output
 Version: 0.0.5
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
     email = "david.gohel@ardata.fr") )
 Author: David Gohel [aut, cre]
-Description: Available vector graphic devices are SVG,
-    DrawingML for Microsoft Word and DrawingML for
-    Microsoft PowerPoint.
+Description: Graphics devices for SVG, DrawingML for
+  Microsoft Word and DrawingML for Microsoft PowerPoint.
+  DrawingML is the markup language for graphics data in
+  Office Open XML.
 License: GPL-3
 Depends:
     R (>= 3.0)
