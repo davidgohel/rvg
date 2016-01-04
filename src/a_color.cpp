@@ -86,10 +86,6 @@ std::string a_color::svg_stroke_attr()
   return os.str();
 }
 
-int a_color::is_black()
-{
-  return (R_RED(this->col) == 0) && (R_GREEN(this->col) == 0) && (R_BLUE(this->col) == 0);
-}
 int a_color::is_visible() {
   return (this->col != NA_INTEGER) && (this->alpha != 0);
 }

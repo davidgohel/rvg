@@ -2,7 +2,6 @@ class a_color
 {
 public:
   a_color (int);
-  int is_black();
   int is_visible();
   int has_alpha();
   std::string solid_fill();
