@@ -174,20 +174,20 @@ void dsvg_poly(int n, double *x, double *y, int filled, const pGEcontext gc,
   int idx = svgd->new_id();
   svgd->register_element();
   fputs("<polyline points='", svgd->file);
-
-  for (int i = 0; i < n; i++) {
-    fprintf(svgd->file, "%.2f,%.2f ", x[i], y[i]);
+  fprintf(svgd->file, "%.2f,%.2f", x[0], y[0]);
+  for (int i = 1; i < n; i++) {
+    fprintf(svgd->file, " %.2f,%.2f", x[i], y[i]);
   }
   fputs("'", svgd->file);
   fprintf(svgd->file, " id='%d'", idx);
-  if( gc->fill != NA_INTEGER ){
+  if( gc->fill != NA_INTEGER && filled > 0 ){
     a_color col_(gc->fill);
     fprintf(svgd->file, "%s", col_.svg_fill_attr().c_str());
   }
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
 
-  fputs(" />", svgd->file);
+  fputs("/>", svgd->file);
 }
 
 static void dsvg_polyline(int n, double *x, double *y, const pGEcontext gc,
@@ -230,7 +230,7 @@ void dsvg_path(double *x, double *y,
 
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
-  fputs(" />", svgd->file);
+  fputs("/>", svgd->file);
 }
 
 static double dsvg_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
@@ -263,7 +263,7 @@ static void dsvg_rect(double x0, double y0, double x1, double y1,
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
 
-  fputs(" />", svgd->file);
+  fputs("/>", svgd->file);
 }
 
 static void dsvg_circle(double x, double y, double r, const pGEcontext gc,
@@ -278,7 +278,7 @@ static void dsvg_circle(double x, double y, double r, const pGEcontext gc,
   fprintf(svgd->file, "%s", fill_.svg_fill_attr().c_str());
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
-  fputs(" />", svgd->file);
+  fputs("/>", svgd->file);
 }
 
 static void dsvg_text(double x, double y, const char *str, double rot,
