@@ -12,7 +12,7 @@ test_that("segments have stroke and no fill", {
 
   x <- read_xml(file)
   seg_node <- xml_find_one(x, "//line")
-  expect_true(is.na( xml_attr(seg_node, "fill") ) )
+  expect_match(xml_attr(seg_node, "fill"), "none")
   expect_match(xml_attr(seg_node, "stroke"), "#000000")
 })
 
@@ -25,7 +25,7 @@ test_that("lines have stroke and no fill", {
 
   x <- read_xml(file)
   seg_node <- xml_find_one(x, "//polyline")
-  expect_true(is.na( xml_attr(seg_node, "fill") ) )
+  expect_match(xml_attr(seg_node, "fill"), "none")
   expect_match(xml_attr(seg_node, "stroke"), "#000000")
 })
 

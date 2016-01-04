@@ -18,6 +18,33 @@ test_that("raster is generated", {
   expect_equal(length(raster_files), expected = 1)
 })
 
+test_that("docx raster is in media", {
+  doc_file <- write_docx(file = "doc.docx",
+             code = {
+               pushViewport(viewport(width = 0.8, height = 0.5, name = "vp1"))
+               grid.rect()
+               pushViewport(viewport( width = 0.8, height = 0.5, name = "vp2",angle = 10 ))
+               redGradient <- matrix(hcl(0, 80, seq(50, 80, 10)), nrow = 4, ncol = 5)
+               grid.raster(redGradient)
+             })
+  expect_true(file.exists(doc_file))
+  utils::unzip( zipfile = doc_file, exdir = "doc_content" )
+  expect_true( length( list.files( file.path("doc_content", "word/media")) ) == 1 )
+})
+
+test_that("pptx raster is in media", {
+  doc_file <- write_pptx(file = "doc.pptx",
+                         code = {
+                           pushViewport(viewport(width = 0.8, height = 0.5, name = "vp1"))
+                           grid.rect()
+                           pushViewport(viewport( width = 0.8, height = 0.5, name = "vp2",angle = 10 ))
+                           redGradient <- matrix(hcl(0, 80, seq(50, 80, 10)), nrow = 4, ncol = 5)
+                           grid.raster(redGradient)
+                         })
+  expect_true(file.exists(doc_file))
+  utils::unzip( zipfile = doc_file, exdir = "pres_content" )
+  expect_true( length( list.files( file.path("pres_content", "ppt/media")) ) == 1 )
+})
 
 test_that("pic tag can be found", {
 
@@ -40,4 +67,8 @@ test_that("pic tag can be found", {
   expect_false( inherits(blip_node, "try-error") )
 })
 
-unlink(list.files(pattern = "\\.png"), force = TRUE)
+unlink(list.files(pattern = "\\.png$"), force = TRUE)
+unlink(list.files(pattern = "\\.docx$"), force = TRUE)
+unlink(list.files(pattern = "\\.pptx$"), force = TRUE)
+unlink("doc_content", recursive = TRUE, force = TRUE)
+unlink("pres_content", recursive = TRUE, force = TRUE)
