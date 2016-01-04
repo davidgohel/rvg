@@ -151,7 +151,7 @@ static void dsvg_close(pDevDesc dd) {
   DSVG_dev *svgd = (DSVG_dev*) dd->deviceSpecific;
 
   if (svgd->pageno > 0)
-    fputs("</svg>", svgd->file);
+    fputs("</svg>\n", svgd->file);
 
   delete(svgd);
 }
@@ -165,6 +165,9 @@ static void dsvg_line(double x1, double y1, double x2, double y2,
     x1, y1, x2, y2, idx);
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
+  a_color col_(gc->fill);
+  fprintf(svgd->file, "%s", col_.svg_fill_attr().c_str());
+
   fputs("/>", svgd->file);
 }
 
@@ -180,10 +183,11 @@ void dsvg_poly(int n, double *x, double *y, int filled, const pGEcontext gc,
   }
   fputs("'", svgd->file);
   fprintf(svgd->file, " id='%d'", idx);
-  if( gc->fill != NA_INTEGER && filled > 0 ){
-    a_color col_(gc->fill);
-    fprintf(svgd->file, "%s", col_.svg_fill_attr().c_str());
-  }
+
+  a_color col_(gc->fill);
+  fprintf(svgd->file, "%s", col_.svg_fill_attr().c_str());
+
+
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
 
@@ -302,7 +306,7 @@ static void dsvg_text(double x, double y, const char *str, double rot,
   if (is_italic(gc->fontface))
     fputs(" font-weight='italic'", svgd->file);
   if (gc->col != -16777216){
-    a_color fill_(gc->fill);
+    a_color fill_(gc->col);
     fprintf(svgd->file, "%s", fill_.svg_fill_attr().c_str());
   } // black
 
@@ -379,7 +383,7 @@ static void dsvg_new_page(const pGEcontext gc, pDevDesc dd) {
   svgd->new_canvas_id();
 
   if (svgd->standalone)
-    fputs("<?xml version='1.0' encoding='UTF-8' ?>", svgd->file);
+    fputs("<?xml version='1.0' encoding='UTF-8'?>\n", svgd->file);
 
   fputs("<svg ", svgd->file);
   if (svgd->standalone){

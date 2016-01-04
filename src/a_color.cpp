@@ -53,6 +53,9 @@ std::string a_color::w_color()
 std::string a_color::svg_fill_attr()
 {
 
+  if( this->is_visible() < 1 )
+    return " fill=\"none\"";
+
   char col_buf[ 100 ];
   sprintf( col_buf, " fill=\"#%02X%02X%02X\"", R_RED(this->col), R_GREEN(this->col), R_BLUE(this->col));
   std::string col_str = col_buf;
@@ -67,6 +70,9 @@ std::string a_color::svg_fill_attr()
 
 std::string a_color::svg_stroke_attr()
 {
+
+  if( this->is_visible() < 1 )
+    return " stroke=\"none\"";
 
   char col_buf[ 100 ];
   sprintf( col_buf, " stroke=\"#%02X%02X%02X\"", R_RED(this->col), R_GREEN(this->col), R_BLUE(this->col));

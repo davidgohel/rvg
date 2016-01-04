@@ -94,7 +94,7 @@ std::string line_style::svg_attr()
   a_color col_(this->col);
 
   if( col_.is_visible() < 1 || this->width < 0.0001 || this->type < 0 )
-    return " stroke=\"none\"";
+    return col_.svg_stroke_attr();
 
 
   std::stringstream os;
