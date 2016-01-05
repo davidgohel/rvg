@@ -276,7 +276,7 @@ static void dsvg_circle(double x, double y, double r, const pGEcontext gc,
   int idx = svgd->new_id();
   svgd->register_element();
 
-  fprintf(svgd->file, "<circle cx='%.2f' cy='%.2f' r='%.2f'", x, y, r );
+  fprintf(svgd->file, "<circle cx='%.2f' cy='%.2f' r='%.2fpt'", x, y, r * .75 );
   fprintf(svgd->file, " id='%d'", idx);
   a_color fill_(gc->fill);
   fprintf(svgd->file, "%s", fill_.svg_fill_attr().c_str());
@@ -300,7 +300,7 @@ static void dsvg_text(double x, double y, const char *str, double rot,
       -1.0 * rot);
   }
   fprintf(svgd->file, " id='%d'", idx);
-  fprintf(svgd->file, " font-size='%.2fpt'", gc->cex * gc->ps);
+  fprintf(svgd->file, " font-size='%.2fpt'", gc->cex * gc->ps * .75 );
   if (is_bold(gc->fontface))
     fputs(" font-weight='bold'", svgd->file);
   if (is_italic(gc->fontface))
