@@ -1,4 +1,4 @@
-context("Extension filenames")
+context("MS extension filenames")
 library(xml2)
 
 test_that("check docx extension", {

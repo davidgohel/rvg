@@ -1,4 +1,4 @@
-context("svg interactive functions")
+context("dsvg interactive functions")
 library(xml2)
 
 test_that("tracer is working", {

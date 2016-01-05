@@ -1,4 +1,4 @@
-context("Absolute filename are returned")
+context("MS absolute filename are returned")
 library(xml2)
 
 test_that("docx filename", {
