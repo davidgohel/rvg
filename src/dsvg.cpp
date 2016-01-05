@@ -300,11 +300,11 @@ static void dsvg_text(double x, double y, const char *str, double rot,
       -1.0 * rot);
   }
   fprintf(svgd->file, " id='%d'", idx);
-  fprintf(svgd->file, " font-size='%.2f'", gc->cex * gc->ps);
+  fprintf(svgd->file, " font-size='%.2fpt'", gc->cex * gc->ps);
   if (is_bold(gc->fontface))
     fputs(" font-weight='bold'", svgd->file);
   if (is_italic(gc->fontface))
-    fputs(" font-weight='italic'", svgd->file);
+    fputs(" font-style='italic'", svgd->file);
   if (gc->col != -16777216){
     a_color fill_(gc->col);
     fprintf(svgd->file, "%s", fill_.svg_fill_attr().c_str());

@@ -194,7 +194,7 @@ static double pptx_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
                             pptx_obj->fontname_mono, pptx_obj->fontname_symbol);
 
   gdtools::context_set_font(pptx_obj->cc, fn,
-                            gc->cex * gc->ps + .5, is_bold(gc->fontface), is_italic(gc->fontface));
+                            gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface));
   FontMetric fm = gdtools::context_extents(pptx_obj->cc, std::string(str));
 
   return fm.width;
@@ -208,7 +208,7 @@ static double pptx_strheight(const char *str, const pGEcontext gc, pDevDesc dd) 
                             pptx_obj->fontname_mono, pptx_obj->fontname_symbol);
 
   gdtools::context_set_font(pptx_obj->cc, fn,
-                            gc->cex * gc->ps + .5, is_bold(gc->fontface), is_italic(gc->fontface));
+                            gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface));
   FontMetric fm = gdtools::context_extents(pptx_obj->cc, std::string(str));
   // Rprintf( "%s : ascent %.3f descent %.3f height %.3f width  %.3f\n", str, fm.ascent, fm.descent, fm.height, fm.width);
   return fm.height;
@@ -362,10 +362,10 @@ static void pptx_text(double x, double y, const char *str, double rot,
                      double hadj, const pGEcontext gc, pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
 
-  double fs = gc->cex * gc->ps + 0.5;
+  double fs = gc->cex * gc->ps ;
   double w = pptx_strwidth(str, gc, dd);
   double h = pptx_strheight(str, gc, dd);
-  if( h < 1.0 ) return;
+  if( fs*100 < 1.0 ) return;
 
   double corrected_offx = translate_rotate_x(x, y, rot, h, w, hadj) ;
   double corrected_offy = translate_rotate_y(x, y, rot, h, w, hadj) ;

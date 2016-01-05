@@ -196,7 +196,7 @@ static double docx_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
     docx_obj->fontname_mono, docx_obj->fontname_symbol);
 
   gdtools::context_set_font(docx_obj->cc, fn,
-                            gc->cex * gc->ps + .5, is_bold(gc->fontface), is_italic(gc->fontface));
+                            gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface));
   FontMetric fm = gdtools::context_extents(docx_obj->cc, std::string(str));
 
   return fm.width;
@@ -210,7 +210,7 @@ static double docx_strheight(const char *str, const pGEcontext gc, pDevDesc dd) 
                             docx_obj->fontname_mono, docx_obj->fontname_symbol);
 
   gdtools::context_set_font(docx_obj->cc, fn,
-                            gc->cex * gc->ps + .5, is_bold(gc->fontface), is_italic(gc->fontface));
+                            gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface));
   FontMetric fm = gdtools::context_extents(docx_obj->cc, std::string(str));
   return fm.height;
 }
@@ -363,10 +363,10 @@ static void docx_text(double x, double y, const char *str, double rot,
                      double hadj, const pGEcontext gc, pDevDesc dd) {
   DOCX_dev *docx_obj = (DOCX_dev*) dd->deviceSpecific;
 
-  double fs = gc->cex * gc->ps + 0.5;
+  double fs = gc->cex * gc->ps;
   double w = docx_strwidth(str, gc, dd)*1.02;
   double h = docx_strheight(str, gc, dd)*1.45;
-  if( h < 1.0 ) return;
+  if( fs*2 < 1.0 ) return;
 
   double corrected_offx = translate_rotate_x(x, y, rot, h, w, hadj) ;
   double corrected_offy = translate_rotate_y(x, y, rot, h, w, hadj) ;
