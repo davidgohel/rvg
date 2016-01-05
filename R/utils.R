@@ -132,14 +132,3 @@ read_relationship <- function(filename) {
   out
 }
 
-
-
-
-.onLoad= function(libname, pkgname){
-
-  options("rvg_fonts" = list(fontname_serif="Times New Roman",
-    fontname_sans = "Calibri", fontname_mono = "Courier New",
-    fontname_symbol = "Symbol") )
-
-  invisible()
-}

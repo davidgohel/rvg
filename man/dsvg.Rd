@@ -6,10 +6,8 @@
 \usage{
 dsvg(file = "Rplots.svg", width = 10, height = 8, bg = "white",
   pointsize = 12, standalone = TRUE, canvas_id = 1,
-  fontname_serif = getOption("rvg_fonts")$fontname_serif,
-  fontname_sans = getOption("rvg_fonts")$fontname_sans,
-  fontname_mono = getOption("rvg_fonts")$fontname_mono,
-  fontname_symbol = getOption("rvg_fonts")$fontname_symbol)
+  fontname_serif = "Times New Roman", fontname_sans = "Calibri",
+  fontname_mono = "Courier New", fontname_symbol = "Symbol")
 }
 \arguments{
 \item{file}{the file where output will appear.}

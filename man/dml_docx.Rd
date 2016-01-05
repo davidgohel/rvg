@@ -5,11 +5,9 @@
 \title{DrawingML graphic device for Microsoft Word}
 \usage{
 dml_docx(file = "Rplots.dml", width = 6, height = 6, bg = "white",
-  fontname_serif = getOption("rvg_fonts")$fontname_serif,
-  fontname_sans = getOption("rvg_fonts")$fontname_sans,
-  fontname_mono = getOption("rvg_fonts")$fontname_mono,
-  fontname_symbol = getOption("rvg_fonts")$fontname_symbol, pointsize = 12,
-  editable = TRUE, id = 1L, next_rels_id = 1L,
+  fontname_serif = "Times New Roman", fontname_sans = "Calibri",
+  fontname_mono = "Courier New", fontname_symbol = "Symbol",
+  pointsize = 12, editable = TRUE, id = 1L, next_rels_id = 1L,
   raster_prefix = "raster_", standalone = TRUE)
 }
 \arguments{
