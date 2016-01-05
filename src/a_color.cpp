@@ -62,9 +62,11 @@ std::string a_color::svg_fill_attr()
 
   std::stringstream os;
   os << col_str;
-  os.precision(2);
 
-  os << " fill-opacity=\"" << this->alpha / 255.0 << "\"";
+  os << " fill-opacity=\"";
+
+  os.precision(2);
+  os << this->alpha / 255.0 << "\"";
   return os.str();
 }
 
