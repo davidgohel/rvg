@@ -58,7 +58,7 @@ test_that("default point size is 12", {
   dev.off()
 
   x <- read_xml(file)
-  expect_equal(xml_attr(xml_find_one(x, ".//text"), "font-size"), "12.00pt")
+  expect_equal(xml_attr(xml_find_one(x, ".//text"), "font-size"), "9.00pt")
 })
 
 test_that("cex generates fractional font sizes", {
@@ -69,7 +69,7 @@ test_that("cex generates fractional font sizes", {
   dev.off()
 
   x <- read_xml(file)
-  expect_equal(xml_attr(xml_find_one(x, ".//text"), "font-size"), "1.20pt")
+  expect_equal(xml_attr(xml_find_one(x, ".//text"), "font-size"), "0.90pt")
 })
 
 test_that("font sets weight/style", {

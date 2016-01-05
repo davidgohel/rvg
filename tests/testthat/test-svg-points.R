@@ -25,7 +25,7 @@ test_that("check stroke and fill exist", {
   x <- read_xml(file)
   node <- xml_find_one(x, ".//circle")
   expect_equal(xml_attr(node, "stroke"), "#FF0000")
-  expect_equal(xml_attr(circle, "fill"), "#FF0000")
+  expect_equal(xml_attr(node, "fill"), "#0000FF")
 })
 
 test_that("check alpha values", {
@@ -53,6 +53,6 @@ test_that("check fill is set to none when necessary", {
 
   x <- read_xml(file)
   node <- xml_find_one(x, ".//circle")
-  expect_match(xml_attr(node, "fill"), "none;")
+  expect_match(xml_attr(node, "fill"), "none")
 })
 
