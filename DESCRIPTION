@@ -6,10 +6,8 @@ Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
     email = "david.gohel@ardata.fr") )
 Author: David Gohel [aut, cre]
-Description: Graphics devices for SVG, DrawingML for
+Description: Vector Graphics devices for SVG, DrawingML for
   Microsoft Word and DrawingML for Microsoft PowerPoint.
-  DrawingML is the markup language for graphics data in
-  Office Open XML.
 License: GPL-3
 Depends:
     R (>= 3.0)

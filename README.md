@@ -4,12 +4,20 @@
 
 # rvg
 
-rvg is a set of graphics devices that produces svg and DrawingML outputs. 
+`rvg` is a set of graphics devices that produces Vector Graphics outputs. This package 
+is providing three formats:
 
-This package implements `write_docx` and `write_pptx` functions. The first one is producing 
-a Microsoft Word document and the last one a Microsoft PowerPoint document containing R plot 
-results in a vector graphics format. By default, theses graphics are *editable*, element 
-edition can be disabled with option `editable = FALSE`.
+* SVG (*Scalable Vector Graphics*) with `dsvg`. The graphic can be made interactive (tooltip, onclick 
+  and id attribute manipulation). To make that work in an HTML document, check for 
+  dependencies `jquery` and `bootstrap` in the document.
+* DrawingML for Microsoft Word (>=2007) with `dml_docx` and DrawingML for Microsoft PowerPoint 
+  with `dml_docx`. Theses formats let users edit the graphic elements (*editable graphics*) 
+  and have a very good rendering. 
+
+Theses are producing raw XML outputs. To let users get easelly their plot into a MS Word or 
+PowerPoint file, two functions have been implements `write_docx` and `write_pptx`. 
+By default, theses graphics are *editable*, element edition can be disabled with 
+option `editable = FALSE`.
 
 ```
 library(rvg)
