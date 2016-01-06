@@ -17,8 +17,10 @@ dsvg_view <- function(code, ...) {
   tryCatch(code,
            finally = dev.off()
   )
-  htmltools::browsable(
-    htmltools::HTML(paste0(readLines(path), collapse = "\n"))
-  )
+  if( interactive() )
+    htmltools::browsable(
+      htmltools::HTML(paste0(readLines(path), collapse = "\n"))
+    )
+  else invisible()
 }
 
