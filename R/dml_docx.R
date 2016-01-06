@@ -1,4 +1,3 @@
-#' @importFrom gdtools font_family_exists
 #' @title DrawingML graphic device for Microsoft Word
 #'
 #' @description

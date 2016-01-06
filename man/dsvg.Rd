@@ -4,7 +4,7 @@
 \alias{dsvg}
 \title{SVG Graphics Driver}
 \usage{
-dsvg(file = "Rplots.svg", width = 10, height = 8, bg = "white",
+dsvg(file = "Rplots.svg", width = 6, height = 6, bg = "white",
   pointsize = 12, standalone = TRUE, canvas_id = 1,
   fontname_serif = "Times New Roman", fontname_sans = "Calibri",
   fontname_mono = "Courier New", fontname_symbol = "Symbol")
@@ -24,7 +24,8 @@ xml header and default namespace.}
 \item{canvas_id}{svg id within HTML page.}
 
 \item{fontname_serif, fontname_sans, fontname_mono, fontname_symbol}{font
-names for font faces}
+names for font faces.
+Used fonts should be available in the operating system.}
 }
 \description{
 This function produces SVG files (compliant to the current w3 svg XML standard)
