@@ -15,7 +15,8 @@
 #'   xml header and default namespace.
 #' @param canvas_id svg id within HTML page.
 #' @param fontname_serif,fontname_sans,fontname_mono,fontname_symbol font
-#' names for font faces
+#' names for font faces.
+#' Used fonts should be available in the operating system.
 #' @seealso \code{\link{Devices}}, \code{\link{dml_docx}}, \code{\link{dml_pptx}}
 #' @examples
 #' dsvg()
@@ -26,21 +27,13 @@
 #' @importFrom Rcpp sourceCpp
 #' @importFrom gdtools raster_view
 #' @export
-dsvg <- function(file = "Rplots.svg", width = 10, height = 8, bg = "white",
+dsvg <- function(file = "Rplots.svg", width = 6, height = 6, bg = "white",
                 pointsize = 12, standalone = TRUE, canvas_id = 1,
                 fontname_serif = "Times New Roman",
                 fontname_sans = "Calibri",
                 fontname_mono = "Courier New",
                 fontname_symbol = "Symbol" ) {
 
-  if( !font_family_exists(font_family = fontname_serif) )
-    warning("'serif' font ", shQuote(fontname_serif), " can not be found")
-  if( !font_family_exists(font_family = fontname_sans) )
-    warning("'sans' font ", shQuote(fontname_sans), " can not be found")
-  if( !font_family_exists(font_family = fontname_mono) )
-    warning("'mono' font ", shQuote(fontname_mono), " can not be found")
-  if( !font_family_exists(font_family = fontname_symbol) )
-    warning("'symbol' font ", shQuote(fontname_symbol), " can not be found")
 
   invisible(DSVG_(file=file, width=width, height=height, bg=bg, pointsize=pointsize, standalone=standalone,
                   canvas_id=canvas_id,
