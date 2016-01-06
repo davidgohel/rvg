@@ -18,7 +18,8 @@ dml_docx(file = "Rplots.dml", width = 6, height = 6, bg = "white",
 \item{bg}{Default background color for the plot (defaults to "white").}
 
 \item{fontname_serif, fontname_sans, fontname_mono, fontname_symbol}{font
-names for font faces}
+names for font faces.
+Used fonts should be available in the operating system.}
 
 \item{pointsize}{default point size.}
 

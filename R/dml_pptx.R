@@ -7,7 +7,8 @@
 #' @param height,width Height and width in inches.
 #' @param offx,offy top and left origin of the plot
 #' @param bg Default background color for the plot (defaults to "white").
-#' @param fontname_serif,fontname_sans,fontname_mono,fontname_symbol font names for font faces
+#' @param fontname_serif,fontname_sans,fontname_mono,fontname_symbol font names for font faces.
+#' Used fonts should be available in the operating system.
 #' @param pointsize default point size.
 #' @param editable should vector graphics elements (points, text, etc.) be editable.
 #' @param id specifies a unique identifier (integer) within the slide
@@ -38,15 +39,6 @@ dml_pptx <- function(file = "Rplots.dml", width = 6, height = 6,
                      id = 1L,
                      next_rels_id = 1L,
                      raster_prefix = "raster_", standalone = TRUE ) {
-
-  if( !font_family_exists(font_family = fontname_serif) )
-    warning("'serif' font ", shQuote(fontname_serif), " can not be found")
-  if( !font_family_exists(font_family = fontname_sans) )
-    warning("'sans' font ", shQuote(fontname_sans), " can not be found")
-  if( !font_family_exists(font_family = fontname_mono) )
-    warning("'mono' font ", shQuote(fontname_mono), " can not be found")
-  if( !font_family_exists(font_family = fontname_symbol) )
-    warning("'symbol' font ", shQuote(fontname_symbol), " can not be found")
 
     invisible(PPTX_(file, bg, width, height, offx = offx, offy = offy,
               pointsize = pointsize, fontname_serif = fontname_serif,

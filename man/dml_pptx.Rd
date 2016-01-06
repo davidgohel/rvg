@@ -19,7 +19,8 @@ dml_pptx(file = "Rplots.dml", width = 6, height = 6, offx = 1,
 
 \item{bg}{Default background color for the plot (defaults to "white").}
 
-\item{fontname_serif, fontname_sans, fontname_mono, fontname_symbol}{font names for font faces}
+\item{fontname_serif, fontname_sans, fontname_mono, fontname_symbol}{font names for font faces.
+Used fonts should be available in the operating system.}
 
 \item{pointsize}{default point size.}
 
