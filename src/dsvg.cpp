@@ -392,15 +392,22 @@ static void dsvg_new_page(const pGEcontext gc, pDevDesc dd) {
   }
 
   fprintf(svgd->file, "id='svg_%d' ", svgd->canvas_id);
-  fprintf(svgd->file, "viewBox='0 0 %.2f %.2f'>", dd->right, dd->bottom);
+  fprintf(svgd->file, "viewBox='0 0 %.2f %.2f' ", dd->right, dd->bottom);
+  fprintf(svgd->file, "width='%.2f' ", dd->right);
+  fprintf(svgd->file, "height='%.2f'>", dd->bottom);
 
+  int bg_fill, fill, col;
+  a_color bg_temp(gc->fill);
+  if (bg_temp.is_visible())
+    bg_fill = gc->fill;
+  else bg_fill = dd->startfill;
 
-  a_color bg_color(dd->startfill);
+  a_color bg_color(bg_fill);
   if( bg_color.is_transparent() < 1 ){
-    gc->fill = dd->startfill;
-    gc->col = dd->startfill;
-    int fill = gc->fill;
-    int col = gc->col;
+    fill = gc->fill;
+    col = gc->col;
+    gc->fill = bg_fill;
+    gc->col = bg_fill;
     dsvg_rect(0, 0, dd->right, dd->bottom, gc, dd);
     gc->fill = fill;
     gc->col = col;

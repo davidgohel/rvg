@@ -456,12 +456,18 @@ static void docx_new_page(const pGEcontext gc, pDevDesc dd) {
 
   fprintf(docx_obj->file, "%s", mt.w_opening_tag().c_str() );
 
-  a_color bg_color(dd->startfill);
+  int bg_fill, fill, col;
+  a_color bg_temp(gc->fill);
+  if (bg_temp.is_visible())
+    bg_fill = gc->fill;
+  else bg_fill = dd->startfill;
+
+  a_color bg_color(bg_fill);
   if( bg_color.is_transparent() < 1 ){
-    gc->fill = dd->startfill;
-    gc->col = dd->startfill;
-    int fill = gc->fill;
-    int col = gc->col;
+    fill = gc->fill;
+    col = gc->col;
+    gc->fill = bg_fill;
+    gc->col = bg_fill;
     docx_rect(0, 0, dd->right, dd->bottom, gc, dd);
     gc->fill = fill;
     gc->col = col;
