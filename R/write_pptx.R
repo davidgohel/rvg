@@ -24,7 +24,7 @@ write_pptx <- function(
   template_dir <- tempfile()
   unzip( zipfile = file.path( system.file(package = "rvg"), "templates/vanilla.pptx" ), exdir = template_dir )
   drop_dir <- file.path(template_dir, "__MACOSX")
-  if( dir.exists(drop_dir) ) unlink(drop_dir, force = TRUE, recursive = TRUE)
+  if( file.exists(drop_dir) ) unlink(drop_dir, force = TRUE, recursive = TRUE)
 
   document_rel <- file.path( template_dir, "ppt/slides/", "_rels/slide1.xml.rels" )
   relationships <- read_relationship( filename = document_rel )
@@ -73,7 +73,7 @@ write_pptx <- function(
     document_rel <- file.path( template_dir, "ppt/slides/", "_rels/slide1.xml.rels" )
 
     media_dir <- file.path(template_dir, "ppt", "media")
-    if( !dir.exists(media_dir))
+    if( !file.exists(media_dir))
       dir.create(media_dir)
 
     for(i in seq_len(nrow(expected_rels))){

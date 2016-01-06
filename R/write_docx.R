@@ -29,7 +29,7 @@ write_docx <- function( file, code,
   template_dir <- tempfile()
   unzip( zipfile = file.path( system.file(package = "rvg"), "templates/vanilla.docx" ), exdir = template_dir )
   drop_dir <- file.path(template_dir, "__MACOSX")
-  if( dir.exists(drop_dir) ) unlink(drop_dir, force = TRUE, recursive = TRUE)
+  if( file.exists(drop_dir) ) unlink(drop_dir, force = TRUE, recursive = TRUE)
 
   document_rel <- file.path( template_dir, "word", "_rels/document.xml.rels" )
   relationships <- read_relationship( filename = document_rel )
