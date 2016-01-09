@@ -564,7 +564,7 @@ pDevDesc pptx_driver_new(std::string filename, int bg, double width, double heig
 }
 
 // [[Rcpp::export]]
-bool PPTX_(std::string file, std::string bg_, int width, int height,
+bool PPTX_(std::string file, std::string bg_, double width, double height,
     double offx, double offy,
     int pointsize,
     std::string fontname_serif,

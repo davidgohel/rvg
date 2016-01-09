@@ -560,7 +560,7 @@ pDevDesc docx_driver_new(std::string filename, int bg, double width, double heig
 }
 
 // [[Rcpp::export]]
-bool DOCX_(std::string file, std::string bg_, int width, int height,
+bool DOCX_(std::string file, std::string bg_, double width, double height,
     int pointsize,
     std::string fontname_serif,
     std::string fontname_sans,

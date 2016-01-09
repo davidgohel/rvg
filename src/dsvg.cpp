@@ -184,9 +184,11 @@ void dsvg_poly(int n, double *x, double *y, int filled, const pGEcontext gc,
   fputs("'", svgd->file);
   fprintf(svgd->file, " id='%d'", idx);
 
-  a_color col_(gc->fill);
-  fprintf(svgd->file, "%s", col_.svg_fill_attr().c_str());
-
+  if( filled > 0 ){
+    a_color col_(gc->fill);
+    fprintf(svgd->file, "%s", col_.svg_fill_attr().c_str());
+  } else
+    fputs(" fill=\"none\"", svgd->file);
 
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
@@ -210,20 +212,20 @@ void dsvg_path(double *x, double *y,
   DSVG_dev *svgd = (DSVG_dev*) dd->deviceSpecific;
   int idx = svgd->new_id();
   svgd->register_element();
-  fputs("<path d='", svgd->file);
+  int index = 0;
 
-  int ind = 0;
+  fputs("<path d='", svgd->file);
   for (int i = 0; i < npoly; i++) {
-    fprintf(svgd->file, "M %.2f %.2f ", x[ind], y[ind]);
-    ind++;
+    fprintf(svgd->file, "M %.2f %.2f ", x[index], y[index]);
+    index++;
     for (int j = 1; j < nper[i]; j++) {
-      fprintf(svgd->file, "L %.2f %.2f ", x[ind], y[ind]);
-      ind++;
+      fprintf(svgd->file, "L %.2f %.2f ", x[index], y[index]);
+      index++;
     }
     fputs("Z ", svgd->file);
   }
-  fputs("'", svgd->file);
-  fprintf(svgd->file, " id='%d'", idx);
+  fprintf(svgd->file, "' id='%d'", idx);
+
   a_color fill_(gc->fill);
   fprintf(svgd->file, "%s", fill_.svg_fill_attr().c_str());
 
@@ -493,7 +495,7 @@ pDevDesc dsvg_driver_new(std::string filename, int bg, double width,
 }
 
 // [[Rcpp::export]]
-bool DSVG_(std::string file, int width, int height, std::string bg,
+bool DSVG_(std::string file, double width, double height, std::string bg,
              int pointsize, bool standalone, int canvas_id,
              std::string fontname_serif,
              std::string fontname_sans,
