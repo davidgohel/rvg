@@ -53,7 +53,7 @@ std::string a_color::w_color()
 std::string a_color::svg_fill_attr()
 {
 
-  if( this->is_visible() < 1 )
+  if( this->is_transparent() > 0 )
     return " fill=\"none\"";
 
   char col_buf[ 100 ];
@@ -73,7 +73,7 @@ std::string a_color::svg_fill_attr()
 std::string a_color::svg_stroke_attr()
 {
 
-  if( this->is_visible() < 1 )
+  if( this->is_transparent() > 0 )
     return " stroke=\"none\"";
 
   char col_buf[ 100 ];

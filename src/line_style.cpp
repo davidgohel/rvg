@@ -9,7 +9,7 @@ using namespace Rcpp;
 std::string line_style::a_tag()
 {
   a_color col_(this->col);
-  if( col_.is_visible() < 1 ) return "";
+  if( col_.is_transparent() > 0 ) return "";
 
   if( this->width < 0.000001 ) return "";
   if( this->type < 0 ) return "";
@@ -85,7 +85,6 @@ std::string line_style::a_tag()
   }
 
   os << "</a:ln>";
-
   return os.str();
 }
 
