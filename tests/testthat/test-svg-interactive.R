@@ -158,7 +158,7 @@ test_that("interactive grid segment grobs", {
   expect_true( grepl( tip, script_txt ) )
 })
 
-test_that("interactive grid segment grobs", {
+test_that("interactive grid text grobs", {
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, canvas_id = 1 )
   gl <- interactiveTextGrob(label = "text", tooltip = "tooltip")

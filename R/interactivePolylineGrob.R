@@ -38,7 +38,19 @@ drawDetails.interactivePolylineGrob <- function(x,recording) {
 	ids = rvg_tracer_off()
 	if( length( ids ) > 0 ) {
 
-	  if( is.null(x$id) )
+	  for( int in c("tooltip", "onclick", "data_id") ){
+	    if( !is.null( x[[int]] )){
+	      if( length( x[[int]] ) == 1 && length(ids)>1 ){
+	        x[[int]] = rep(x[[int]], length(ids) )
+	      }
+	      if( length(ids) %% length(x[[int]]) < 1 &&
+	          length(ids) != length(x[[int]]) ){
+	        x[[int]] = rep( x[[int]], each = length(ids) %/% length(x[[int]]) )
+	      }
+	    }
+	  }
+
+	  if( is.null(x$id) && is.null(x$id.lengths) )
 	    x$id <- rep( 1, length(x$x) )
 
 		.w = c( TRUE, x$id[-1]!=x$id[-length(x$id)] )
