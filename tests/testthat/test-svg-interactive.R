@@ -158,3 +158,18 @@ test_that("interactive grid segment grobs", {
   expect_true( grepl( tip, script_txt ) )
 })
 
+test_that("interactive grid segment grobs", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  gl <- interactiveTextGrob(label = "text", tooltip = "tooltip")
+  gl <- editGrob(gl)
+  grid.draw(gl)
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip <- "attr\\(\\'title\\',\\'tooltip\\'\\)"
+  expect_true( grepl( tip, script_txt ) )
+})
+
