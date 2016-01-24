@@ -1,0 +1,13 @@
+# rvg 0.6
+
+## Bug fixes
+
+* plot size was truncated to integers
+
+* lines with opacity were not displayed
+
+## New features
+
+* grid support for interactive points,
+  polygons, polylines, rectangles and segments
+
