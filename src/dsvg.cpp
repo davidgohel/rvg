@@ -171,8 +171,8 @@ static void dsvg_line(double x1, double y1, double x2, double y2,
   fputs("/>", svgd->file);
 }
 
-void dsvg_poly(int n, double *x, double *y, int filled, const pGEcontext gc,
-              pDevDesc dd) {
+static void dsvg_polyline(int n, double *x, double *y, const pGEcontext gc,
+                         pDevDesc dd) {
   DSVG_dev *svgd = (DSVG_dev*) dd->deviceSpecific;
   int idx = svgd->new_id();
   svgd->register_element();
@@ -184,25 +184,33 @@ void dsvg_poly(int n, double *x, double *y, int filled, const pGEcontext gc,
   fputs("'", svgd->file);
   fprintf(svgd->file, " id='%d'", idx);
 
-  if( filled > 0 ){
-    a_color col_(gc->fill);
-    fprintf(svgd->file, "%s", col_.svg_fill_attr().c_str());
-  } else
-    fputs(" fill=\"none\"", svgd->file);
+  fputs(" fill=\"none\"", svgd->file);
 
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
 
   fputs("/>", svgd->file);
 }
-
-static void dsvg_polyline(int n, double *x, double *y, const pGEcontext gc,
-                         pDevDesc dd) {
-  dsvg_poly(n, x, y, 0, gc, dd);
-}
 static void dsvg_polygon(int n, double *x, double *y, const pGEcontext gc,
                         pDevDesc dd) {
-  dsvg_poly(n, x, y, 1, gc, dd);
+  DSVG_dev *svgd = (DSVG_dev*) dd->deviceSpecific;
+  int idx = svgd->new_id();
+  svgd->register_element();
+  fputs("<polygon points='", svgd->file);
+  fprintf(svgd->file, "%.2f,%.2f", x[0], y[0]);
+  for (int i = 1; i < n; i++) {
+    fprintf(svgd->file, " %.2f,%.2f", x[i], y[i]);
+  }
+  fputs("'", svgd->file);
+  fprintf(svgd->file, " id='%d'", idx);
+
+  a_color col_(gc->fill);
+  fprintf(svgd->file, "%s", col_.svg_fill_attr().c_str());
+
+  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
+  fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
+
+  fputs("/>", svgd->file);
 }
 
 void dsvg_path(double *x, double *y,
