@@ -37,7 +37,7 @@ test_that("polygons do have fill and stroke", {
   dev.off()
 
   x <- read_xml(file)
-  svg_node <- xml_find_one(x, "//polyline")
+  svg_node <- xml_find_one(x, "//polygon")
   expect_match(xml_attr(svg_node, "fill"), "#FF0000")
   expect_match(xml_attr(svg_node, "stroke"), "#0000FF")
 })
@@ -50,7 +50,7 @@ test_that("polygons without border have fill and no stroke", {
   dev.off()
 
   x <- read_xml(file)
-  svg_node <- xml_find_one(x, "//polyline")
+  svg_node <- xml_find_one(x, "//polygon")
   expect_equal(xml_attr(svg_node, "fill"), "#FF0000")
   expect_equal(xml_attr(svg_node, "stroke"), "none")
 })
