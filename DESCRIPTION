@@ -15,7 +15,9 @@ Imports:
     grDevices,
     Rcpp,
     xml2,
-    gdtools, utils, R.utils
+    gdtools,
+    grid,
+    utils, R.utils
 LinkingTo: Rcpp,
     gdtools
 Suggests:

@@ -1,5 +1,6 @@
 context("dsvg interactive functions")
 library(xml2)
+library(grid)
 
 test_that("tracer is working", {
   file <- tempfile(fileext = ".svg")
@@ -74,5 +75,86 @@ test_that("clicks are written", {
   tip2 <- "click\\(alert\\(2\\)\\)"
   expect_true( grepl( tip1, script_txt ) )
   expect_true( grepl( tip2, script_txt ) )
+})
+
+
+test_that("interactive grid point grobs", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  gl <- interactivePointsGrob(tooltip = "tooltip")
+  gl <- editGrob(gl, gp = gpar(col = "green"))
+  grid.draw(gl)
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip <- "attr\\(\\'title\\',\\'tooltip\\'\\)"
+  expect_true( grepl( tip, script_txt ) )
+})
+
+test_that("interactive grid polygon grobs", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  gl <- interactivePolygonGrob(x=c(0, 0.5, 1, 0.5), y=c(0.5, 1, 0.5, 0),
+                               tooltip = "tooltip")
+  gl <- editGrob(gl, gp = gpar(col = "green"))
+  grid.draw(gl)
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip <- "attr\\(\\'title\\',\\'tooltip\\'\\)"
+  expect_true( grepl( tip, script_txt ) )
+})
+
+
+test_that("interactive grid polyline grobs", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  gl <- interactivePolylineGrob(x=c(0, 0.5, 1, 0.5), y=c(0.5, 1, 0.5, 0),
+                               tooltip = "tooltip")
+  gl <- editGrob(gl, gp = gpar(col = "blue"))
+  grid.draw(gl)
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip <- "attr\\(\\'title\\',\\'tooltip\\'\\)"
+  expect_true( grepl( tip, script_txt ) )
+})
+
+
+test_that("interactive grid rect grobs", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  gl <- interactiveRectGrob(tooltip = "tooltip")
+  gl <- editGrob(gl, gp = gpar(col = "blue"))
+  grid.draw(gl)
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip <- "attr\\(\\'title\\',\\'tooltip\\'\\)"
+  expect_true( grepl( tip, script_txt ) )
+})
+
+
+test_that("interactive grid segment grobs", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  gl <- interactiveSegmentsGrob(tooltip = "tooltip")
+  gl <- editGrob(gl)
+  grid.draw(gl)
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip <- "attr\\(\\'title\\',\\'tooltip\\'\\)"
+  expect_true( grepl( tip, script_txt ) )
 })
 
