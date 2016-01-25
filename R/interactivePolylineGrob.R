@@ -38,29 +38,45 @@ drawDetails.interactivePolylineGrob <- function(x,recording) {
 	ids = rvg_tracer_off()
 	if( length( ids ) > 0 ) {
 
-	  for( int in c("tooltip", "onclick", "data_id") ){
-	    if( !is.null( x[[int]] )){
-	      if( length( x[[int]] ) == 1 && length(ids)>1 ){
-	        x[[int]] = rep(x[[int]], length(ids) )
-	      }
-	      if( length(ids) %% length(x[[int]]) < 1 &&
-	          length(ids) != length(x[[int]]) ){
-	        x[[int]] = rep( x[[int]], each = length(ids) %/% length(x[[int]]) )
-	      }
-	    }
-	  }
-
 	  if( is.null(x$id) && is.null(x$id.lengths) )
 	    x$id <- rep( 1, length(x$x) )
 
 		.w = c( TRUE, x$id[-1]!=x$id[-length(x$id)] )
-		if( !is.null( x$tooltip ))
-			send_tooltip(ids, x$tooltip[.w])
-		if( !is.null( x$onclick ))
-			send_click(ids, x$onclick[.w])
-		if( !is.null( x$data_id ))
-			set_data_id(ids, x$data_id[.w])
 
+		if( !is.null( x$tooltip )){
+		  tooltip <- x$tooltip[.w]
+		  if( length( tooltip ) == 1 && length(ids)>1 ){
+		    tooltip <- rep(tooltip, length(ids) )
+		  }
+		  if( length(ids) %% length(tooltip) < 1 &&
+		      length(ids) != length(tooltip) ){
+		    tooltip <- rep( tooltip, each = length(ids) %/% length(tooltip) )
+		  }
+		  send_tooltip(ids, tooltip)
+		}
+
+		if( !is.null( x$onclick )){
+		  onclick <- x$onclick[.w]
+		  if( length( onclick ) == 1 && length(ids)>1 ){
+		    onclick <- rep(onclick, length(ids) )
+		  }
+		  if( length(ids) %% length(onclick) < 1 &&
+		      length(ids) != length(onclick) ){
+		    onclick <- rep( onclick, each = length(ids) %/% length(onclick) )
+		  }
+			send_click(ids, onclick)
+		}
+		if( !is.null( x$data_id )){
+		  data_id <- x$data_id[.w]
+		  if( length( data_id ) == 1 && length(ids)>1 ){
+		    data_id <- rep(data_id, length(ids) )
+		  }
+		  if( length(ids) %% length(data_id) < 1 &&
+		      length(ids) != length(data_id) ){
+		    data_id <- rep( data_id, each = length(ids) %/% length(data_id) )
+		  }
+			set_data_id(ids, data_id)
+    }
 	}
 
 
