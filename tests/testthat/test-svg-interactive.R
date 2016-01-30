@@ -38,6 +38,25 @@ test_that("tooltips are written", {
   expect_true( grepl( tip2, script_txt ) )
 })
 
+test_that("tooltips are written without jQuery", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  plot.new()
+  rvg_tracer_on()
+  points(c(0.5, .6), c(.4, .3))
+  ids = rvg_tracer_off()
+  send_tooltip(ids = ids, tooltips = c("tip1", "tip2"), use_jquery=FALSE)
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip1 <- "setAttribute\\(\\'title\\', \\'tip1\\'\\)"
+  tip2 <- "setAttribute\\(\\'title\\', \\'tip2\\'\\)"
+  expect_true( grepl( tip1, script_txt ) )
+  expect_true( grepl( tip2, script_txt ) )
+})
+
 test_that("ID are written", {
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, canvas_id = 1 )
@@ -57,6 +76,25 @@ test_that("ID are written", {
   expect_true( grepl( tip2, script_txt ) )
 })
 
+
+test_that("ID are written without jQuery", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  plot.new()
+  rvg_tracer_on()
+  points(c(0.5, .6), c(.4, .3))
+  ids = rvg_tracer_off()
+  set_data_id(ids = ids, data_id = c("HI1", "HI2") , use_jquery = FALSE)
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip1 <- "setAttribute\\(\\'data-id\\',\\'HI1\\'\\)"
+  tip2 <- "setAttribute\\(\\'data-id\\',\\'HI2\\'\\)"
+  expect_true( grepl( tip1, script_txt ) )
+  expect_true( grepl( tip2, script_txt ) )
+})
 
 test_that("clicks are written", {
   file <- tempfile(fileext = ".svg")
@@ -78,6 +116,25 @@ test_that("clicks are written", {
 })
 
 
+test_that("clicks are written without jQuery", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  plot.new()
+  rvg_tracer_on()
+  points(c(0.5, .6), c(.4, .3))
+  ids = rvg_tracer_off()
+  send_click(ids = ids, clicks = c("alert(1)", "alert(2)"), use_jquery = FALSE)
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip1 <- "onclick=alert\\(1\\)"
+  tip2 <- "onclick=alert\\(2\\)"
+  expect_true( grepl( tip1, script_txt ) )
+  expect_true( grepl( tip2, script_txt ) )
+})
+
 test_that("interactive grid point grobs", {
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, canvas_id = 1 )
@@ -90,6 +147,21 @@ test_that("interactive grid point grobs", {
   script_node <- xml_find_one(doc, ".//script")
   script_txt <-  xml_text(script_node)
   tip <- "attr\\(\\'title\\',\\'tooltip\\'\\)"
+  expect_true( grepl( tip, script_txt ) )
+})
+
+test_that("interactive grid point grobs without jQuery", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  gl <- interactivePointsGrob(tooltip = "tooltip", use_jquery = FALSE)
+  gl <- editGrob(gl, gp = gpar(col = "green"))
+  grid.draw(gl)
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip <- "setAttribute\\(\\'title\\', \\'tooltip\\'\\)"
   expect_true( grepl( tip, script_txt ) )
 })
 
@@ -110,6 +182,22 @@ test_that("interactive grid polygon grobs", {
 })
 
 
+test_that("interactive grid polygon grobs without jQuery", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  gl <- interactivePolygonGrob(x=c(0, 0.5, 1, 0.5), y=c(0.5, 1, 0.5, 0),
+                               tooltip = "tooltip", use_jquery = FALSE)
+  gl <- editGrob(gl, gp = gpar(col = "green"))
+  grid.draw(gl)
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip <- "setAttribute\\(\\'title\\', \\'tooltip\\'\\)"
+  expect_true( grepl( tip, script_txt ) )
+})
+
 test_that("interactive grid polyline grobs", {
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, canvas_id = 1 )
@@ -127,6 +215,22 @@ test_that("interactive grid polyline grobs", {
 })
 
 
+test_that("interactive grid polyline grobs without jQuery", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  gl <- interactivePolylineGrob(x=c(0, 0.5, 1, 0.5), y=c(0.5, 1, 0.5, 0),
+                               tooltip = "tooltip", use_jquery = FALSE)
+  gl <- editGrob(gl, gp = gpar(col = "blue"))
+  grid.draw(gl)
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip <- "setAttribute\\(\\'title\\', \\'tooltip\\'\\)"
+  expect_true( grepl( tip, script_txt ) )
+})
+
 test_that("interactive grid rect grobs", {
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, canvas_id = 1 )
@@ -143,6 +247,21 @@ test_that("interactive grid rect grobs", {
 })
 
 
+test_that("interactive grid rect grobs without jQuery", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  gl <- interactiveRectGrob(tooltip = "tooltip", use_jquery = FALSE)
+  gl <- editGrob(gl, gp = gpar(col = "blue"))
+  grid.draw(gl)
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip <- "setAttribute\\(\\'title\\', \\'tooltip\\'\\)"
+  expect_true( grepl( tip, script_txt ) )
+})
+
 test_that("interactive grid segment grobs", {
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, canvas_id = 1 )
@@ -158,6 +277,21 @@ test_that("interactive grid segment grobs", {
   expect_true( grepl( tip, script_txt ) )
 })
 
+test_that("interactive grid segment grobs without jQuery", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  gl <- interactiveSegmentsGrob(tooltip = "tooltip", use_jquery = FALSE)
+  gl <- editGrob(gl)
+  grid.draw(gl)
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip <- "setAttribute\\(\\'title\\', \\'tooltip\\'\\)"
+  expect_true( grepl( tip, script_txt ) )
+})
+
 test_that("interactive grid text grobs", {
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, canvas_id = 1 )
@@ -170,6 +304,22 @@ test_that("interactive grid text grobs", {
   script_node <- xml_find_one(doc, ".//script")
   script_txt <-  xml_text(script_node)
   tip <- "attr\\(\\'title\\',\\'tooltip\\'\\)"
+  expect_true( grepl( tip, script_txt ) )
+})
+
+
+test_that("interactive grid text grobs without jQuery", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  gl <- interactiveTextGrob(label = "text", tooltip = "tooltip", use_jquery = FALSE)
+  gl <- editGrob(gl)
+  grid.draw(gl)
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip <- "setAttribute\\(\\'title\\', \\'tooltip\\'\\)"
   expect_true( grepl( tip, script_txt ) )
 })
 

@@ -25,7 +25,7 @@ interactiveRectGrob <- function(x=unit(0.5, "npc"), y=unit(0.5, "npc"),
 		width <- unit(width, default.units)
 	if (!is.unit(height))
 		height <- unit(height, default.units)
-	grob(tooltip = tooltip, onclick = onclick, data_id = data_id,
+	grob(tooltip = tooltip, onclick = onclick, data_id = data_id, use_jquery = use_jquery,
 			x=x, y=y, width=width, height=height, just=just,
 			hjust=hjust, vjust=vjust,
 			name=name, gp=gp, vp=vp, cl="interactiveRectGrob")

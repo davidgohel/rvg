@@ -21,7 +21,7 @@ interactivePointsGrob <- function( x = unit(0.5, "npc"),
 		x <- unit(x, default.units)
 	if (!is.unit(y))
 		y <- unit(y, default.units)
-	grob(tooltip = tooltip, onclick = onclick, data_id = data_id, use_jquery,
+	grob(tooltip = tooltip, onclick = onclick, data_id = data_id, use_jquery = use_jquery,
 			x = x, y = y, pch = pch, size=size,
 			name=name, gp=gp, vp=vp, cl="interactivePointsGrob")
 }
