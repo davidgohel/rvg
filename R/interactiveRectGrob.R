@@ -6,12 +6,14 @@
 #' @param tooltip tooltip associated with rectangles
 #' @param onclick javascript action to execute when rectangle is clicked
 #' @param data_id identifiers to associate with rectangles
+#' @param use_jquery logical indicating whether to rely on jQuery or not (default: "\code{TRUE}")
 #' @export
 interactiveRectGrob <- function(x=unit(0.5, "npc"), y=unit(0.5, "npc"),
 		width=unit(1, "npc"), height=unit(1, "npc"),
 		tooltip = NULL,
 		onclick = NULL,
 		data_id = NULL,
+		use_jquery = TRUE,
 		just="centre", hjust=NULL, vjust=NULL,
 		default.units="npc",
 		name=NULL, gp=gpar(), vp=NULL) {
@@ -23,7 +25,7 @@ interactiveRectGrob <- function(x=unit(0.5, "npc"), y=unit(0.5, "npc"),
 		width <- unit(width, default.units)
 	if (!is.unit(height))
 		height <- unit(height, default.units)
-	grob(tooltip = tooltip, onclick = onclick, data_id = data_id,
+	grob(tooltip = tooltip, onclick = onclick, data_id = data_id, use_jquery = use_jquery,
 			x=x, y=y, width=width, height=height, just=just,
 			hjust=hjust, vjust=vjust,
 			name=name, gp=gp, vp=vp, cl="interactiveRectGrob")
@@ -36,18 +38,21 @@ interactiveRectGrob <- function(x=unit(0.5, "npc"), y=unit(0.5, "npc"),
 #' @inheritParams grid::drawDetails
 drawDetails.interactiveRectGrob <- function(x,recording) {
 	rvg_tracer_on()
-	argnames = setdiff( names(x), c("tooltip", "onclick", "data_id") )
+	argnames = setdiff( names(x), c("tooltip", "onclick", "data_id", "use_jquery") )
 	do.call( grid.rect, x[argnames] )
 
 	ids = rvg_tracer_off()
+
+	use_jquery <- x$use_jquery %||% TRUE
+
 	if( length( ids ) > 0 ) {
 
 		if( !is.null( x$tooltip ))
-			send_tooltip(ids, x$tooltip)
+			send_tooltip(ids, x$tooltip, use_jquery)
 		if( !is.null( x$onclick ))
-			send_click(ids, x$onclick)
+			send_click(ids, x$onclick, use_jquery)
 		if( !is.null( x$data_id ))
-			set_data_id(ids, x$data_id)
+			set_data_id(ids, x$data_id, use_jquery)
 	}
 	invisible()
 }

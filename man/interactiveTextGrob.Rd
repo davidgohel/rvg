@@ -5,9 +5,10 @@
 \title{Generate interactive grob text}
 \usage{
 interactiveTextGrob(label, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
-  tooltip = NULL, onclick = NULL, data_id = NULL, just = "centre",
-  hjust = NULL, vjust = NULL, rot = 0, check.overlap = FALSE,
-  default.units = "npc", name = NULL, gp = gpar(), vp = NULL)
+  tooltip = NULL, onclick = NULL, data_id = NULL, use_jquery = TRUE,
+  just = "centre", hjust = NULL, vjust = NULL, rot = 0,
+  check.overlap = FALSE, default.units = "npc", name = NULL,
+  gp = gpar(), vp = NULL)
 }
 \arguments{
 \item{label}{A character or \link{expression} vector.  Other
@@ -22,6 +23,8 @@ interactiveTextGrob(label, x = unit(0.5, "npc"), y = unit(0.5, "npc"),
 \item{onclick}{javascript action to execute when rectangle is clicked}
 
 \item{data_id}{identifiers to associate with rectangles}
+
+\item{use_jquery}{logical indicating whether to rely on jQuery or not (default: "\code{TRUE}")}
 
 \item{just}{The justification of the text
     relative to its (x, y) location.  If there are two values, the first

@@ -4,13 +4,15 @@
 \alias{set_data_id}
 \title{add id}
 \usage{
-set_data_id(ids, data_id)
+set_data_id(ids, data_id, use_jquery = TRUE)
 }
 \arguments{
 \item{ids}{integer vector of graphical elements identifiers (returned by
 \code{\link{rvg_tracer_off}}).}
 
 \item{data_id}{user id to be associated with \code{ids}.}
+
+\item{use_jquery}{logical indicating whether to rely on jQuery or not (default: "\code{TRUE}")}
 }
 \description{
 add id to graphical elements.

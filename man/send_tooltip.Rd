@@ -4,13 +4,15 @@
 \alias{send_tooltip}
 \title{send tooltip}
 \usage{
-send_tooltip(ids, tooltips)
+send_tooltip(ids, tooltips, use_jquery = TRUE)
 }
 \arguments{
 \item{ids}{integer vector of graphical elements identifiers (returned by
 \code{\link{rvg_tracer_off}}).}
 
 \item{tooltips}{tooltip (html is accepted) text.}
+
+\item{use_jquery}{logical indicating whether to rely on jQuery or not (default: "\code{TRUE}")}
 }
 \description{
 add tooltips on graphical elements.

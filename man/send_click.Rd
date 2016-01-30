@@ -4,13 +4,15 @@
 \alias{send_click}
 \title{send click}
 \usage{
-send_click(ids, clicks)
+send_click(ids, clicks, use_jquery = TRUE)
 }
 \arguments{
 \item{ids}{integer vector of graphical elements identifiers (returned by
 \code{\link{rvg_tracer_off}}).}
 
 \item{clicks}{javascript functions to execute on click actions.}
+
+\item{use_jquery}{logical indicating whether to rely on jQuery or not (default: "\code{TRUE}")}
 }
 \description{
 add tooltips on graphical elements.

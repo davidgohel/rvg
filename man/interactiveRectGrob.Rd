@@ -6,9 +6,9 @@
 \usage{
 interactiveRectGrob(x = unit(0.5, "npc"), y = unit(0.5, "npc"),
   width = unit(1, "npc"), height = unit(1, "npc"), tooltip = NULL,
-  onclick = NULL, data_id = NULL, just = "centre", hjust = NULL,
-  vjust = NULL, default.units = "npc", name = NULL, gp = gpar(),
-  vp = NULL)
+  onclick = NULL, data_id = NULL, use_jquery = TRUE, just = "centre",
+  hjust = NULL, vjust = NULL, default.units = "npc", name = NULL,
+  gp = gpar(), vp = NULL)
 }
 \arguments{
 \item{x}{A numeric vector or unit object specifying x-location.}
@@ -24,6 +24,8 @@ interactiveRectGrob(x = unit(0.5, "npc"), y = unit(0.5, "npc"),
 \item{onclick}{javascript action to execute when rectangle is clicked}
 
 \item{data_id}{identifiers to associate with rectangles}
+
+\item{use_jquery}{logical indicating whether to rely on jQuery or not (default: "\code{TRUE}")}
 
 \item{just}{The justification of the rectangle
     relative to its (x, y) location.  If there are two values, the first

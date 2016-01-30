@@ -43,9 +43,10 @@ rvg_tracer_off <- function(){
 #' @param ids integer vector of graphical elements identifiers (returned by
 #' \code{\link{rvg_tracer_off}}).
 #' @param tooltips tooltip (html is accepted) text.
+#' @param use_jquery logical indicating whether to rely on jQuery or not (default: "\code{TRUE}")
 #'
 #' @export
-send_tooltip = function( ids, tooltips ){
+send_tooltip = function( ids, tooltips, use_jquery=TRUE){
 
 	stopifnot( .Device == "dsvg_device" )
 	if( is.factor(tooltips) )
@@ -55,7 +56,11 @@ send_tooltip = function( ids, tooltips ){
 	stopifnot( is.numeric(ids) )
 	stopifnot( length(ids) == length(tooltips) )
 	dev_num <- as.integer(dev.cur()-1L)
-	add_tooltip(dn = dev_num, id = as.integer( ids ), str = tooltips )
+	if (use_jquery[1] == TRUE) {
+  	add_tooltip(dn = dev_num, id = as.integer( ids ), str = tooltips )
+	} else {
+  	add_tooltip_raw(dn = dev_num, id = as.integer( ids ), str = tooltips )
+	}
 
 	invisible()
 }
@@ -66,9 +71,10 @@ send_tooltip = function( ids, tooltips ){
 #' @param ids integer vector of graphical elements identifiers (returned by
 #' \code{\link{rvg_tracer_off}}).
 #' @param clicks javascript functions to execute on click actions.
+#' @param use_jquery logical indicating whether to rely on jQuery or not (default: "\code{TRUE}")
 #'
 #' @export
-send_click = function( ids, clicks ){
+send_click = function( ids, clicks, use_jquery=TRUE){
 	stopifnot( .Device == "dsvg_device" )
 	if( is.factor(clicks) )
 		clicks = as.character( clicks )
@@ -78,7 +84,11 @@ send_click = function( ids, clicks ){
 	stopifnot( length(ids) == length(clicks) )
 
 	dev_num <- as.integer(dev.cur()-1L)
-	add_click_event(dn = dev_num, id = as.integer( ids ), str = clicks )
+	if (use_jquery[1] == TRUE) {
+  	add_click_event(dn = dev_num, id = as.integer( ids ), str = clicks )
+	} else {
+  	add_click_event_raw(dn = dev_num, id = as.integer( ids ), str = clicks )
+	}
 
 	invisible()
 }
@@ -89,9 +99,10 @@ send_click = function( ids, clicks ){
 #' @param ids integer vector of graphical elements identifiers (returned by
 #' \code{\link{rvg_tracer_off}}).
 #' @param data_id user id to be associated with \code{ids}.
+#' @param use_jquery logical indicating whether to rely on jQuery or not (default: "\code{TRUE}")
 #'
 #' @export
-set_data_id = function( ids, data_id ){
+set_data_id = function( ids, data_id, use_jquery=TRUE){
 	stopifnot( .Device == "dsvg_device" )
 	if( is.factor(data_id) )
 		data_id = as.character( data_id )
@@ -101,7 +112,11 @@ set_data_id = function( ids, data_id ){
 	stopifnot( length(ids) == length(data_id) )
 
 	dev_num <- as.integer(dev.cur()-1L)
-	add_data_id(dn = dev_num, id = as.integer( ids ), data_id = data_id )
+	if (use_jquery[1] == TRUE) {
+  	add_data_id(dn = dev_num, id = as.integer( ids ), data_id = data_id )
+	} else {
+  	add_data_id_raw(dn = dev_num, id = as.integer( ids ), data_id = data_id )
+	}
 
 	invisible()
 }
@@ -130,5 +145,9 @@ read_relationship <- function(filename) {
   out <- list( data = data.frame(id = id, int_id = int_id, type = type, target = target, stringsAsFactors = FALSE ) )
   out$max_int <- max(int_id, na.rm = T)
   out
+}
+
+"%||%" <- function(a, b) {
+  if (!is.null(a)) a else b
 }
 

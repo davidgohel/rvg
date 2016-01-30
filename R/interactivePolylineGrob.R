@@ -6,6 +6,7 @@
 #' @param tooltip tooltip associated with polylines
 #' @param onclick javascript action to execute when polyline is clicked
 #' @param data_id identifiers to associate with polylines
+#' @param use_jquery logical indicating whether to rely on jQuery or not (default: "\code{TRUE}")
 #' @export
 interactivePolylineGrob <- function(x=unit(c(0, 1), "npc"),
 		y=unit(c(0, 1), "npc"),
@@ -13,6 +14,7 @@ interactivePolylineGrob <- function(x=unit(c(0, 1), "npc"),
 		tooltip = NULL,
 		onclick = NULL,
 		data_id = NULL,
+		use_jquery = TRUE,
 		default.units="npc",
 		arrow=NULL,
 		name=NULL, gp=gpar(), vp=NULL) {
@@ -21,7 +23,7 @@ interactivePolylineGrob <- function(x=unit(c(0, 1), "npc"),
 		x <- unit(x, default.units)
 	if (!is.unit(y))
 		y <- unit(y, default.units)
-	grob(tooltip = tooltip, onclick = onclick, data_id = data_id,
+	grob(tooltip = tooltip, onclick = onclick, data_id = data_id, use_jquery = use_jquery,
 			x=x, y=y, id=id, id.lengths=id.lengths,
 			arrow=arrow, name=name, gp=gp, vp=vp, cl="interactivePolylineGrob")
 }
@@ -32,10 +34,13 @@ interactivePolylineGrob <- function(x=unit(c(0, 1), "npc"),
 #' @inheritParams grid::drawDetails
 drawDetails.interactivePolylineGrob <- function(x,recording) {
 	rvg_tracer_on()
-	argnames = setdiff( names(x), c("tooltip", "onclick", "data_id") )
+	argnames = setdiff( names(x), c("tooltip", "onclick", "data_id", "use_jquery") )
 	do.call( grid.polyline, x[argnames] )
 
 	ids = rvg_tracer_off()
+
+	use_jquery <- x$use_jquery %||% TRUE
+
 	if( length( ids ) > 0 ) {
 
 	  if( is.null(x$id) && is.null(x$id.lengths) )
@@ -52,7 +57,7 @@ drawDetails.interactivePolylineGrob <- function(x,recording) {
 		      length(ids) != length(tooltip) ){
 		    tooltip <- rep( tooltip, each = length(ids) %/% length(tooltip) )
 		  }
-		  send_tooltip(ids, tooltip)
+		  send_tooltip(ids, tooltip, use_jquery)
 		}
 
 		if( !is.null( x$onclick )){
@@ -64,7 +69,7 @@ drawDetails.interactivePolylineGrob <- function(x,recording) {
 		      length(ids) != length(onclick) ){
 		    onclick <- rep( onclick, each = length(ids) %/% length(onclick) )
 		  }
-			send_click(ids, onclick)
+			send_click(ids, onclick, use_jquery)
 		}
 		if( !is.null( x$data_id )){
 		  data_id <- x$data_id[.w]
@@ -75,7 +80,7 @@ drawDetails.interactivePolylineGrob <- function(x,recording) {
 		      length(ids) != length(data_id) ){
 		    data_id <- rep( data_id, each = length(ids) %/% length(data_id) )
 		  }
-			set_data_id(ids, data_id)
+			set_data_id(ids, data_id, use_jquery)
     }
 	}
 
