@@ -5,9 +5,9 @@
 \title{Generate interactive grob points}
 \usage{
 interactivePointsGrob(x = unit(0.5, "npc"), y = unit(0.5, "npc"),
-  tooltip = NULL, onclick = NULL, data_id = NULL, pch = 1,
-  size = unit(1, "char"), default.units = "native", name = NULL,
-  gp = gpar(), vp = NULL)
+  tooltip = NULL, onclick = NULL, data_id = NULL, use_jquery = TRUE,
+  pch = 1, size = unit(1, "char"), default.units = "native",
+  name = NULL, gp = gpar(), vp = NULL)
 }
 \arguments{
 \item{x}{numeric vector or unit object specifying x-values.}
@@ -19,6 +19,8 @@ interactivePointsGrob(x = unit(0.5, "npc"), y = unit(0.5, "npc"),
 \item{onclick}{javascript action to execute when point is clicked}
 
 \item{data_id}{identifiers to associate with points}
+
+\item{use_jquery}{logical indicating whether to rely on jQuery or not (default: "\code{TRUE}")}
 
 \item{pch}{numeric or character vector indicating what sort of
     plotting symbol to use.  See \code{\link{points}} for the

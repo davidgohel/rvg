@@ -96,6 +96,19 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// add_tooltip_raw
+bool add_tooltip_raw(int dn, Rcpp::IntegerVector id, std::vector< std::string > str);
+RcppExport SEXP rvg_add_tooltip_raw(SEXP dnSEXP, SEXP idSEXP, SEXP strSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type dn(dnSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type id(idSEXP);
+    Rcpp::traits::input_parameter< std::vector< std::string > >::type str(strSEXP);
+    __result = Rcpp::wrap(add_tooltip_raw(dn, id, str));
+    return __result;
+END_RCPP
+}
 // add_click_event
 bool add_click_event(int dn, Rcpp::IntegerVector id, std::vector< std::string > str);
 RcppExport SEXP rvg_add_click_event(SEXP dnSEXP, SEXP idSEXP, SEXP strSEXP) {
@@ -109,6 +122,19 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// add_click_event_raw
+bool add_click_event_raw(int dn, Rcpp::IntegerVector id, std::vector< std::string > str);
+RcppExport SEXP rvg_add_click_event_raw(SEXP dnSEXP, SEXP idSEXP, SEXP strSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type dn(dnSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type id(idSEXP);
+    Rcpp::traits::input_parameter< std::vector< std::string > >::type str(strSEXP);
+    __result = Rcpp::wrap(add_click_event_raw(dn, id, str));
+    return __result;
+END_RCPP
+}
 // add_data_id
 bool add_data_id(int dn, Rcpp::IntegerVector id, std::vector< std::string > data_id);
 RcppExport SEXP rvg_add_data_id(SEXP dnSEXP, SEXP idSEXP, SEXP data_idSEXP) {
@@ -119,6 +145,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type id(idSEXP);
     Rcpp::traits::input_parameter< std::vector< std::string > >::type data_id(data_idSEXP);
     __result = Rcpp::wrap(add_data_id(dn, id, data_id));
+    return __result;
+END_RCPP
+}
+// add_data_id_raw
+bool add_data_id_raw(int dn, Rcpp::IntegerVector id, std::vector< std::string > data_id);
+RcppExport SEXP rvg_add_data_id_raw(SEXP dnSEXP, SEXP idSEXP, SEXP data_idSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type dn(dnSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type id(idSEXP);
+    Rcpp::traits::input_parameter< std::vector< std::string > >::type data_id(data_idSEXP);
+    __result = Rcpp::wrap(add_data_id_raw(dn, id, data_id));
     return __result;
 END_RCPP
 }

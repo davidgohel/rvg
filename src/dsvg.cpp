@@ -601,6 +601,36 @@ bool add_tooltip(int dn, Rcpp::IntegerVector id, std::vector< std::string > str)
   return true;
 }
 
+// [[Rcpp::export]]
+bool add_tooltip_raw(int dn, Rcpp::IntegerVector id, std::vector< std::string > str){
+  int nb_elts = id.size();
+  pGEDevDesc dev= GEgetDevice(dn);
+
+  if (!dev) return false;
+
+  DSVG_dev *svgd = (DSVG_dev *) dev->dev->deviceSpecific;
+
+  fputs("<script type='text/javascript'><![CDATA[", svgd->file);
+
+  for( int i = 0 ; i < nb_elts ; i++ ){
+
+    fprintf(svgd->file,
+            "document.querySelectorAll('#svg_%d')[0].getElementById('%d').setAttribute('data-toggle', 'tooltip');",
+            svgd->canvas_id, id[i]);
+
+    fprintf(svgd->file,
+            "document.querySelectorAll('#svg_%d')[0].getElementById('%d').setAttribute('title', '%s');",
+            svgd->canvas_id, id[i], str[i].c_str());
+
+    fprintf(svgd->file,
+            "document.querySelectorAll('#svg_%d')[0].getElementById('%d').setAttribute('data-html', 'true');",
+            svgd->canvas_id, id[i]);
+
+  }
+  fputs("]]></script>", svgd->file);
+  return true;
+}
+
 
 // [[Rcpp::export]]
 bool add_click_event(int dn, Rcpp::IntegerVector id, std::vector< std::string > str){
@@ -621,6 +651,25 @@ bool add_click_event(int dn, Rcpp::IntegerVector id, std::vector< std::string > 
 }
 
 // [[Rcpp::export]]
+bool add_click_event_raw(int dn, Rcpp::IntegerVector id, std::vector< std::string > str){
+  int nb_elts = id.size();
+  pGEDevDesc dev= GEgetDevice(dn);
+
+  if (!dev) return false;
+
+  DSVG_dev *svgd = (DSVG_dev *) dev->dev->deviceSpecific;
+
+  fputs("<script type='text/javascript'><![CDATA[", svgd->file);
+  for( int i = 0 ; i < nb_elts ; i++ ){
+    fprintf(svgd->file, "document.querySelectorAll('#svg_%d')[0].getElementById('%d').onclick=%s;",
+      svgd->canvas_id, id[i], str[i].c_str() );
+  }
+  fputs("]]></script>", svgd->file);
+  return true;
+}
+
+
+// [[Rcpp::export]]
 bool add_data_id(int dn, Rcpp::IntegerVector id, std::vector< std::string > data_id){
   int nb_elts = id.size();
   pGEDevDesc dev= GEgetDevice(dn);
@@ -632,6 +681,25 @@ bool add_data_id(int dn, Rcpp::IntegerVector id, std::vector< std::string > data
   fputs("<script type='text/javascript'><![CDATA[", svgd->file);
   for( int i = 0 ; i < nb_elts ; i++ ){
     fprintf(svgd->file, "$('#svg_%d').find('#%d').attr('data-id','%s');",
+      svgd->canvas_id, id[i], data_id[i].c_str() );
+  }
+  fputs("]]></script>", svgd->file);
+  return true;
+}
+
+
+// [[Rcpp::export]]
+bool add_data_id_raw(int dn, Rcpp::IntegerVector id, std::vector< std::string > data_id){
+  int nb_elts = id.size();
+  pGEDevDesc dev= GEgetDevice(dn);
+
+  if (!dev) return false;
+
+  DSVG_dev *svgd = (DSVG_dev *) dev->dev->deviceSpecific;
+
+  fputs("<script type='text/javascript'><![CDATA[", svgd->file);
+  for( int i = 0 ; i < nb_elts ; i++ ){
+    fprintf(svgd->file, "document.querySelectorAll('#svg_%d')[0].getElementById('%d').setAttribute('data-id','%s');",
       svgd->canvas_id, id[i], data_id[i].c_str() );
   }
   fputs("]]></script>", svgd->file);

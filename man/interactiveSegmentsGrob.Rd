@@ -6,8 +6,9 @@
 \usage{
 interactiveSegmentsGrob(x0 = unit(0, "npc"), y0 = unit(0, "npc"),
   x1 = unit(1, "npc"), y1 = unit(1, "npc"), tooltip = NULL,
-  onclick = NULL, data_id = NULL, default.units = "npc", arrow = NULL,
-  name = NULL, gp = gpar(), vp = NULL)
+  onclick = NULL, data_id = NULL, use_jquery = TRUE,
+  default.units = "npc", arrow = NULL, name = NULL, gp = gpar(),
+  vp = NULL)
 }
 \arguments{
 \item{x0}{ Numeric indicating the starting x-values of the line segments. }
@@ -25,6 +26,8 @@ interactiveSegmentsGrob(x0 = unit(0, "npc"), y0 = unit(0, "npc"),
 \item{onclick}{javascript action to execute when segment is clicked}
 
 \item{data_id}{identifiers to associate with segments}
+
+\item{use_jquery}{logical indicating whether to rely on jQuery or not (default: "\code{TRUE}")}
 
 \item{default.units}{ A string. }
 

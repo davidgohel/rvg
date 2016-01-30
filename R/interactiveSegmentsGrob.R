@@ -6,12 +6,14 @@
 #' @param tooltip tooltip associated with segments
 #' @param onclick javascript action to execute when segment is clicked
 #' @param data_id identifiers to associate with segments
+#' @param use_jquery logical indicating whether to rely on jQuery or not (default: "\code{TRUE}")
 #' @export
 interactiveSegmentsGrob <- function(x0=unit(0, "npc"), y0=unit(0, "npc"),
 		x1=unit(1, "npc"), y1=unit(1, "npc"),
 		tooltip = NULL,
 		onclick = NULL,
 		data_id = NULL,
+		use_jquery = TRUE,
 		default.units="npc",
 		arrow=NULL,
 		name=NULL, gp=gpar(), vp=NULL) {
@@ -24,7 +26,7 @@ interactiveSegmentsGrob <- function(x0=unit(0, "npc"), y0=unit(0, "npc"),
 		y0 <- unit(y0, default.units)
 	if (!is.unit(y1))
 		y1 <- unit(y1, default.units)
-	grob(tooltip = tooltip, onclick = onclick, data_id = data_id,
+	grob(tooltip = tooltip, onclick = onclick, data_id = data_id, use_jquery = use_jquery,
 			x0=x0, y0=y0, x1=x1, y1=y1, arrow=arrow, name=name, gp=gp, vp=vp,
 			cl="interactiveSegmentsGrob")
 }
@@ -35,10 +37,13 @@ interactiveSegmentsGrob <- function(x0=unit(0, "npc"), y0=unit(0, "npc"),
 #' @inheritParams grid::drawDetails
 drawDetails.interactiveSegmentsGrob <- function(x,recording) {
 	rvg_tracer_on()
-	argnames = setdiff( names(x), c("tooltip", "onclick", "data_id") )
+	argnames = setdiff( names(x), c("tooltip", "onclick", "data_id", "use_jquery") )
 	do.call( grid.segments, x[argnames] )
 
 	ids = rvg_tracer_off()
+
+	use_jquery <- x$use_jquery %||% TRUE
+
 	if( length( ids ) > 0 ) {
 
 		if( !is.null( x$tooltip )){
@@ -47,7 +52,7 @@ drawDetails.interactiveSegmentsGrob <- function(x,recording) {
 		  if( length(ids) %% length(x$tooltip) < 1 ){
 		    x$tooltip = rep( x$tooltip, each = length(ids) %/% length(x$tooltip) )
 		  }
-		  send_tooltip(ids, x$tooltip)
+		  send_tooltip(ids, x$tooltip, use_jquery)
 		}
 
 		if( !is.null( x$onclick )){
@@ -56,7 +61,7 @@ drawDetails.interactiveSegmentsGrob <- function(x,recording) {
 		  if( length(ids) %% length(x$onclick) < 1 ){
 		    x$onclick = rep( x$onclick, each = length(ids) %/% length(x$onclick) )
 		  }
-		  send_click(ids, x$onclick)
+		  send_click(ids, x$onclick, use_jquery)
 		}
 		if( !is.null( x$data_id )){
 			if( length( x$data_id ) == 1 && length(ids)>1 )
@@ -64,7 +69,7 @@ drawDetails.interactiveSegmentsGrob <- function(x,recording) {
 			if( length(ids) %% length(x$data_id) < 1 ){
 				x$data_id = rep( x$data_id, each = length(ids) %/% length(x$data_id) )
 			}
-			set_data_id(ids, x$data_id)
+			set_data_id(ids, x$data_id, use_jquery)
 		}
 	}
 	invisible()

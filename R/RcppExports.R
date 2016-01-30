@@ -25,12 +25,24 @@ add_tooltip <- function(dn, id, str) {
     .Call('rvg_add_tooltip', PACKAGE = 'rvg', dn, id, str)
 }
 
+add_tooltip_raw <- function(dn, id, str) {
+    .Call('rvg_add_tooltip_raw', PACKAGE = 'rvg', dn, id, str)
+}
+
 add_click_event <- function(dn, id, str) {
     .Call('rvg_add_click_event', PACKAGE = 'rvg', dn, id, str)
 }
 
+add_click_event_raw <- function(dn, id, str) {
+    .Call('rvg_add_click_event_raw', PACKAGE = 'rvg', dn, id, str)
+}
+
 add_data_id <- function(dn, id, data_id) {
     .Call('rvg_add_data_id', PACKAGE = 'rvg', dn, id, data_id)
+}
+
+add_data_id_raw <- function(dn, id, data_id) {
+    .Call('rvg_add_data_id_raw', PACKAGE = 'rvg', dn, id, data_id)
 }
 
 PPTX_ <- function(file, bg_, width, height, offx, offy, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id, standalone) {

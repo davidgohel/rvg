@@ -6,8 +6,8 @@
 \usage{
 interactivePolylineGrob(x = unit(c(0, 1), "npc"), y = unit(c(0, 1), "npc"),
   id = NULL, id.lengths = NULL, tooltip = NULL, onclick = NULL,
-  data_id = NULL, default.units = "npc", arrow = NULL, name = NULL,
-  gp = gpar(), vp = NULL)
+  data_id = NULL, use_jquery = TRUE, default.units = "npc",
+  arrow = NULL, name = NULL, gp = gpar(), vp = NULL)
 }
 \arguments{
 \item{x}{A numeric vector or unit object specifying x-values.}
@@ -27,6 +27,8 @@ interactivePolylineGrob(x = unit(c(0, 1), "npc"), y = unit(c(0, 1), "npc"),
 \item{onclick}{javascript action to execute when polyline is clicked}
 
 \item{data_id}{identifiers to associate with polylines}
+
+\item{use_jquery}{logical indicating whether to rely on jQuery or not (default: "\code{TRUE}")}
 
 \item{default.units}{A string indicating the default units to use
     if \code{x} or \code{y} are only given as numeric vectors.}
