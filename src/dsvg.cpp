@@ -151,7 +151,7 @@ static void dsvg_close(pDevDesc dd) {
   DSVG_dev *svgd = (DSVG_dev*) dd->deviceSpecific;
 
   if (svgd->pageno > 0)
-    fputs("</svg>\n", svgd->file);
+    fputs("</g></svg>\n", svgd->file);
 
   delete(svgd);
 }
@@ -404,7 +404,7 @@ static void dsvg_new_page(const pGEcontext gc, pDevDesc dd) {
   fprintf(svgd->file, "id='svg_%d' ", svgd->canvas_id);
   fprintf(svgd->file, "viewBox='0 0 %.2f %.2f' ", dd->right, dd->bottom);
   fprintf(svgd->file, "width='%.2f' ", dd->right);
-  fprintf(svgd->file, "height='%.2f'>", dd->bottom);
+  fprintf(svgd->file, "height='%.2f'><g>", dd->bottom);
 
   int bg_fill, fill, col;
   a_color bg_temp(gc->fill);
@@ -579,6 +579,30 @@ Rcpp::IntegerVector collect_id(int dn) {
   }
   return R_NilValue;
 }
+
+
+// [[Rcpp::export]]
+bool add_attribute(int dn, Rcpp::IntegerVector id,
+                  std::vector< std::string > str,
+                  std::string name){
+  int nb_elts = id.size();
+  pGEDevDesc dev= GEgetDevice(dn);
+
+  if (!dev) return false;
+
+  DSVG_dev *svgd = (DSVG_dev *) dev->dev->deviceSpecific;
+
+  fputs("<script type='text/javascript'><![CDATA[", svgd->file);
+
+  for( int i = 0 ; i < nb_elts ; i++ ){
+    fprintf(svgd->file,
+            "document.querySelectorAll('#svg_%d')[0].getElementById('%d').setAttribute('%s','%s');",
+            svgd->canvas_id, id[i], name.c_str(), str[i].c_str());
+  }
+  fputs("]]></script>", svgd->file);
+  return true;
+}
+
 
 // [[Rcpp::export]]
 bool add_tooltip(int dn, Rcpp::IntegerVector id, std::vector< std::string > str){
