@@ -83,6 +83,20 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// add_attribute
+bool add_attribute(int dn, Rcpp::IntegerVector id, std::vector< std::string > str, std::string name);
+RcppExport SEXP rvg_add_attribute(SEXP dnSEXP, SEXP idSEXP, SEXP strSEXP, SEXP nameSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type dn(dnSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type id(idSEXP);
+    Rcpp::traits::input_parameter< std::vector< std::string > >::type str(strSEXP);
+    Rcpp::traits::input_parameter< std::string >::type name(nameSEXP);
+    __result = Rcpp::wrap(add_attribute(dn, id, str, name));
+    return __result;
+END_RCPP
+}
 // add_tooltip
 bool add_tooltip(int dn, Rcpp::IntegerVector id, std::vector< std::string > str);
 RcppExport SEXP rvg_add_tooltip(SEXP dnSEXP, SEXP idSEXP, SEXP strSEXP) {

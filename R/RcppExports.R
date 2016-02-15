@@ -21,6 +21,10 @@ collect_id <- function(dn) {
     .Call('rvg_collect_id', PACKAGE = 'rvg', dn)
 }
 
+add_attribute <- function(dn, id, str, name) {
+    .Call('rvg_add_attribute', PACKAGE = 'rvg', dn, id, str, name)
+}
+
 add_tooltip <- function(dn, id, str) {
     .Call('rvg_add_tooltip', PACKAGE = 'rvg', dn, id, str)
 }

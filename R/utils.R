@@ -106,6 +106,40 @@ set_data_id = function( ids, data_id ){
 	invisible()
 }
 
+#' @title set attributes to graphical elements
+#'
+#' @description set attributes with javascript instructions
+#' to graphical elements.
+#' @param ids integer vector of graphical elements identifiers (returned by
+#' \code{\link{rvg_tracer_off}}).
+#' @param attribute name of the attribute to set.
+#' @param str values to set for the attribute.
+#'
+#' @export
+set_attr = function( ids, attribute, str ){
+  stopifnot( .Device == "dsvg_device" )
+  if( is.factor(str) )
+    str = as.character( str )
+  if( is.factor(attribute) )
+    str = as.character( attribute )
+
+  stopifnot( is.character(attribute) )
+  stopifnot( is.character(str) )
+  stopifnot( is.numeric(ids) )
+  stopifnot( length(ids) == length(str) )
+  stopifnot( length(attribute) == 1 )
+
+  dev_num <- as.integer(dev.cur()-1L)
+  add_attribute(dn = dev_num,
+               id = as.integer( ids ),
+               str = str,
+               name = attribute
+               )
+
+  invisible()
+}
+
+
 #' @importFrom utils zip
 #' @importFrom R.utils getAbsolutePath
 pack_folder <- function( folder, target ){
