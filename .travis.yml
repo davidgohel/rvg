@@ -23,9 +23,8 @@ env:
     - RVERSION=release
     - RVERSION=devel
 
-os:
-- linux
-- osx
+after_script:
+  - ./travis-tool.sh dump_logs
 
 after_success:
   - Rscript -e 'covr::codecov()'
