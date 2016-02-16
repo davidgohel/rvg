@@ -1,3 +1,9 @@
+# rvg 0.7
+
+## New features
+
+* new function set_attr to set attributes to graphical elements
+
 # rvg 0.6
 
 ## Bug fixes
