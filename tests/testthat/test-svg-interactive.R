@@ -2,6 +2,7 @@ context("dsvg interactive functions")
 library(xml2)
 library(grid)
 
+# tracer -------
 test_that("tracer is working", {
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, bg = "transparent" )
@@ -19,6 +20,7 @@ test_that("tracer is working", {
   expect_equal(circle_id, as.character(1:2) )
 })
 
+# send_tooltip -------
 test_that("tooltips are written", {
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, canvas_id = 1 )
@@ -38,6 +40,7 @@ test_that("tooltips are written", {
   expect_true( grepl( tip2, script_txt ) )
 })
 
+# set_data_id -------
 test_that("ID are written", {
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, canvas_id = 1 )
@@ -58,6 +61,7 @@ test_that("ID are written", {
 })
 
 
+# send_click -------
 test_that("clicks are written", {
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, canvas_id = 1 )
@@ -77,6 +81,42 @@ test_that("clicks are written", {
   expect_true( grepl( tip2, script_txt ) )
 })
 
+# set_attr -------
+test_that("attributes are written", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  plot.new()
+  rvg_tracer_on()
+  points(c(0.5, .6), c(.4, .3))
+  ids = rvg_tracer_off()
+  set_attr(ids = ids, str = c("alert(1)", "alert(2)"), attribute = "onclick" )
+  dev.off()
+
+  doc <- read_xml(file)
+  script_node <- xml_find_one(doc, ".//script")
+  script_txt <-  xml_text(script_node)
+  tip1 = "document\\.querySelectorAll\\('#svg_[0-9]+'\\)\\[0\\]\\.getElementById\\('[0-9]+'\\)\\.setAttribute\\('onclick','alert\\(1\\)'\\)"
+  tip2 = "document\\.querySelectorAll\\('#svg_[0-9]+'\\)\\[0\\]\\.getElementById\\('[0-9]+'\\)\\.setAttribute\\('onclick','alert\\(2\\)'\\)"
+  expect_true( grepl( tip1, script_txt ) )
+  expect_true( grepl( tip2, script_txt ) )
+})
+
+test_that("attributes cannot contain single quotes", {
+  file <- tempfile(fileext = ".svg")
+  dsvg( file = file, standalone = FALSE, canvas_id = 1 )
+  plot.new()
+  rvg_tracer_on()
+  points(c(0.5, .6), c(.4, .3))
+  ids = rvg_tracer_off()
+  expect_error(
+    set_attr(ids = ids, str = c("alert('1')", "alert('2')"), attribute = "onclick" )
+  )
+  dev.off()
+})
+
+
+
+# interactive grobs -------
 
 test_that("interactive grid point grobs", {
   file <- tempfile(fileext = ".svg")
