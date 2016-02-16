@@ -4,7 +4,10 @@ Title: R Graphics Devices for Vector Graphics Output
 Version: 0.0.7.9000
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
-    email = "david.gohel@ardata.fr") )
+      email = "david.gohel@ardata.fr"),
+    person("Bob", "Rudis", role = c("ctb"),
+      comment = "the javascript code used by function set_attr")
+    )
 Author: David Gohel [aut, cre]
 Description: Vector Graphics devices for SVG, DrawingML for
   Microsoft Word and DrawingML for Microsoft PowerPoint.
