@@ -1,6 +1,6 @@
 /*
  * This file is part of rvg.
- * Copyright (c) 2015, David Gohel All rights reserved.
+ * Copyright (c) 2016, David Gohel All rights reserved.
  *
  * rvg is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ public:
   int pageno;
   int id;
   int canvas_id;
+  int clip_id;
   double clipleft, clipright, cliptop, clipbottom;
   bool standalone;
   /*   */
@@ -57,6 +58,7 @@ public:
       pageno(0),
 	    id(-1),
 	    canvas_id(canvas_id_),
+	    clip_id(-1),
       standalone(standalone_),
       tracer_on(0),
       tracer_is_init(0),
@@ -141,10 +143,24 @@ static void dsvg_metric_info(int c, const pGEcontext gc, double* ascent,
 static void dsvg_clip(double x0, double x1, double y0, double y1, pDevDesc dd) {
   DSVG_dev *svgd = (DSVG_dev*) dd->deviceSpecific;
 
+  if (std::abs(x0 - svgd->clipleft) < 0.01 && std::abs(x1 - svgd->clipright) < 0.01 &&
+      std::abs(y0 - svgd->clipbottom) < 0.01 && std::abs(y1 - svgd->cliptop) < 0.01)
+    return;
+
   svgd->clipleft = x0;
   svgd->clipright = x1;
   svgd->clipbottom = y0;
   svgd->cliptop = y1;
+
+  svgd->clip_id++;
+  fputs("<defs>", svgd->file);
+  fprintf(svgd->file, "<clipPath id='cl%d'>", svgd->clip_id );
+  fprintf(svgd->file, "<rect x='%.2f' y='%.2f' width='%.2f' height='%.2f'/>",
+          std::min(x0, x1), std::min(y0, y1),
+          std::abs(x1 - x0),
+          std::abs(y1 - y0) );
+  fputs("</clipPath>", svgd->file);
+  fputs("</defs>", svgd->file);
 }
 
 static void dsvg_close(pDevDesc dd) {
@@ -163,6 +179,7 @@ static void dsvg_line(double x1, double y1, double x2, double y2,
   svgd->register_element();
   fprintf(svgd->file, "<line x1='%.2f' y1='%.2f' x2='%.2f' y2='%.2f' id='%d'",
     x1, y1, x2, y2, idx);
+  fprintf(svgd->file, " clip-path='url(#cl%d)'", svgd->clip_id);
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
   a_color col_(gc->fill);
@@ -183,6 +200,7 @@ static void dsvg_polyline(int n, double *x, double *y, const pGEcontext gc,
   }
   fputs("'", svgd->file);
   fprintf(svgd->file, " id='%d'", idx);
+  fprintf(svgd->file, " clip-path='url(#cl%d)'", svgd->clip_id);
 
   fputs(" fill=\"none\"", svgd->file);
 
@@ -203,6 +221,7 @@ static void dsvg_polygon(int n, double *x, double *y, const pGEcontext gc,
   }
   fputs("'", svgd->file);
   fprintf(svgd->file, " id='%d'", idx);
+  fprintf(svgd->file, " clip-path='url(#cl%d)'", svgd->clip_id);
 
   a_color col_(gc->fill);
   fprintf(svgd->file, "%s", col_.svg_fill_attr().c_str());
@@ -233,6 +252,7 @@ void dsvg_path(double *x, double *y,
     fputs("Z ", svgd->file);
   }
   fprintf(svgd->file, "' id='%d'", idx);
+  fprintf(svgd->file, " clip-path='url(#cl%d)'", svgd->clip_id);
 
   a_color fill_(gc->fill);
   fprintf(svgd->file, "%s", fill_.svg_fill_attr().c_str());
@@ -272,6 +292,8 @@ static void dsvg_rect(double x0, double y0, double x1, double y1,
       "<rect x='%.2f' y='%.2f' width='%.2f' height='%.2f'",
       fmin(x0, x1), fmin(y0, y1), fabs(x1 - x0), fabs(y1 - y0));
   fprintf(svgd->file, " id='%d'", idx);
+  fprintf(svgd->file, " clip-path='url(#cl%d)'", svgd->clip_id);
+
   a_color fill_(gc->fill);
   fprintf(svgd->file, "%s", fill_.svg_fill_attr().c_str());
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
@@ -288,6 +310,7 @@ static void dsvg_circle(double x, double y, double r, const pGEcontext gc,
 
   fprintf(svgd->file, "<circle cx='%.2f' cy='%.2f' r='%.2fpt'", x, y, r * .75 );
   fprintf(svgd->file, " id='%d'", idx);
+  fprintf(svgd->file, " clip-path='url(#cl%d)'", svgd->clip_id);
   a_color fill_(gc->fill);
   fprintf(svgd->file, "%s", fill_.svg_fill_attr().c_str());
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
@@ -301,6 +324,7 @@ static void dsvg_text(double x, double y, const char *str, double rot,
 
   int idx = svgd->new_id();
   svgd->register_element();
+  fprintf(svgd->file, "<g clip-path='url(#cl%d)'>", svgd->clip_id);
 
   fputs("<text", svgd->file);
   if (rot == 0) {
@@ -339,6 +363,7 @@ static void dsvg_text(double x, double y, const char *str, double rot,
   }
 
   fputs("</text>", svgd->file);
+  fputs("</g>", svgd->file);
 }
 
 static void dsvg_size(double *left, double *right, double *bottom, double *top,
@@ -372,6 +397,7 @@ static void dsvg_raster(unsigned int *raster, int w, int h,
   fprintf(svgd->file, "<image x='%.2f' y='%.2f' ", x, y - height );
   fprintf(svgd->file, "width='%.2f' height='%.2f' ", width, height);
   fprintf(svgd->file, "id='%d' ", idx);
+  fprintf(svgd->file, "clip-path='url(#cl%d)' ", svgd->clip_id);
 
   if (fabs(rot)>0.001) {
     fprintf(svgd->file, "transform='rotate(%0.0f,%0.0f,%0.0f)' ", -1.0 * rot, x, y );
@@ -490,7 +516,7 @@ pDevDesc dsvg_driver_new(std::string filename, int bg, double width,
   dd->ipr[1] = 1.0 / 72.0;
 
   // Capabilities
-  dd->canClip = FALSE;
+  dd->canClip = TRUE;
   dd->canHAdj = 0;
   dd->canChangeGamma = FALSE;
   dd->displayListOn = FALSE;
