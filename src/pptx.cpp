@@ -33,6 +33,7 @@
 #include "a_path.h"
 #include "a_prstgeom.h"
 #include "empty_body_text.h"
+#include "clipper.h"
 
 // SVG device metadata
 class PPTX_dev {
@@ -55,6 +56,7 @@ public:
   bool editable;
   int standalone;
   XPtrCairoContext cc;
+  clipper *clp;
 
   PPTX_dev(std::string filename_,
            std::string fontname_serif_,
@@ -78,6 +80,7 @@ public:
       cc(gdtools::context_create()){
 
     file = fopen(R_ExpandFileName(filename.c_str()), "w");
+    clp = new clipper();
   }
 
   bool ok() const {
@@ -175,6 +178,7 @@ static void pptx_clip(double x0, double x1, double y0, double y1, pDevDesc dd) {
   pptx_obj->clipright = x1;
   pptx_obj->clipbottom = y0;
   pptx_obj->cliptop = y1;
+  pptx_obj->clp->set_clipping_region(x0, y1, x1, y0);
 }
 
 
@@ -214,6 +218,34 @@ static double pptx_strheight(const char *str, const pGEcontext gc, pDevDesc dd) 
   return fm.height;
 }
 
+void pptx_do_polyline(NumericVector x, NumericVector y, const pGEcontext gc,
+                          pDevDesc dd) {
+  PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
+
+  int i;
+
+  for(i = 0 ; i < x.size() ; i++ ){
+    x[i] += pptx_obj->offx;
+    y[i] += pptx_obj->offy;
+  }
+  xfrm xfrm_(x, y );
+  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
+  fputs("<p:sp>", pptx_obj->file);
+  write_nv_pr_pptx(dd, "pl");
+  fputs("<p:spPr>", pptx_obj->file);
+  fprintf(pptx_obj->file, "%s", xfrm_.xml().c_str());
+  fputs( "<a:custGeom><a:avLst/>", pptx_obj->file );
+  fputs( "<a:pathLst>", pptx_obj->file );
+  fprintf(pptx_obj->file, "%s", a_path::a_tag(x, y, 0 ).c_str());
+  fputs( "</a:pathLst>", pptx_obj->file );
+  fputs( "</a:custGeom>", pptx_obj->file );
+  fprintf(pptx_obj->file, "%s", line_style_.a_tag().c_str());
+  fputs("</p:spPr>", pptx_obj->file);
+  fprintf(pptx_obj->file, "%s",empty_body_text::p_tag().c_str());
+  fputs("</p:sp>", pptx_obj->file);
+}
+
+
 
 static void pptx_line(double x1, double y1, double x2, double y2,
                      const pGEcontext gc, pDevDesc dd) {
@@ -221,58 +253,42 @@ static void pptx_line(double x1, double y1, double x2, double y2,
 
   Rcpp::NumericVector x_(2);
   Rcpp::NumericVector y_(2);
-  x_[0] = x1 + pptx_obj->offx;
-  y_[0] = y1 + pptx_obj->offy;
-  x_[1] = x2 + pptx_obj->offx;
-  y_[1] = y2 + pptx_obj->offy;
-  xfrm xfrm_(x_, y_ );
+  x_[0] = x1;
+  y_[0] = y1;
+  x_[1] = x2;
+  y_[1] = y2;
+  pptx_obj->clp->set_data(x_, y_);
+  pptx_obj->clp->clip_polyline();
 
-  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
+  std::vector<NumericVector> x_array = pptx_obj->clp->get_x_lines();
+  std::vector<NumericVector> y_array = pptx_obj->clp->get_y_lines();
 
-
-  fputs("<p:sp>", pptx_obj->file);
-    write_nv_pr_pptx(dd, "ln");
-    fputs("<p:spPr>", pptx_obj->file);
-      fprintf(pptx_obj->file, "%s", xfrm_.xml().c_str());
-      fputs( "<a:custGeom><a:avLst/>", pptx_obj->file );
-        fputs( "<a:pathLst>", pptx_obj->file );
-        fprintf(pptx_obj->file, "%s", a_path::a_tag(x_, y_, 0 ).c_str());
-        fputs( "</a:pathLst>", pptx_obj->file );
-      fputs( "</a:custGeom>", pptx_obj->file );
-      fprintf(pptx_obj->file, "%s", line_style_.a_tag().c_str());
-    fputs("</p:spPr>", pptx_obj->file);
-    fprintf(pptx_obj->file, "%s",empty_body_text::p_tag().c_str());
-  fputs("</p:sp>", pptx_obj->file);
+  for( int l = 0 ; l < x_array.size() ; l++ ){
+    pptx_do_polyline(x_array.at(l), y_array.at(l), gc, dd);
+  }
 }
 
 
 static void pptx_polyline(int n, double *x, double *y, const pGEcontext gc,
                          pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
-
   int i;
   Rcpp::NumericVector x_(n);
   Rcpp::NumericVector y_(n);
 
   for(i = 0 ; i < n ; i++ ){
-    x_[i] = x[i]+pptx_obj->offx;
-    y_[i] = y[i]+pptx_obj->offy;
+    x_[i] = x[i];
+    y_[i] = y[i];
   }
-  xfrm xfrm_(x_, y_ );
-  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
-  fputs("<p:sp>", pptx_obj->file);
-    write_nv_pr_pptx(dd, "pl");
-    fputs("<p:spPr>", pptx_obj->file);
-      fprintf(pptx_obj->file, "%s", xfrm_.xml().c_str());
-      fputs( "<a:custGeom><a:avLst/>", pptx_obj->file );
-        fputs( "<a:pathLst>", pptx_obj->file );
-        fprintf(pptx_obj->file, "%s", a_path::a_tag(x_, y_, 0 ).c_str());
-        fputs( "</a:pathLst>", pptx_obj->file );
-      fputs( "</a:custGeom>", pptx_obj->file );
-      fprintf(pptx_obj->file, "%s", line_style_.a_tag().c_str());
-    fputs("</p:spPr>", pptx_obj->file);
-    fprintf(pptx_obj->file, "%s",empty_body_text::p_tag().c_str());
-  fputs("</p:sp>", pptx_obj->file);
+  pptx_obj->clp->set_data(x_, y_);
+  pptx_obj->clp->clip_polyline();
+
+  std::vector<NumericVector> x_array = pptx_obj->clp->get_x_lines();
+  std::vector<NumericVector> y_array = pptx_obj->clp->get_y_lines();
+
+  for( int l = 0 ; l < x_array.size() ; l++ ){
+    pptx_do_polyline(x_array.at(l), y_array.at(l), gc, dd);
+  }
 }
 
 static void pptx_polygon(int n, double *x, double *y, const pGEcontext gc,
@@ -284,10 +300,21 @@ static void pptx_polygon(int n, double *x, double *y, const pGEcontext gc,
   Rcpp::NumericVector y_(n);
 
   for(i = 0 ; i < n ; i++ ){
-    x_[i] = x[i]+pptx_obj->offx;
-    y_[i] = y[i]+pptx_obj->offy;
+    x_[i] = x[i];
+    y_[i] = y[i];
   }
-  xfrm xfrm_(x_, y_ );
+
+  pptx_obj->clp->set_data(x_, y_);
+  pptx_obj->clp->clip_polygon();
+  //
+  Rcpp::NumericVector x__ = pptx_obj->clp->get_x();
+  Rcpp::NumericVector y__ = pptx_obj->clp->get_y();
+  for(i = 0 ; i < y__.size() ; i++ ){
+    x__[i] += pptx_obj->offx;
+    y__[i] += pptx_obj->offy;
+  }
+  xfrm xfrm_(x__, y__);
+
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   a_color fill_( gc->fill );
 
@@ -297,7 +324,7 @@ static void pptx_polygon(int n, double *x, double *y, const pGEcontext gc,
       fprintf(pptx_obj->file, "%s", xfrm_.xml().c_str());
       fputs("<a:custGeom><a:avLst/>", pptx_obj->file );
         fputs( "<a:pathLst>", pptx_obj->file );
-          fprintf(pptx_obj->file, "%s", a_path::a_tag(x_, y_, 1 ).c_str());
+          fprintf(pptx_obj->file, "%s", a_path::a_tag(x__, y__, 1 ).c_str());
         fputs( "</a:pathLst>", pptx_obj->file );
       fputs("</a:custGeom>", pptx_obj->file );
       if( fill_.is_visible() > 0 )
@@ -314,11 +341,21 @@ static void pptx_rect(double x0, double y0, double x1, double y1,
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
   Rcpp::NumericVector x_(2);
   Rcpp::NumericVector y_(2);
-  x_[0] = x0 + pptx_obj->offx;
-  y_[0] = y0 + pptx_obj->offy;
-  x_[1] = x1 + pptx_obj->offx;
-  y_[1] = y1 + pptx_obj->offy;
-  xfrm xfrm_(x_, y_ );
+  x_[0] = x0;
+  y_[0] = y0;
+  x_[1] = x1;
+  y_[1] = y1;
+
+  pptx_obj->clp->set_data(x_, y_);
+  pptx_obj->clp->clip_polygon();
+  Rcpp::NumericVector x__ = pptx_obj->clp->get_x();
+  Rcpp::NumericVector y__ = pptx_obj->clp->get_y();
+  for(int i = 0 ; i < x__.size() ; i++ ){
+    x__[i] += pptx_obj->offx;
+    y__[i] += pptx_obj->offy;
+  }
+  xfrm xfrm_(x__, y__);
+
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   a_color fill_( gc->fill );
 
@@ -452,6 +489,7 @@ static void pptx_new_page(const pGEcontext gc, pDevDesc dd) {
     Rf_error("pptx device only supports one page");
   }
 
+  pptx_obj->clp->set_clipping_region(0.0, 0.0, dd->right, dd->bottom);
   main_tree mt(pptx_obj->new_id(), pptx_obj->new_id(),
                pptx_obj->offx, pptx_obj->offy,
                dd->right, dd->bottom, pptx_obj->standalone);
@@ -548,7 +586,7 @@ pDevDesc pptx_driver_new(std::string filename, int bg, double width, double heig
   dd->ipr[1] = 1.0 / 72.0;
 
   // Capabilities
-  dd->canClip = FALSE;
+  dd->canClip = TRUE;
   dd->canHAdj = 0;
   dd->canChangeGamma = FALSE;
   dd->displayListOn = FALSE;
