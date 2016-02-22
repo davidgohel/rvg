@@ -25,7 +25,8 @@ LinkingTo: Rcpp,
     gdtools
 Suggests:
     htmltools,
-    testthat
+    testthat,
+    covr
 URL: https://github.com/davidgohel/rvg
 BugReports: https://github.com/davidgohel/rvg/issues
 RoxygenNote: 5.0.1
