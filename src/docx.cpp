@@ -1,6 +1,6 @@
 /*
  * This file is part of rvg.
- * Copyright (c) 2015, David Gohel All rights reserved.
+ * Copyright (c) 2016, David Gohel All rights reserved.
  *
  * rvg is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@
 #include "a_path.h"
 #include "a_prstgeom.h"
 #include "empty_body_text.h"
+#include "clipper.h"
 
 // SVG device metadata
 class DOCX_dev {
@@ -53,6 +54,7 @@ public:
   bool editable;
   int standalone;
   XPtrCairoContext cc;
+  clipper *clp;
 
   DOCX_dev(std::string filename_,
            std::string fontname_serif_,
@@ -75,6 +77,7 @@ public:
       cc(gdtools::context_create()){
 
     file = fopen(R_ExpandFileName(filename.c_str()), "w");
+    clp = new clipper();
   }
 
   bool ok() const {
@@ -177,6 +180,7 @@ static void docx_clip(double x0, double x1, double y0, double y1, pDevDesc dd) {
   docx_obj->clipright = x1;
   docx_obj->clipbottom = y0;
   docx_obj->cliptop = y1;
+  docx_obj->clp->set_clipping_region(x0, y1, x1, y0);
 }
 
 static void docx_close(pDevDesc dd) {
@@ -216,8 +220,30 @@ static double docx_strheight(const char *str, const pGEcontext gc, pDevDesc dd) 
 }
 
 
+
+void docx_do_polyline(NumericVector x, NumericVector y, const pGEcontext gc,
+                   pDevDesc dd) {
+  DOCX_dev *docx_obj = (DOCX_dev*) dd->deviceSpecific;
+
+  xfrm xfrm_(x, y );
+  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
+  fputs("<wps:wsp>", docx_obj->file);
+  write_nv_pr_docx(dd, "pl");
+  fputs("<wps:spPr>", docx_obj->file);
+  fprintf(docx_obj->file, "%s", xfrm_.xml().c_str());
+  fputs( "<a:custGeom><a:avLst/>", docx_obj->file );
+  fputs( "<a:pathLst>", docx_obj->file );
+  fprintf(docx_obj->file, "%s", a_path::a_tag(x, y, 0 ).c_str());
+  fputs( "</a:pathLst>", docx_obj->file );
+  fputs( "</a:custGeom>", docx_obj->file );
+  fprintf(docx_obj->file, "%s", line_style_.a_tag().c_str());
+  fputs("</wps:spPr>", docx_obj->file);
+  fprintf(docx_obj->file, "%s",empty_body_text::wps_tag().c_str());
+  fputs("</wps:wsp>", docx_obj->file);
+}
+
 static void docx_line(double x1, double y1, double x2, double y2,
-                     const pGEcontext gc, pDevDesc dd) {
+                      const pGEcontext gc, pDevDesc dd) {
   DOCX_dev *docx_obj = (DOCX_dev*) dd->deviceSpecific;
 
   Rcpp::NumericVector x_(2);
@@ -226,26 +252,18 @@ static void docx_line(double x1, double y1, double x2, double y2,
   y_[0] = y1 ;
   x_[1] = x2 ;
   y_[1] = y2 ;
-  xfrm xfrm_(x_, y_ );
 
-  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
+  docx_obj->clp->set_data(x_, y_);
+  docx_obj->clp->clip_polyline();
 
+  std::vector<NumericVector> x_array = docx_obj->clp->get_x_lines();
+  std::vector<NumericVector> y_array = docx_obj->clp->get_y_lines();
 
-  fputs("<wps:wsp>", docx_obj->file);
-    write_nv_pr_docx(dd, "ln");
-    fputs("<wps:spPr>", docx_obj->file);
-      fprintf(docx_obj->file, "%s", xfrm_.xml().c_str());
-      fputs( "<a:custGeom><a:avLst/>", docx_obj->file );
-        fputs( "<a:pathLst>", docx_obj->file );
-        fprintf(docx_obj->file, "%s", a_path::a_tag(x_, y_, 0 ).c_str());
-        fputs( "</a:pathLst>", docx_obj->file );
-      fputs( "</a:custGeom>", docx_obj->file );
-      fprintf(docx_obj->file, "%s", line_style_.a_tag().c_str());
-    fputs("</wps:spPr>", docx_obj->file);
-    fprintf(docx_obj->file, "%s",empty_body_text::wps_tag().c_str());
-  fputs("</wps:wsp>", docx_obj->file);
+  for( int l = 0 ; l < x_array.size() ; l++ ){
+    docx_do_polyline(x_array.at(l), y_array.at(l), gc, dd);
+  }
+
 }
-
 
 static void docx_polyline(int n, double *x, double *y, const pGEcontext gc,
                          pDevDesc dd) {
@@ -259,21 +277,16 @@ static void docx_polyline(int n, double *x, double *y, const pGEcontext gc,
     x_[i] = x[i];
     y_[i] = y[i];
   }
-  xfrm xfrm_(x_, y_ );
-  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
-  fputs("<wps:wsp>", docx_obj->file);
-    write_nv_pr_docx(dd, "pl");
-    fputs("<wps:spPr>", docx_obj->file);
-      fprintf(docx_obj->file, "%s", xfrm_.xml().c_str());
-      fputs( "<a:custGeom><a:avLst/>", docx_obj->file );
-        fputs( "<a:pathLst>", docx_obj->file );
-        fprintf(docx_obj->file, "%s", a_path::a_tag(x_, y_, 0 ).c_str());
-        fputs( "</a:pathLst>", docx_obj->file );
-      fputs( "</a:custGeom>", docx_obj->file );
-      fprintf(docx_obj->file, "%s", line_style_.a_tag().c_str());
-    fputs("</wps:spPr>", docx_obj->file);
-    fprintf(docx_obj->file, "%s",empty_body_text::wps_tag().c_str());
-  fputs("</wps:wsp>", docx_obj->file);
+  docx_obj->clp->set_data(x_, y_);
+  docx_obj->clp->clip_polyline();
+
+  std::vector<NumericVector> x_array = docx_obj->clp->get_x_lines();
+  std::vector<NumericVector> y_array = docx_obj->clp->get_y_lines();
+
+  for( int l = 0 ; l < x_array.size() ; l++ ){
+    docx_do_polyline(x_array.at(l), y_array.at(l), gc, dd);
+  }
+
 }
 
 static void docx_polygon(int n, double *x, double *y, const pGEcontext gc,
@@ -288,7 +301,13 @@ static void docx_polygon(int n, double *x, double *y, const pGEcontext gc,
     x_[i] = x[i];
     y_[i] = y[i];
   }
-  xfrm xfrm_(x_, y_ );
+  docx_obj->clp->set_data(x_, y_);
+  docx_obj->clp->clip_polygon();
+
+  Rcpp::NumericVector x__ = docx_obj->clp->get_x();
+  Rcpp::NumericVector y__ = docx_obj->clp->get_y();
+
+  xfrm xfrm_(x__, y__);
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   a_color fill_( gc->fill );
 
@@ -298,7 +317,7 @@ static void docx_polygon(int n, double *x, double *y, const pGEcontext gc,
       fprintf(docx_obj->file, "%s", xfrm_.xml().c_str());
       fputs("<a:custGeom><a:avLst/>", docx_obj->file );
         fputs( "<a:pathLst>", docx_obj->file );
-          fprintf(docx_obj->file, "%s", a_path::a_tag(x_, y_, 1 ).c_str());
+          fprintf(docx_obj->file, "%s", a_path::a_tag(x__, y__, 1 ).c_str());
         fputs( "</a:pathLst>", docx_obj->file );
       fputs("</a:custGeom>", docx_obj->file );
       if( fill_.is_visible() > 0 )
@@ -319,7 +338,13 @@ static void docx_rect(double x0, double y0, double x1, double y1,
   y_[0] = y0;
   x_[1] = x1;
   y_[1] = y1;
-  xfrm xfrm_(x_, y_ );
+  docx_obj->clp->set_data(x_, y_);
+  docx_obj->clp->clip_polygon();
+  Rcpp::NumericVector x__ = docx_obj->clp->get_x();
+  Rcpp::NumericVector y__ = docx_obj->clp->get_y();
+
+  xfrm xfrm_(x__, y__);
+
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   a_color fill_( gc->fill );
 
@@ -447,7 +472,7 @@ static void docx_new_page(const pGEcontext gc, pDevDesc dd) {
   if (docx_obj->pageno > 0) {
     Rf_error("docx device only supports one page");
   }
-
+  docx_obj->clp->set_clipping_region(0.0, 0.0, dd->right, dd->bottom);
   main_tree mt(docx_obj->new_id(),
                docx_obj->new_id(),
                0.0, 0.0,
@@ -544,7 +569,7 @@ pDevDesc docx_driver_new(std::string filename, int bg, double width, double heig
   dd->ipr[1] = 1.0 / 72.0;
 
   // Capabilities
-  dd->canClip = FALSE;
+  dd->canClip = TRUE;
   dd->canHAdj = 0;
   dd->canChangeGamma = FALSE;
   dd->displayListOn = FALSE;
