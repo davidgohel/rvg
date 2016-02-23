@@ -39,15 +39,6 @@ std::string main_tree::a_opening_tag()
   os << "<p:nvPr/>";
   os << "</p:nvGrpSpPr>";
 
-  os << "<p:grpSpPr>";
-  os << "<a:xfrm>";
-  os << "<a:off x=\"" << (int)(this->offx * 12700) << "\" y=\"" << (int)(this->offy * 12700) << "\"/>";
-  os << "<a:ext cx=\"" << (int)(this->width * 12700) << "\" cy=\"" << (int)(this->height * 12700) << "\"/>";
-  os << "<a:chOff x=\"" << (int)(this->offx * 12700) << "\" y=\"" << (int)(this->offy * 12700) << "\"/>";
-  os << "<a:chExt cx=\"" << (int)(this->width * 12700) << "\" cy=\"" << (int)(this->height * 12700) << "\"/>";
-  os << "</a:xfrm>";
-  os << "</p:grpSpPr>";
-
   return os.str();
 }
 
