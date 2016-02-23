@@ -6,7 +6,10 @@ Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
       email = "david.gohel@ardata.fr"),
     person("Bob", "Rudis", role = c("ctb"),
-      comment = "the javascript code used by function set_attr")
+      comment = "the javascript code used by function set_attr"),
+    person("Francois", "Brunetti", role = c("ctb"),
+      email = "francois.brunetti@lysis-consultants.fr",
+      comment = "clipping algorithms")
     )
 Author: David Gohel [aut, cre]
 Description: Vector Graphics devices for SVG, DrawingML for
