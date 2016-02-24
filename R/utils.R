@@ -46,7 +46,7 @@ rvg_tracer_off <- function(){
 #'
 #' @export
 send_tooltip = function( ids, tooltips ){
-  .Deprecated("set_attr")
+  #.Deprecated("set_attr")
 	stopifnot( .Device == "dsvg_device" )
 	if( is.factor(tooltips) )
 		tooltips = as.character( tooltips )
@@ -69,7 +69,7 @@ send_tooltip = function( ids, tooltips ){
 #'
 #' @export
 send_click = function( ids, clicks ){
-  .Deprecated("set_attr")
+  #.Deprecated("set_attr")
 	stopifnot( .Device == "dsvg_device" )
 	if( is.factor(clicks) )
 		clicks = as.character( clicks )
@@ -93,7 +93,7 @@ send_click = function( ids, clicks ){
 #'
 #' @export
 set_data_id = function( ids, data_id ){
-  .Deprecated("set_attr")
+  #.Deprecated("set_attr")
 	stopifnot( .Device == "dsvg_device" )
 	if( is.factor(data_id) )
 		data_id = as.character( data_id )
