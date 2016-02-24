@@ -2,6 +2,7 @@
 
 ## New features
 
+* implementation of clipping (algorithms by Francois Brunetti).
 * new function set_attr to set attributes to graphical elements
   without dependency to jquery nor bootstrap (suggested by
   Bob Rudis).
