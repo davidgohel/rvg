@@ -10,7 +10,7 @@ std::string body_pr::a_tag()
 
   os << "<a:bodyPr ";
   os << "lIns=\"0\" rIns=\"0\" tIns=\"0\" bIns=\"0\" ";
-  os << "anchorCtr=\"1\" anchor=\"ctr\"/>";
+  os << "anchorCtr=\"1\" anchor=\"ctr\" wrap=\"none\"/>";
   os << "<a:lstStyle/>";
 
   return os.str();
@@ -24,7 +24,7 @@ std::string body_pr::wps_tag()
   os << "<wps:bodyPr ";
   os << "lIns=\"0\" rIns=\"0\" tIns=\"0\" bIns=\"0\" ";
   os << "anchor=\"b\" ";
-  os << "vertOverflow=\"overflow\" horzOverflow=\"overflow\" vert=\"horz\">";
+  os << "vertOverflow=\"overflow\" horzOverflow=\"overflow\" vert=\"horz\" wrap=\"none\">";
   // os << "<a:spAutoFit/>";
   os << "</wps:bodyPr>";
   return os.str();
