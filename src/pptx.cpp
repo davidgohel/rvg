@@ -339,13 +339,16 @@ static void pptx_rect(double x0, double y0, double x1, double y1,
                      const pGEcontext gc, pDevDesc dd) {
 
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
-  Rcpp::NumericVector x_(2);
-  Rcpp::NumericVector y_(2);
+  Rcpp::NumericVector x_(4);
+  Rcpp::NumericVector y_(4);
   x_[0] = x0;
   y_[0] = y0;
   x_[1] = x1;
-  y_[1] = y1;
-
+  y_[1] = y0;
+  x_[2] = x1;
+  y_[2] = y1;
+  x_[3] = x0;
+  y_[3] = y1;
   pptx_obj->clp->set_data(x_, y_);
   pptx_obj->clp->clip_polygon();
   Rcpp::NumericVector x__ = pptx_obj->clp->get_x();
