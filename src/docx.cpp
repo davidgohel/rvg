@@ -63,7 +63,8 @@ public:
            std::string fontname_symbol_,
            bool editable_, int id_,
            std::string raster_prefix_,
-           int next_rels_id_, int standalone_):
+           int next_rels_id_, int standalone_,
+           double width_, double height_ ):
       filename(filename_),
       pageno(0),
 	    id(id_),
@@ -77,6 +78,10 @@ public:
       cc(gdtools::context_create()){
 
     file = fopen(R_ExpandFileName(filename.c_str()), "w");
+    clipleft = 0.0;
+    clipright = width_;
+    cliptop = 0.0;
+    clipbottom = height_;
     clp = new clipper();
   }
 
@@ -580,7 +585,8 @@ pDevDesc docx_driver_new(std::string filename, int bg, double width, double heig
     fontname_serif, fontname_sans, fontname_mono, fontname_symbol,
     editable, id,
     raster_prefix,
-    next_rels_id, standalone);
+    next_rels_id, standalone,
+    width * 72, height * 72);
   return dd;
 }
 

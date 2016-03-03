@@ -53,7 +53,7 @@ public:
            std::string fontname_serif_,
            std::string fontname_sans_,
            std::string fontname_mono_,
-           std::string fontname_symbol_ ):
+           std::string fontname_symbol_, double width_, double height_ ):
       filename(filename_),
       pageno(0),
 	    id(-1),
@@ -66,8 +66,12 @@ public:
       fontname_sans(fontname_sans_),
       fontname_mono(fontname_mono_),
       fontname_symbol(fontname_symbol_),
-      cc(gdtools::context_create()) {
+      cc(gdtools::context_create() ) {
     file = fopen(R_ExpandFileName(filename.c_str()), "w");
+    clipleft = 0.0;
+    clipright = width_;
+    cliptop = 0.0;
+    clipbottom = height_;
   }
 
   bool ok() const {
@@ -525,7 +529,8 @@ pDevDesc dsvg_driver_new(std::string filename, int bg, double width,
   dd->haveTransparentBg = 2;
 
   dd->deviceSpecific = new DSVG_dev(filename, standalone, canvas_id, bg,
-                                  fontname_serif, fontname_sans, fontname_mono, fontname_symbol);
+                                  fontname_serif, fontname_sans, fontname_mono, fontname_symbol,
+                                  width * 72, height * 72);
   return dd;
 }
 
