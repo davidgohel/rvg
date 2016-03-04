@@ -10,7 +10,7 @@ is providing three formats:
 
 * SVG (*Scalable Vector Graphics*) with `dsvg`. The graphic can be made interactive (tooltip, onclick 
   and id attribute manipulation). To make that work in an HTML document, check for 
-  dependencies `jquery` and `bootstrap` in the document.
+  dependencies `d3.js` in the document.
 * DrawingML for Microsoft Word (>=2007) with `dml_docx` and DrawingML for Microsoft PowerPoint 
   with `dml_docx`. Theses formats let users edit the graphic elements (*editable graphics*) 
   and have a very good rendering. 
@@ -36,4 +36,8 @@ write_pptx(file = "my_plot.pptx", code = print( gg ))
 Install the development version:
 
     devtools::install_github("davidgohel/rvg")
+
+Install the CRAN version:
+
+    install.packages("rvg")
 
