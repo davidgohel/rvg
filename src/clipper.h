@@ -20,11 +20,6 @@ public:
   std::vector<NumericVector> get_x_lines();
   std::vector<NumericVector> get_y_lines();
 
-  double get_xmin();
-  double get_xmax();
-  double get_ymin();
-  double get_ymax();
-
 
 private:
   NumericVector x;

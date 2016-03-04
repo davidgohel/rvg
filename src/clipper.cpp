@@ -493,35 +493,6 @@ void clipper::extract_lines(){
 
 }
 
-double clipper::get_xmin(){
-  double xmin = xout_.at(0);
-  for(int i = 1 ; xout_.size() ; i++ ){
-    if( xout_.at(i) < xmin ) xmin = xout_.at(i);
-  }
-  return xmin;
-}
-
-double clipper::get_ymin(){
-  double ymin = yout_.at(0);
-  for(int i = 1 ; yout_.size() ; i++ ){
-    if( yout_.at(i) < ymin ) ymin = yout_.at(i);
-  }
-  return ymin;
-}
-double clipper::get_xmax(){
-  double xmax = xout_.at(0);
-  for(int i = 1 ; xout_.size() ; i++ ){
-    if( xout_.at(i) > xmax ) xmax = xout_.at(i);
-  }
-  return xmax;
-}
-double clipper::get_ymax(){
-  double ymax = yout_.at(0);
-  for(int i = 1 ; yout_.size() ; i++ ){
-    if( yout_.at(i) > ymax ) ymax = yout_.at(i);
-  }
-  return ymax;
-}
 
 std::vector<NumericVector> clipper::get_x_lines(){
   return x_lines;
