@@ -21,14 +21,14 @@ Imports:
     Rcpp,
     xml2,
     gdtools,
-    grid,
     utils, R.utils
 LinkingTo: Rcpp,
     gdtools
 Suggests:
     htmltools,
     testthat,
-    covr
+    covr,
+    grid
 URL: https://github.com/davidgohel/rvg
 BugReports: https://github.com/davidgohel/rvg/issues
 RoxygenNote: 5.0.1

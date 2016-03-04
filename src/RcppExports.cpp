@@ -97,45 +97,6 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// add_tooltip
-bool add_tooltip(int dn, Rcpp::IntegerVector id, std::vector< std::string > str);
-RcppExport SEXP rvg_add_tooltip(SEXP dnSEXP, SEXP idSEXP, SEXP strSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< int >::type dn(dnSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type id(idSEXP);
-    Rcpp::traits::input_parameter< std::vector< std::string > >::type str(strSEXP);
-    __result = Rcpp::wrap(add_tooltip(dn, id, str));
-    return __result;
-END_RCPP
-}
-// add_click_event
-bool add_click_event(int dn, Rcpp::IntegerVector id, std::vector< std::string > str);
-RcppExport SEXP rvg_add_click_event(SEXP dnSEXP, SEXP idSEXP, SEXP strSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< int >::type dn(dnSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type id(idSEXP);
-    Rcpp::traits::input_parameter< std::vector< std::string > >::type str(strSEXP);
-    __result = Rcpp::wrap(add_click_event(dn, id, str));
-    return __result;
-END_RCPP
-}
-// add_data_id
-bool add_data_id(int dn, Rcpp::IntegerVector id, std::vector< std::string > data_id);
-RcppExport SEXP rvg_add_data_id(SEXP dnSEXP, SEXP idSEXP, SEXP data_idSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< int >::type dn(dnSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type id(idSEXP);
-    Rcpp::traits::input_parameter< std::vector< std::string > >::type data_id(data_idSEXP);
-    __result = Rcpp::wrap(add_data_id(dn, id, data_id));
-    return __result;
-END_RCPP
-}
 // PPTX_
 bool PPTX_(std::string file, std::string bg_, double width, double height, double offx, double offy, int pointsize, std::string fontname_serif, std::string fontname_sans, std::string fontname_mono, std::string fontname_symbol, bool editable, int id, std::string raster_prefix, int next_rels_id, int standalone);
 RcppExport SEXP rvg_PPTX_(SEXP fileSEXP, SEXP bg_SEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP offxSEXP, SEXP offySEXP, SEXP pointsizeSEXP, SEXP fontname_serifSEXP, SEXP fontname_sansSEXP, SEXP fontname_monoSEXP, SEXP fontname_symbolSEXP, SEXP editableSEXP, SEXP idSEXP, SEXP raster_prefixSEXP, SEXP next_rels_idSEXP, SEXP standaloneSEXP) {
