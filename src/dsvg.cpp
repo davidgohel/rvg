@@ -392,7 +392,7 @@ static void dsvg_raster(unsigned int *raster, int w, int h,
     height = -height;
 
   std::vector<unsigned int> raster_(w*h);
-  for ( int i = 0 ; i < raster_.size(); i++) {
+  for ( size_t i = 0 ; i < raster_.size(); i++) {
     raster_[i] = raster[i] ;
   }
 

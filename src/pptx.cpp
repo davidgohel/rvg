@@ -268,7 +268,7 @@ static void pptx_line(double x1, double y1, double x2, double y2,
   std::vector<NumericVector> x_array = pptx_obj->clp->get_x_lines();
   std::vector<NumericVector> y_array = pptx_obj->clp->get_y_lines();
 
-  for( int l = 0 ; l < x_array.size() ; l++ ){
+  for( size_t l = 0 ; l < x_array.size() ; l++ ){
     pptx_do_polyline(x_array.at(l), y_array.at(l), gc, dd);
   }
 }
@@ -277,11 +277,10 @@ static void pptx_line(double x1, double y1, double x2, double y2,
 static void pptx_polyline(int n, double *x, double *y, const pGEcontext gc,
                          pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
-  int i;
   Rcpp::NumericVector x_(n);
   Rcpp::NumericVector y_(n);
 
-  for(i = 0 ; i < n ; i++ ){
+  for(int i = 0 ; i < n ; i++ ){
     x_[i] = x[i];
     y_[i] = y[i];
   }
@@ -291,7 +290,7 @@ static void pptx_polyline(int n, double *x, double *y, const pGEcontext gc,
   std::vector<NumericVector> x_array = pptx_obj->clp->get_x_lines();
   std::vector<NumericVector> y_array = pptx_obj->clp->get_y_lines();
 
-  for( int l = 0 ; l < x_array.size() ; l++ ){
+  for( size_t l = 0 ; l < x_array.size() ; l++ ){
     pptx_do_polyline(x_array.at(l), y_array.at(l), gc, dd);
   }
 }
@@ -299,7 +298,6 @@ static void pptx_polyline(int n, double *x, double *y, const pGEcontext gc,
 static void pptx_polygon(int n, double *x, double *y, const pGEcontext gc,
                         pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
-
   int i;
   Rcpp::NumericVector x_(n);
   Rcpp::NumericVector y_(n);

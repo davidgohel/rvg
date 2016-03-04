@@ -264,7 +264,7 @@ static void docx_line(double x1, double y1, double x2, double y2,
   std::vector<NumericVector> x_array = docx_obj->clp->get_x_lines();
   std::vector<NumericVector> y_array = docx_obj->clp->get_y_lines();
 
-  for( int l = 0 ; l < x_array.size() ; l++ ){
+  for( size_t l = 0 ; l < x_array.size() ; l++ ){
     docx_do_polyline(x_array.at(l), y_array.at(l), gc, dd);
   }
 
@@ -288,7 +288,7 @@ static void docx_polyline(int n, double *x, double *y, const pGEcontext gc,
   std::vector<NumericVector> x_array = docx_obj->clp->get_x_lines();
   std::vector<NumericVector> y_array = docx_obj->clp->get_y_lines();
 
-  for( int l = 0 ; l < x_array.size() ; l++ ){
+  for( size_t l = 0 ; l < x_array.size() ; l++ ){
     docx_do_polyline(x_array.at(l), y_array.at(l), gc, dd);
   }
 
