@@ -158,7 +158,7 @@ static void dsvg_clip(double x0, double x1, double y0, double y1, pDevDesc dd) {
 
   svgd->clip_id++;
   fputs("<defs>", svgd->file);
-  fprintf(svgd->file, "<clipPath id='cl%d'>", svgd->clip_id );
+  fprintf(svgd->file, "<clipPath id='cl%d_%d'>", svgd->canvas_id, svgd->clip_id );
   fprintf(svgd->file, "<rect x='%.2f' y='%.2f' width='%.2f' height='%.2f'/>",
           std::min(x0, x1), std::min(y0, y1),
           std::abs(x1 - x0),
@@ -183,7 +183,7 @@ static void dsvg_line(double x1, double y1, double x2, double y2,
   svgd->register_element();
   fprintf(svgd->file, "<line x1='%.2f' y1='%.2f' x2='%.2f' y2='%.2f' id='%d'",
     x1, y1, x2, y2, idx);
-  fprintf(svgd->file, " clip-path='url(#cl%d)'", svgd->clip_id);
+  fprintf(svgd->file, " clip-path='url(#cl%d_%d)'", svgd->canvas_id, svgd->clip_id);
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   fprintf(svgd->file, "%s", line_style_.svg_attr().c_str());
   a_color col_(gc->fill);
@@ -204,8 +204,7 @@ static void dsvg_polyline(int n, double *x, double *y, const pGEcontext gc,
   }
   fputs("'", svgd->file);
   fprintf(svgd->file, " id='%d'", idx);
-  fprintf(svgd->file, " clip-path='url(#cl%d)'", svgd->clip_id);
-
+  fprintf(svgd->file, " clip-path='url(#cl%d_%d)'", svgd->canvas_id, svgd->clip_id);
   fputs(" fill=\"none\"", svgd->file);
 
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
@@ -225,7 +224,7 @@ static void dsvg_polygon(int n, double *x, double *y, const pGEcontext gc,
   }
   fputs("'", svgd->file);
   fprintf(svgd->file, " id='%d'", idx);
-  fprintf(svgd->file, " clip-path='url(#cl%d)'", svgd->clip_id);
+  fprintf(svgd->file, " clip-path='url(#cl%d_%d)'", svgd->canvas_id, svgd->clip_id);
 
   a_color col_(gc->fill);
   fprintf(svgd->file, "%s", col_.svg_fill_attr().c_str());
@@ -256,7 +255,7 @@ void dsvg_path(double *x, double *y,
     fputs("Z ", svgd->file);
   }
   fprintf(svgd->file, "' id='%d'", idx);
-  fprintf(svgd->file, " clip-path='url(#cl%d)'", svgd->clip_id);
+  fprintf(svgd->file, " clip-path='url(#cl%d_%d)'", svgd->canvas_id, svgd->clip_id);
 
   a_color fill_(gc->fill);
   fprintf(svgd->file, "%s", fill_.svg_fill_attr().c_str());
@@ -296,7 +295,7 @@ static void dsvg_rect(double x0, double y0, double x1, double y1,
       "<rect x='%.2f' y='%.2f' width='%.2f' height='%.2f'",
       fmin(x0, x1), fmin(y0, y1), fabs(x1 - x0), fabs(y1 - y0));
   fprintf(svgd->file, " id='%d'", idx);
-  fprintf(svgd->file, " clip-path='url(#cl%d)'", svgd->clip_id);
+  fprintf(svgd->file, " clip-path='url(#cl%d_%d)'", svgd->canvas_id, svgd->clip_id);
 
   a_color fill_(gc->fill);
   fprintf(svgd->file, "%s", fill_.svg_fill_attr().c_str());
@@ -314,7 +313,7 @@ static void dsvg_circle(double x, double y, double r, const pGEcontext gc,
 
   fprintf(svgd->file, "<circle cx='%.2f' cy='%.2f' r='%.2fpt'", x, y, r * .75 );
   fprintf(svgd->file, " id='%d'", idx);
-  fprintf(svgd->file, " clip-path='url(#cl%d)'", svgd->clip_id);
+  fprintf(svgd->file, " clip-path='url(#cl%d_%d)'", svgd->canvas_id, svgd->clip_id);
   a_color fill_(gc->fill);
   fprintf(svgd->file, "%s", fill_.svg_fill_attr().c_str());
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
@@ -328,7 +327,7 @@ static void dsvg_text(double x, double y, const char *str, double rot,
 
   int idx = svgd->new_id();
   svgd->register_element();
-  fprintf(svgd->file, "<g clip-path='url(#cl%d)'>", svgd->clip_id);
+  fprintf(svgd->file, "<g clip-path='url(#cl%d_%d)'>", svgd->canvas_id, svgd->clip_id);
 
   fputs("<text", svgd->file);
   if (rot == 0) {
