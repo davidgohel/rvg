@@ -62,6 +62,55 @@ std::string main_tree::a_closing_tag()
 }
 
 
+std::string main_tree::x_opening_tag()
+{
+  std::stringstream os;
+
+  if( this->standalone > 0 ){
+    os << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
+    os << "<xdr:wsDr xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" ";
+    os << "xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" ";
+    os << "xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\" ";
+    os << "xmlns:xdr=\"http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing\" >";
+  } else {
+    os << "<xdr:wsDr>";
+  }
+
+  os << "<xdr:absoluteAnchor>";
+    os << "<xdr:pos x=\"" << (int)(this->offx * 12700) << "\" y=\"" << (int)(this->offy * 12700) << "\"/>";
+    os << "<xdr:ext cx=\"" << (int)(this->width * 12700) << "\" cy=\"" << (int)(this->height * 12700) << "\"/>";
+
+    os << "<xdr:grpSp>";
+
+    os << "<xdr:nvGrpSpPr>";
+    os << "<xdr:cNvPr id=\"" << this->group_id << "\" name=\"grp" << this->group_id << "\"/>";
+    os << "<xdr:cNvGrpSpPr/>";
+    os << "<xdr:nvPr/>";
+    os << "</xdr:nvGrpSpPr>";
+
+    os << "<xdr:grpSpPr>";
+    os << "<a:xfrm>";
+    os << "<a:off x=\"" << (int)(this->offx * 12700) << "\" y=\"" << (int)(this->offy * 12700) << "\"/>";
+    os << "<a:ext cx=\"" << (int)(this->width * 12700) << "\" cy=\"" << (int)(this->height * 12700) << "\"/>";
+    os << "<a:chOff x=\"" << (int)(this->offx * 12700) << "\" y=\"" << (int)(this->offy * 12700) << "\"/>";
+    os << "<a:chExt cx=\"" << (int)(this->width * 12700) << "\" cy=\"" << (int)(this->height * 12700) << "\"/>";
+    os << "</a:xfrm>";
+    os << "</xdr:grpSpPr>";
+
+    return os.str();
+}
+
+std::string main_tree::x_closing_tag()
+{
+  std::stringstream os;
+  os << "</xdr:grpSp>";
+  os << "<xdr:clientData/>";
+  os << "</xdr:absoluteAnchor>";
+  os << "</xdr:wsDr>";
+
+  return os.str();
+}
+
 std::string main_tree::w_opening_tag()
 {
 

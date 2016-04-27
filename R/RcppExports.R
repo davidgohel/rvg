@@ -29,3 +29,7 @@ PPTX_ <- function(file, bg_, width, height, offx, offy, pointsize, fontname_seri
     .Call('rvg_PPTX_', PACKAGE = 'rvg', file, bg_, width, height, offx, offy, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id, standalone)
 }
 
+XLSX_ <- function(file, bg_, width, height, offx, offy, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id, standalone) {
+    .Call('rvg_XLSX_', PACKAGE = 'rvg', file, bg_, width, height, offx, offy, pointsize, fontname_serif, fontname_sans, fontname_mono, fontname_symbol, editable, id, raster_prefix, next_rels_id, standalone)
+}
+

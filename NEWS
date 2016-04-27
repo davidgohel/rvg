@@ -1,3 +1,14 @@
+# rvg 0.9
+
+## New features
+
+* new device driver for Microsoft Excel documents
+* add function write_xlsx
+
+## Bug fixes
+
+* make cliping region id unique in dsvg
+
 # rvg 0.8
 
 ## Bug fixes
