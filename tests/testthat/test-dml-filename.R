@@ -21,4 +21,13 @@ test_that("pptx filename", {
   expect_equal(object = file_abs_path, expected = expected )
 })
 
+test_that("xlsx filename", {
+
+  file_abs_path <- try( write_xlsx(file = "my_plot.xlsx", code = plot(rnorm(10))), silent = TRUE )
+  expected <- file.path(getwd(), "my_plot.xlsx")
+  expect_equal(object = file_abs_path, expected = expected )
+
+  file_abs_path <- try( write_xlsx(file = expected, code = plot(rnorm(10))), silent = TRUE )
+  expect_equal(object = file_abs_path, expected = expected )
+})
 unlink(list.files(pattern = "^my_plot"), force = TRUE)

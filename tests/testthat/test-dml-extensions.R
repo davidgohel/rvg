@@ -19,4 +19,13 @@ test_that("check pptx extension", {
   expect_is(object = file_abs_path, class = "try-error")
 })
 
+test_that("check xlsx extension", {
+
+  file_abs_path <- try( write_xlsx(file = "my_plot.xlsx", code = plot(rnorm(10))), silent = TRUE )
+  expect_is(object = file_abs_path, class = "character")
+
+  file_abs_path <- try( write_xlsx(file = "my_plot.xlsxa", code = plot(rnorm(10))), silent = TRUE )
+  expect_is(object = file_abs_path, class = "try-error")
+})
+
 unlink(list.files(pattern = "^my_plot"), force = TRUE)
