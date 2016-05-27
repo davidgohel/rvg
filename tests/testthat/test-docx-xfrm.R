@@ -12,16 +12,16 @@ test_that("rect has dimensions", {
 
 
   doc <- read_xml(file)
-  xfrm_node <- xml_find_one(doc, ".//wps:wsp/wps:spPr/a:xfrm", ns = xml_ns( doc ))
+  xfrm_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:xfrm", ns = xml_ns( doc ))
   expect_is(object = xfrm_node, class = "xml_node")
 
-  off_node <- xml_find_one(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:off", ns = xml_ns( doc ))
+  off_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:off", ns = xml_ns( doc ))
   offx <- xml_attr(off_node, "x")
   offy <- xml_attr(off_node, "y")
   expect_true( grepl("^[0-9]+$", offx ) )
   expect_true( grepl("^[0-9]+$", offy ) )
 
-  ext_node <- xml_find_one(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:ext", ns = xml_ns( doc ))
+  ext_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:ext", ns = xml_ns( doc ))
   cx <- xml_attr(ext_node, "cx")
   cy <- xml_attr(ext_node, "cy")
   expect_true( grepl("^[0-9]+$", cx ) )
@@ -39,16 +39,16 @@ test_that("lines has dimensions", {
 
 
   doc <- read_xml(file)
-  xfrm_node <- xml_find_one(doc, ".//wps:wsp/wps:spPr/a:xfrm", ns = xml_ns( doc ))
+  xfrm_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:xfrm", ns = xml_ns( doc ))
   expect_is(object = xfrm_node, class = "xml_node")
 
-  off_node <- xml_find_one(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:off", ns = xml_ns( doc ))
+  off_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:off", ns = xml_ns( doc ))
   offx <- xml_attr(off_node, "x")
   offy <- xml_attr(off_node, "y")
   expect_true( grepl("^[0-9]+$", offx ) )
   expect_true( grepl("^[0-9]+$", offy ) )
 
-  ext_node <- xml_find_one(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:ext", ns = xml_ns( doc ))
+  ext_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:ext", ns = xml_ns( doc ))
   cx <- xml_attr(ext_node, "cx")
   cy <- xml_attr(ext_node, "cy")
   expect_true( grepl("^[0-9]+$", cx ) )
@@ -70,16 +70,16 @@ test_that("polygon has dimensions", {
 
 
   doc <- read_xml(file)
-  xfrm_node <- xml_find_one(doc, ".//wps:wsp/wps:spPr/a:xfrm", ns = xml_ns( doc ))
+  xfrm_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:xfrm", ns = xml_ns( doc ))
   expect_is(object = xfrm_node, class = "xml_node")
 
-  off_node <- xml_find_one(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:off", ns = xml_ns( doc ))
+  off_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:off", ns = xml_ns( doc ))
   offx <- xml_attr(off_node, "x")
   offy <- xml_attr(off_node, "y")
   expect_true( grepl("^[0-9]+$", offx ) )
   expect_true( grepl("^[0-9]+$", offy ) )
 
-  ext_node <- xml_find_one(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:ext", ns = xml_ns( doc ))
+  ext_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:ext", ns = xml_ns( doc ))
   cx <- xml_attr(ext_node, "cx")
   cy <- xml_attr(ext_node, "cy")
   expect_true( grepl("^[0-9]+$", cx ) )
@@ -96,16 +96,16 @@ test_that("text has dimensions", {
   dev.off()
 
   doc <- read_xml(file)
-  xfrm_node <- xml_find_one(doc, ".//wps:wsp/wps:spPr/a:xfrm", ns = xml_ns( doc ))
+  xfrm_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:xfrm", ns = xml_ns( doc ))
   expect_is(object = xfrm_node, class = "xml_node")
 
-  off_node <- xml_find_one(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:off", ns = xml_ns( doc ))
+  off_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:off", ns = xml_ns( doc ))
   offx <- xml_attr(off_node, "x")
   offy <- xml_attr(off_node, "y")
   expect_true( grepl("^[0-9]+$", offx ) )
   expect_true( grepl("^[0-9]+$", offy ) )
 
-  ext_node <- xml_find_one(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:ext", ns = xml_ns( doc ))
+  ext_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:xfrm/a:ext", ns = xml_ns( doc ))
   cx <- xml_attr(ext_node, "cx")
   cy <- xml_attr(ext_node, "cy")
   expect_true( grepl("^[0-9]+$", cx ) )

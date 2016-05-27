@@ -11,7 +11,7 @@ test_that("text can be found", {
 
   x <- read_xml(file)
   xpath_ <- ".//wps:wsp/wps:txbx/w:txbxContent/w:p/w:r/w:t"
-  text_node <- xml_find_one(x, xpath_, ns = xml_ns( x ))
+  text_node <- xml_find_first(x, xpath_, ns = xml_ns( x ))
   expect_is(object = text_node, class = "xml_node")
   expect_equal(xml_text(text_node), "hello")
 })
@@ -50,7 +50,7 @@ test_that("special characters are escaped", {
   x <- read_xml(file)
   ns <-  xml_ns( x )
   xpath_ <- ".//wps:wsp/wps:txbx/w:txbxContent/w:p/w:r/w:t"
-  text_node <- xml_find_one(x, xpath_, ns = xml_ns( x ))
+  text_node <- xml_find_first(x, xpath_, ns = xml_ns( x ))
   expect_equal(xml_text(text_node), "<&>")
 })
 
@@ -66,7 +66,7 @@ test_that("utf-8 characters are preserved", {
   x <- read_xml(file)
   ns <-  xml_ns( x )
   xpath_ <- ".//wps:wsp/wps:txbx/w:txbxContent/w:p/w:r/w:t"
-  text_node <- xml_find_one(x, xpath_, ns = xml_ns( x ))
+  text_node <- xml_find_first(x, xpath_, ns = xml_ns( x ))
   expect_equal(xml_text(text_node), "\u00b5")
 })
 
@@ -80,7 +80,7 @@ test_that("text color is written in fill attr", {
   x <- read_xml(file)
   ns <-  xml_ns( x )
   xpath_ <- ".//wps:wsp/wps:txbx/w:txbxContent/w:p/w:r/w:rPr/w:color"
-  selected_node <- xml_find_one(x, xpath_, ns = xml_ns( x ))
+  selected_node <- xml_find_first(x, xpath_, ns = xml_ns( x ))
   expect_equal(xml_attr(selected_node, "val"), "113399")
 })
 
@@ -95,10 +95,10 @@ test_that("default point size is 12", {
   ns <-  xml_ns( x )
   xpath_ <- ".//wps:wsp/wps:txbx/w:txbxContent/w:p/w:r/w:rPr/w:sz"
 
-  selected_node <- xml_find_one(x, xpath_, ns = xml_ns( x ))
+  selected_node <- xml_find_first(x, xpath_, ns = xml_ns( x ))
   expect_equal(xml_attr(selected_node, "val"), "24")
   xpath_ <- ".//wps:wsp/wps:txbx/w:txbxContent/w:p/w:r/w:rPr/w:szCs"
-  selected_node <- xml_find_one(x, xpath_, ns = xml_ns( x ))
+  selected_node <- xml_find_first(x, xpath_, ns = xml_ns( x ))
   expect_equal(xml_attr(selected_node, "val"), "24")
 })
 
@@ -112,7 +112,7 @@ test_that("cex does not generate fractional font sizes", {
   x <- read_xml(file)
   ns <-  xml_ns( x )
   xpath_ <- ".//wps:wsp/wps:txbx/w:txbxContent/w:p/w:r/w:rPr/w:sz"
-  selected_node <- xml_find_one(x, xpath_, ns = xml_ns( x ))
+  selected_node <- xml_find_first(x, xpath_, ns = xml_ns( x ))
   expect_equal(xml_attr(selected_node, "val"), "6")
 })
 
@@ -128,9 +128,9 @@ test_that("font sets weight/style", {
   xpath_b <- ".//wps:wsp/wps:txbx/w:txbxContent/w:p/w:r/w:rPr/w:b"
   xpath_i <- ".//wps:wsp/wps:txbx/w:txbxContent/w:p/w:r/w:rPr/w:i"
 
-  selected_node <- try( xml_find_one(x, xpath_b, ns = xml_ns( x )), silent = TRUE)
+  selected_node <- try( xml_find_first(x, xpath_b, ns = xml_ns( x )), silent = TRUE)
   expect_is(selected_node, "try-error")
-  selected_node <- try( xml_find_one(x, xpath_i, ns = xml_ns( x )), silent = TRUE)
+  selected_node <- try( xml_find_first(x, xpath_i, ns = xml_ns( x )), silent = TRUE)
   expect_is(selected_node, "try-error")
 
   file <- tempfile()
@@ -142,10 +142,10 @@ test_that("font sets weight/style", {
   x <- read_xml(file)
   ns <-  xml_ns( x )
   selected_node <- try(
-    xml_find_one(x, xpath_b, ns = xml_ns( x )), silent = TRUE)
+    xml_find_first(x, xpath_b, ns = xml_ns( x )), silent = TRUE)
   expect_is(selected_node, "xml_node")
   selected_node <- try(
-    xml_find_one(x, xpath_i, ns = xml_ns( x )), silent = TRUE)
+    xml_find_first(x, xpath_i, ns = xml_ns( x )), silent = TRUE)
   expect_is(selected_node, "try-error")
 
   file <- tempfile()
@@ -156,9 +156,9 @@ test_that("font sets weight/style", {
 
   x <- read_xml(file)
   ns <-  xml_ns( x )
-  selected_node <- try( xml_find_one(x, xpath_b, ns = xml_ns( x )), silent = TRUE)
+  selected_node <- try( xml_find_first(x, xpath_b, ns = xml_ns( x )), silent = TRUE)
   expect_is(selected_node, "try-error")
-  selected_node <- try( xml_find_one(x, xpath_i, ns = xml_ns( x )), silent = TRUE)
+  selected_node <- try( xml_find_first(x, xpath_i, ns = xml_ns( x )), silent = TRUE)
   expect_is(selected_node, "xml_node")
 
   file <- tempfile()
@@ -169,9 +169,9 @@ test_that("font sets weight/style", {
 
   x <- read_xml(file)
   ns <-  xml_ns( x )
-  selected_node <- try( xml_find_one(x, xpath_b, ns = xml_ns( x )), silent = TRUE)
+  selected_node <- try( xml_find_first(x, xpath_b, ns = xml_ns( x )), silent = TRUE)
   expect_is(selected_node, "xml_node")
-  selected_node <- try( xml_find_one(x, xpath_i, ns = xml_ns( x )), silent = TRUE)
+  selected_node <- try( xml_find_first(x, xpath_i, ns = xml_ns( x )), silent = TRUE)
   expect_is(selected_node, "xml_node")
 })
 
@@ -220,7 +220,7 @@ test_that("symbol font family is 'Symbol'", {
   x <- read_xml(file)
   ns <-  xml_ns( x )
   xpath_ <- ".//wps:wsp/wps:txbx/w:txbxContent/w:p/w:r/w:rPr/w:rFonts"
-  font_node <- xml_find_one(x, xpath_, ns = xml_ns( x ))
+  font_node <- xml_find_first(x, xpath_, ns = xml_ns( x ))
   expect_equal(xml_attr(font_node, "ascii"), "Symbol")
   expect_equal(xml_attr(font_node, "hAnsi"), "Symbol")
   expect_equal(xml_attr(font_node, "cs"), "Symbol")

@@ -9,7 +9,7 @@ test_that("text can be found", {
   dev.off()
 
   doc <- read_xml(file)
-  text_node <- xml_find_one(doc, ".//xdr:sp/xdr:txBody/a:p/a:r/a:t", ns = xml_ns( doc ))
+  text_node <- xml_find_first(doc, ".//xdr:sp/xdr:txBody/a:p/a:r/a:t", ns = xml_ns( doc ))
   expect_is(object = text_node, class = "xml_node")
   expect_equal(xml_text(text_node), "hello")
 })
@@ -34,7 +34,7 @@ test_that("special characters are escaped", {
 
   x <- read_xml(file)
   ns <-  xml_ns( x )
-  expect_equal(xml_text(xml_find_one(x, ".//xdr:sp/xdr:txBody/a:p/a:r/a:t", ns = ns )), "<&>")
+  expect_equal(xml_text(xml_find_first(x, ".//xdr:sp/xdr:txBody/a:p/a:r/a:t", ns = ns )), "<&>")
 })
 
 test_that("utf-8 characters are preserved", {
@@ -48,7 +48,7 @@ test_that("utf-8 characters are preserved", {
 
   x <- read_xml(file)
   ns <-  xml_ns( x )
-  expect_equal(xml_text(xml_find_one(x, ".//xdr:sp/xdr:txBody/a:p/a:r/a:t", ns = ns )), "\u00b5")
+  expect_equal(xml_text(xml_find_first(x, ".//xdr:sp/xdr:txBody/a:p/a:r/a:t", ns = ns )), "\u00b5")
 })
 
 test_that("text color is written in fill attr", {
@@ -60,7 +60,7 @@ test_that("text color is written in fill attr", {
 
   x <- read_xml(file)
   ns <-  xml_ns( x )
-  expect_equal( xml_attr( xml_find_one(x, ".//xdr:sp/xdr:txBody/a:p/a:r/a:rPr/a:solidFill/a:srgbClr", ns = ns ), "val" ), "113399" )
+  expect_equal( xml_attr( xml_find_first(x, ".//xdr:sp/xdr:txBody/a:p/a:r/a:rPr/a:solidFill/a:srgbClr", ns = ns ), "val" ), "113399" )
 })
 
 test_that("default point size is 12", {
@@ -72,7 +72,7 @@ test_that("default point size is 12", {
 
   x <- read_xml(file)
   ns <-  xml_ns( x )
-  rPr <- xml_find_one(x, ".//xdr:sp/xdr:txBody/a:p/a:r/a:rPr", ns = ns )
+  rPr <- xml_find_first(x, ".//xdr:sp/xdr:txBody/a:p/a:r/a:rPr", ns = ns )
   expect_equal(xml_attr(rPr, "sz"), "1200")
 })
 
@@ -85,7 +85,7 @@ test_that("cex does not generate fractional font sizes", {
 
   x <- read_xml(file)
   ns <-  xml_ns( x )
-  rPr <- xml_find_one(x, ".//xdr:sp/xdr:txBody/a:p/a:r/a:rPr", ns = ns )
+  rPr <- xml_find_first(x, ".//xdr:sp/xdr:txBody/a:p/a:r/a:rPr", ns = ns )
   expect_equal(xml_attr(rPr, "sz"), "120")
 })
 
@@ -145,8 +145,8 @@ test_that("symbol font family is 'Symbol'", {
 
   x <- read_xml(file)
   ns <-  xml_ns( x )
-  rPr_latin <- xml_find_one(x, ".//xdr:sp/xdr:txBody/a:p/a:r/a:rPr/a:latin", ns = ns )
-  rPr_cs <- xml_find_one(x, ".//xdr:sp/xdr:txBody/a:p/a:r/a:rPr/a:cs", ns = ns )
+  rPr_latin <- xml_find_first(x, ".//xdr:sp/xdr:txBody/a:p/a:r/a:rPr/a:latin", ns = ns )
+  rPr_cs <- xml_find_first(x, ".//xdr:sp/xdr:txBody/a:p/a:r/a:rPr/a:cs", ns = ns )
   expect_equal(xml_attr(rPr_latin, "typeface"), c("Symbol"))
   expect_equal(xml_attr(rPr_cs, "typeface"), c("Symbol"))
 })

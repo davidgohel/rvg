@@ -11,7 +11,7 @@ test_that("check docx editable properties", {
 
   x <- read_xml(file)
   xpath_ <- ".//wps:wsp/wps:cNvSpPr/a:spLocks"
-  node <- try( xml_find_one(x, xpath_, ns = xml_ns( x )), silent = TRUE )
+  node <- try( xml_find_first(x, xpath_, ns = xml_ns( x )), silent = TRUE )
   expect_is(object = node, class = "xml_node")
 
   file <- tempfile()
@@ -21,7 +21,7 @@ test_that("check docx editable properties", {
   dev.off()
   x <- read_xml(file)
   xpath_ <- ".//wps:wsp/wps:cNvSpPr/a:spLocks"
-  expect_error(object = xml_find_one(x, xpath_, ns = xml_ns( x )), regexp = "No matches")
+  expect_error(object = xml_find_first(x, xpath_, ns = xml_ns( x )), regexp = "No matches")
 })
 
 test_that("check pptx editable properties", {
@@ -34,7 +34,7 @@ test_that("check pptx editable properties", {
 
   x <- read_xml(file)
   xpath_ <- ".//p:sp/p:nvSpPr/p:cNvSpPr/a:spLocks"
-  node <- try( xml_find_one(x, xpath_, ns = xml_ns( x )), silent = TRUE )
+  node <- try( xml_find_first(x, xpath_, ns = xml_ns( x )), silent = TRUE )
   expect_is(object = node, class = "xml_node")
 
   file <- tempfile()
@@ -44,7 +44,7 @@ test_that("check pptx editable properties", {
   dev.off()
   x <- read_xml(file)
   xpath_ <- ".//p:sp/p:nvSpPr/p:cNvSpPr/a:spLocks"
-  expect_error(object = xml_find_one(x, xpath_, ns = xml_ns( x )), regexp = "No matches")
+  expect_error(object = xml_find_first(x, xpath_, ns = xml_ns( x )), regexp = "No matches")
 })
 
 
@@ -58,7 +58,7 @@ test_that("check xlsx editable properties", {
 
   x <- read_xml(file)
   xpath_ <- ".//xdr:sp/xdr:nvSpPr/xdr:cNvSpPr/a:spLocks"
-  node <- try( xml_find_one(x, xpath_, ns = xml_ns( x )), silent = TRUE )
+  node <- try( xml_find_first(x, xpath_, ns = xml_ns( x )), silent = TRUE )
   expect_is(object = node, class = "xml_node")
 
   file <- tempfile()
@@ -68,5 +68,5 @@ test_that("check xlsx editable properties", {
   dev.off()
   x <- read_xml(file)
   xpath_ <- ".//xdr:sp/xdr:nvSpPr/xdr:cNvSpPr/a:spLocks"
-  expect_error(object = xml_find_one(x, xpath_, ns = xml_ns( x )), regexp = "No matches")
+  expect_error(object = xml_find_first(x, xpath_, ns = xml_ns( x )), regexp = "No matches")
 })

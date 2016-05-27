@@ -11,7 +11,7 @@ test_that("segments have stroke and no fill", {
   dev.off()
 
   x <- read_xml(file)
-  seg_node <- xml_find_one(x, "//line")
+  seg_node <- xml_find_first(x, "//line")
   expect_match(xml_attr(seg_node, "fill"), "none")
   expect_match(xml_attr(seg_node, "stroke"), "#000000")
 })
@@ -24,7 +24,7 @@ test_that("lines have stroke and no fill", {
   dev.off()
 
   x <- read_xml(file)
-  seg_node <- xml_find_one(x, "//polyline")
+  seg_node <- xml_find_first(x, "//polyline")
   expect_match(xml_attr(seg_node, "fill"), "none")
   expect_match(xml_attr(seg_node, "stroke"), "#000000")
 })
@@ -37,7 +37,7 @@ test_that("polygons do have fill and stroke", {
   dev.off()
 
   x <- read_xml(file)
-  svg_node <- xml_find_one(x, "//polygon")
+  svg_node <- xml_find_first(x, "//polygon")
   expect_match(xml_attr(svg_node, "fill"), "#FF0000")
   expect_match(xml_attr(svg_node, "stroke"), "#0000FF")
 })
@@ -50,7 +50,7 @@ test_that("polygons without border have fill and no stroke", {
   dev.off()
 
   x <- read_xml(file)
-  svg_node <- xml_find_one(x, "//polygon")
+  svg_node <- xml_find_first(x, "//polygon")
   expect_equal(xml_attr(svg_node, "fill"), "#FF0000")
   expect_equal(xml_attr(svg_node, "stroke"), "none")
 })
@@ -73,7 +73,7 @@ dash_array <- function(...) {
   lines(c(0,1), c(0.5,.7), ...)
   dev.off()
   doc <- read_xml(file)
-  dash <- xml_attr(xml_find_one(doc, "//polyline"), "stroke-dasharray")
+  dash <- xml_attr(xml_find_first(doc, "//polyline"), "stroke-dasharray")
   as.integer(strsplit(dash, ",")[[1]])
 }
 
@@ -115,13 +115,13 @@ test_that("line end shapes", {
   dev.off()
   x3 <- read_xml(file)
 
-  linecap <- xml_attr(xml_find_one(x1, "//polyline"), "stroke-linecap")
+  linecap <- xml_attr(xml_find_first(x1, "//polyline"), "stroke-linecap")
   expect_match(linecap, "round")
 
-  linecap <- xml_attr(xml_find_one(x2, "//polyline"), "stroke-linecap")
+  linecap <- xml_attr(xml_find_first(x2, "//polyline"), "stroke-linecap")
   expect_match(linecap, "butt")
 
-  linecap <- xml_attr(xml_find_one(x3, "//polyline"), "stroke-linecap")
+  linecap <- xml_attr(xml_find_first(x3, "//polyline"), "stroke-linecap")
   expect_match(linecap, "square")
 })
 
@@ -133,7 +133,7 @@ test_that("line join shapes", {
   lines(c(0.3, 0.5, 0.7), c(0.1, 0.9, 0.1), lwd = 15, ljoin = "round")
   dev.off()
   x1 <- read_xml(file)
-  linejoin <- xml_attr(xml_find_one(x1, "//polyline"), "stroke-linejoin")
+  linejoin <- xml_attr(xml_find_first(x1, "//polyline"), "stroke-linejoin")
   expect_match(linejoin, "round")
 
   file <- tempfile(fileext = ".svg")
@@ -142,7 +142,7 @@ test_that("line join shapes", {
   lines(c(0.3, 0.5, 0.7), c(0.1, 0.9, 0.1), lwd = 15, ljoin = "mitre")
   dev.off()
   x2 <- read_xml(file)
-  linejoin <- xml_attr(xml_find_one(x2, "//polyline"), "stroke-linejoin")
+  linejoin <- xml_attr(xml_find_first(x2, "//polyline"), "stroke-linejoin")
   expect_match(linejoin, "miter")
 
   file <- tempfile(fileext = ".svg")
@@ -151,6 +151,6 @@ test_that("line join shapes", {
   lines(c(0.3, 0.5, 0.7), c(0.1, 0.9, 0.1), lwd = 15, ljoin = "bevel")
   dev.off()
   x3 <- read_xml(file)
-  linejoin <- xml_attr(xml_find_one(x3, "//polyline"), "stroke-linejoin")
+  linejoin <- xml_attr(xml_find_first(x3, "//polyline"), "stroke-linejoin")
   expect_match(linejoin, "bevel")
 })

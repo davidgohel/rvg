@@ -33,10 +33,10 @@ test_that("pic tag can be found", {
 
 
   doc <- read_xml(file)
-  pic_node <- try( xml_find_one(doc, ".//xdr:pic", ns = xml_ns( doc )), silent = TRUE )
+  pic_node <- try( xml_find_first(doc, ".//xdr:pic", ns = xml_ns( doc )), silent = TRUE )
   expect_false( inherits(pic_node, "try-error") )
 
-  blip_node <- try( xml_find_one(pic_node, ".//a:blip", ns = xml_ns( doc )), silent = TRUE )
+  blip_node <- try( xml_find_first(pic_node, ".//a:blip", ns = xml_ns( doc )), silent = TRUE )
   expect_false( inherits(blip_node, "try-error") )
 })
 

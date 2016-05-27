@@ -10,7 +10,7 @@ test_that("radius is given in points", {
   dev.off()
 
   x <- read_xml(file)
-  node <- xml_find_one(x, ".//circle")
+  node <- xml_find_first(x, ".//circle")
 
   expect_equal(xml_attr(node, "r"), "33.75pt")
 })
@@ -23,7 +23,7 @@ test_that("check stroke and fill exist", {
   dev.off()
 
   x <- read_xml(file)
-  node <- xml_find_one(x, ".//circle")
+  node <- xml_find_first(x, ".//circle")
   expect_equal(xml_attr(node, "stroke"), "#FF0000")
   expect_equal(xml_attr(node, "fill"), "#0000FF")
 })
@@ -37,7 +37,7 @@ test_that("check alpha values", {
   dev.off()
 
   x <- read_xml(file)
-  node <- xml_find_one(x, ".//circle")
+  node <- xml_find_first(x, ".//circle")
   expect_equal(xml_attr(node, "stroke"), "#FF0000" )
   expect_equal(xml_attr(node, "stroke-opacity"), "0.5")
   expect_equal(xml_attr(node, "fill"), "#00FFFF")
@@ -52,7 +52,7 @@ test_that("check fill is set to none when necessary", {
   dev.off()
 
   x <- read_xml(file)
-  node <- xml_find_one(x, ".//circle")
+  node <- xml_find_first(x, ".//circle")
   expect_match(xml_attr(node, "fill"), "none")
 })
 

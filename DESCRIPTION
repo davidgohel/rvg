@@ -29,6 +29,8 @@ Suggests:
     testthat,
     covr,
     grid
+Remotes:
+    hadley/xml2
 URL: https://github.com/davidgohel/rvg
 BugReports: https://github.com/davidgohel/rvg/issues
 RoxygenNote: 5.0.1

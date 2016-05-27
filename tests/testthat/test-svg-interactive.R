@@ -31,7 +31,7 @@ test_that("attributes are written", {
   dev.off()
 
   doc <- read_xml(file)
-  script_node <- xml_find_one(doc, ".//script")
+  script_node <- xml_find_first(doc, ".//script")
   script_txt <-  xml_text(script_node)
   tip1 = "document\\.querySelectorAll\\('#svg_[0-9]+'\\)\\[0\\]\\.getElementById\\('[0-9]+'\\)\\.setAttribute\\('onclick','alert\\(1\\)'\\)"
   tip2 = "document\\.querySelectorAll\\('#svg_[0-9]+'\\)\\[0\\]\\.getElementById\\('[0-9]+'\\)\\.setAttribute\\('onclick','alert\\(2\\)'\\)"

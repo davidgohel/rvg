@@ -22,7 +22,7 @@ test_that("special characters are escaped", {
   dev.off()
 
   x <- read_xml(file)
-  expect_equal(xml_text(xml_find_one(x, ".//text")), "<&>")
+  expect_equal(xml_text(xml_find_first(x, ".//text")), "<&>")
 })
 
 test_that("utf-8 characters are preserved", {
@@ -35,7 +35,7 @@ test_that("utf-8 characters are preserved", {
   dev.off()
 
   x <- read_xml(file)
-  expect_equal(xml_text(xml_find_one(x, ".//text")), "\u00b5")
+  expect_equal(xml_text(xml_find_first(x, ".//text")), "\u00b5")
 })
 
 test_that("text color is written in fill attr", {
@@ -47,7 +47,7 @@ test_that("text color is written in fill attr", {
   dev.off()
 
   x <- read_xml(file)
-  expect_equal(xml_attr(xml_find_one(x, ".//text"), "fill"), "#113399")
+  expect_equal(xml_attr(xml_find_first(x, ".//text"), "fill"), "#113399")
 })
 
 test_that("default point size is 12", {
@@ -58,7 +58,7 @@ test_that("default point size is 12", {
   dev.off()
 
   x <- read_xml(file)
-  expect_equal(xml_attr(xml_find_one(x, ".//text"), "font-size"), "9.00pt")
+  expect_equal(xml_attr(xml_find_first(x, ".//text"), "font-size"), "9.00pt")
 })
 
 test_that("cex generates fractional font sizes", {
@@ -69,7 +69,7 @@ test_that("cex generates fractional font sizes", {
   dev.off()
 
   x <- read_xml(file)
-  expect_equal(xml_attr(xml_find_one(x, ".//text"), "font-size"), "0.90pt")
+  expect_equal(xml_attr(xml_find_first(x, ".//text"), "font-size"), "0.90pt")
 })
 
 test_that("font sets weight/style", {
