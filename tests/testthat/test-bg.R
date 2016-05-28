@@ -10,7 +10,7 @@ test_that("pptx background exists if background is not transparent", {
 
 
   doc <- read_xml(file)
-  solid_fill <- try( xml_find_first(doc, ".//p:sp/p:spPr/a:solidFill", ns = xml_ns( doc )), silent = FALSE )
+  solid_fill <- xml_find_first(doc, ".//p:sp/p:spPr/a:solidFill", ns = xml_ns( doc ))
   expect_is(object = solid_fill, class = "xml_node")
 
   color_node <- xml_find_first(doc, ".//p:sp/p:spPr/a:solidFill/a:srgbClr", ns = xml_ns( doc ))
@@ -42,8 +42,8 @@ test_that("pptx background does not exist if background is transparent", {
   dev.off()
 
   doc <- read_xml(file)
-  bg_node <- try( xml_find_first(doc, ".//p:sp", ns = xml_ns( doc )), silent = TRUE )
-  expect_true( inherits(bg_node, "try-error") )
+  bg_node <- xml_find_first(doc, ".//p:sp", ns = xml_ns( doc ))
+  expect_is(bg_node, class = "xml_missing")
 })
 
 
@@ -56,8 +56,8 @@ test_that("docx background exists if background is not transparent", {
 
 
   doc <- read_xml(file)
-  solid_fill <- try( xml_find_first(doc, ".//wps:wsp/wps:spPr/a:solidFill", ns = xml_ns( doc )), silent = FALSE )
-  expect_is(object = solid_fill, class = "xml_node")
+  solid_fill <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:solidFill", ns = xml_ns( doc ))
+  expect_is(solid_fill, class = "xml_node")
 
   color_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:solidFill/a:srgbClr", ns = xml_ns( doc ))
   color <- xml_attr(color_node, "val")
@@ -87,8 +87,8 @@ test_that("docx background does not exist if background is transparent", {
   dev.off()
 
   doc <- read_xml(file)
-  bg_node <- try( xml_find_first(doc, ".//wps:wsp", ns = xml_ns( doc )), silent = TRUE )
-  expect_true( inherits(bg_node, "try-error") )
+  bg_node <- xml_find_first(doc, ".//wps:wsp", ns = xml_ns( doc ))
+  expect_is(bg_node, class = "xml_missing")
 })
 
 
@@ -101,7 +101,7 @@ test_that("svg background exists if background is not transparent", {
   dev.off()
 
   doc <- read_xml(file)
-  bg_node <- try( xml_find_first(doc, ".//rect[@id]"), silent = FALSE )
+  bg_node <- xml_find_first(doc, ".//rect[@id]")
   expect_is(object = bg_node, class = "xml_node")
   expect_equal(object = xml_attr(bg_node, "fill"), expected = "#123456")
   expect_equal(object = xml_attr(bg_node, "fill-opacity"), expected = "1")
@@ -112,7 +112,7 @@ test_that("svg background exists if background is not transparent", {
   dev.off()
 
   doc <- read_xml(file)
-  bg_node <- try( xml_find_first(doc, ".//rect[@id]"), silent = FALSE )
+  bg_node <- xml_find_first(doc, ".//rect[@id]")
   expect_equal(object = xml_attr(bg_node, "fill-opacity"), expected = "0.6")
 })
 
@@ -125,8 +125,8 @@ test_that("svg background does not exist if background is transparent", {
   dev.off()
 
   doc <- read_xml(file)
-  bg_node <- try( xml_find_first(doc, ".//rect[@id]"), silent = TRUE )
-  expect_true( inherits(bg_node, "try-error") )
+  bg_node <- xml_find_first(doc, ".//rect[@id]")
+  expect_is(bg_node, class = "xml_missing")
 })
 
 

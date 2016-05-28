@@ -132,7 +132,7 @@ test_that("a symbol has width greater than 0", {
   strw <- strwidth(expression(symbol("\042")))
   dev.off()
 
-  expect_less_than(.Machine$double.eps, strw)
+  expect_lt(.Machine$double.eps, strw)
 })
 
 test_that("symbol font family is 'Symbol'", {

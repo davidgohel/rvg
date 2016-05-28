@@ -10,8 +10,8 @@ test_that("segments don't have fill", {
   dev.off()
 
   doc <- read_xml(file)
-  fill_node <- try(xml_find_first(doc, ".//wps:wsp/wps:spPr/a:solidFill", ns = xml_ns( doc ) ), silent = TRUE )
-  expect_true( inherits(fill_node, "try-error") )
+  fill_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:solidFill", ns = xml_ns( doc ) )
+  expect_is(fill_node, class = "xml_missing")
 })
 
 test_that("lines don't have fill", {
@@ -23,8 +23,8 @@ test_that("lines don't have fill", {
   dev.off()
 
   doc <- read_xml(file)
-  fill_node <- try(xml_find_first(doc, ".//wps:wsp/wps:spPr/a:solidFill", ns = xml_ns( doc ) ), silent = TRUE )
-  expect_true( inherits(fill_node, "try-error") )
+  fill_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:solidFill", ns = xml_ns( doc ) )
+  expect_is(fill_node, class = "xml_missing")
 })
 
 test_that("polygons do have fill", {
@@ -35,8 +35,8 @@ test_that("polygons do have fill", {
   dev.off()
 
   doc <- read_xml(file)
-  fill_node <- try(xml_find_first(doc, ".//wps:wsp/wps:spPr/a:solidFill", ns = xml_ns( doc ) ), silent = TRUE )
-  expect_false( inherits(fill_node, "try-error") )
+  fill_node <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:solidFill", ns = xml_ns( doc ) )
+  expect_is( fill_node, "xml_node")
 })
 
 test_that("polygons without border", {
@@ -49,12 +49,12 @@ test_that("polygons without border", {
   doc <- read_xml(file)
 
   # Have fill
-  fill_color <- try(xml_find_first(doc, ".//wps:wsp/wps:spPr/a:solidFill/a:srgbClr", ns = xml_ns( doc ) ), silent = TRUE )
+  fill_color <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:solidFill/a:srgbClr", ns = xml_ns( doc ) )
   expect_equal(xml_attr(fill_color, "val"), "FF0000")
 
   # Have no ln
-  line_color <- try( xml_find_first(doc, ".//wps:wsp/wps:spPr/a:ln", ns = xml_ns( doc )), silent = TRUE )
-  expect_true( inherits(line_color, "try-error") )
+  line_color <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:ln", ns = xml_ns( doc ) )
+  expect_is(line_color, class = "xml_missing")
 
 })
 
@@ -65,7 +65,7 @@ dash_array <- function(...) {
   dev.off()
 
   doc <- read_xml(file)
-  dash <- try(xml_find_first(doc, ".//wps:wsp/wps:spPr/a:ln/a:prstDash", ns = xml_ns( doc )), silent = TRUE )
+  dash <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:ln/a:prstDash", ns = xml_ns( doc ))
   dash
 }
 custom_dash_array <- function(...) {
@@ -104,8 +104,8 @@ test_that("line join shapes", {
   dev.off()
 
   doc <- read_xml(file)
-  join_shape <- try(xml_find_first(doc, ".//wps:wsp/wps:spPr/a:ln/a:round", ns = xml_ns( doc ) ), silent = TRUE )
-  expect_false( inherits(join_shape, "try-error") )
+  join_shape <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:ln/a:round", ns = xml_ns( doc ) )
+  expect_is(join_shape, class = "xml_node")
 
   file <- tempfile()
   dml_docx( file = file, bg = "transparent", standalone = TRUE )
@@ -114,8 +114,8 @@ test_that("line join shapes", {
   dev.off()
 
   doc <- read_xml(file)
-  join_shape <- try(xml_find_first(doc, ".//wps:wsp/wps:spPr/a:ln/a:miter", ns = xml_ns( doc ) ), silent = TRUE )
-  expect_false( inherits(join_shape, "try-error") )
+  join_shape <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:ln/a:miter", ns = xml_ns( doc ) )
+  expect_is(join_shape, class = "xml_node")
 
   file <- tempfile()
   dml_docx( file = file, bg = "transparent", standalone = TRUE )
@@ -124,6 +124,6 @@ test_that("line join shapes", {
   dev.off()
 
   doc <- read_xml(file)
-  join_shape <- try(xml_find_first(doc, ".//wps:wsp/wps:spPr/a:ln/a:bevel", ns = xml_ns( doc ) ), silent = TRUE )
-  expect_false( inherits(join_shape, "try-error") )
+  join_shape <- xml_find_first(doc, ".//wps:wsp/wps:spPr/a:ln/a:bevel", ns = xml_ns( doc ) )
+  expect_is( join_shape, "xml_node")
 })

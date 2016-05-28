@@ -128,10 +128,10 @@ test_that("font sets weight/style", {
   xpath_b <- ".//wps:wsp/wps:txbx/w:txbxContent/w:p/w:r/w:rPr/w:b"
   xpath_i <- ".//wps:wsp/wps:txbx/w:txbxContent/w:p/w:r/w:rPr/w:i"
 
-  selected_node <- try( xml_find_first(x, xpath_b, ns = xml_ns( x )), silent = TRUE)
-  expect_is(selected_node, "try-error")
-  selected_node <- try( xml_find_first(x, xpath_i, ns = xml_ns( x )), silent = TRUE)
-  expect_is(selected_node, "try-error")
+  selected_node <- xml_find_first(x, xpath_b, ns = xml_ns( x ))
+  expect_is(selected_node, "xml_missing")
+  selected_node <- xml_find_first(x, xpath_i, ns = xml_ns( x ))
+  expect_is(selected_node, "xml_missing")
 
   file <- tempfile()
   dml_docx( file = file, bg = "transparent" )
@@ -141,12 +141,10 @@ test_that("font sets weight/style", {
 
   x <- read_xml(file)
   ns <-  xml_ns( x )
-  selected_node <- try(
-    xml_find_first(x, xpath_b, ns = xml_ns( x )), silent = TRUE)
+  selected_node <- xml_find_first(x, xpath_b, ns = xml_ns( x ))
   expect_is(selected_node, "xml_node")
-  selected_node <- try(
-    xml_find_first(x, xpath_i, ns = xml_ns( x )), silent = TRUE)
-  expect_is(selected_node, "try-error")
+  selected_node <- xml_find_first(x, xpath_i, ns = xml_ns( x ))
+  expect_is(selected_node, "xml_missing")
 
   file <- tempfile()
   dml_docx( file = file, bg = "transparent" )
@@ -156,9 +154,9 @@ test_that("font sets weight/style", {
 
   x <- read_xml(file)
   ns <-  xml_ns( x )
-  selected_node <- try( xml_find_first(x, xpath_b, ns = xml_ns( x )), silent = TRUE)
-  expect_is(selected_node, "try-error")
-  selected_node <- try( xml_find_first(x, xpath_i, ns = xml_ns( x )), silent = TRUE)
+  selected_node <- xml_find_first(x, xpath_b, ns = xml_ns( x ))
+  expect_is(selected_node, "xml_missing")
+  selected_node <- xml_find_first(x, xpath_i, ns = xml_ns( x ))
   expect_is(selected_node, "xml_node")
 
   file <- tempfile()
@@ -169,9 +167,9 @@ test_that("font sets weight/style", {
 
   x <- read_xml(file)
   ns <-  xml_ns( x )
-  selected_node <- try( xml_find_first(x, xpath_b, ns = xml_ns( x )), silent = TRUE)
+  selected_node <- xml_find_first(x, xpath_b, ns = xml_ns( x ))
   expect_is(selected_node, "xml_node")
-  selected_node <- try( xml_find_first(x, xpath_i, ns = xml_ns( x )), silent = TRUE)
+  selected_node <- xml_find_first(x, xpath_i, ns = xml_ns( x ))
   expect_is(selected_node, "xml_node")
 })
 
@@ -206,7 +204,7 @@ test_that("a symbol has width greater than 0", {
   strw <- strwidth(expression(symbol("\042")))
   dev.off()
 
-  expect_less_than(.Machine$double.eps, strw)
+  expect_lt(.Machine$double.eps, strw)
 })
 
 test_that("symbol font family is 'Symbol'", {
