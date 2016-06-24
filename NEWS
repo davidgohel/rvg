@@ -1,3 +1,7 @@
+# rvg 1.0
+
+* adapt code to xml2 1.0 (use xml_find_first instead of deprecated xml_find_one)
+
 # rvg 0.9
 
 ## New features
