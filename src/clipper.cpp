@@ -355,6 +355,7 @@ void clipper::correct(){
 }
 
 bool clipper::has_pairneg(){
+  if( dout_.size() < 1 ) return 0;
   for( size_t i = 0 ; i < dout_.size() - 1; i++ ){
     if( Lout_.at(i) < 0 && Lout_.at(i)==Lout_.at(i+1) ){
       return 1;
