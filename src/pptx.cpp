@@ -49,20 +49,16 @@ public:
   std::string raster_prefix;
   int img_id;
 
-  std::string fontname_serif;
-  std::string fontname_sans;
-  std::string fontname_mono;
-  std::string fontname_symbol;
+  Rcpp::List system_aliases;
+  Rcpp::List user_aliases;
+
   bool editable;
   int standalone;
   XPtrCairoContext cc;
   clipper *clp;
 
   PPTX_dev(std::string filename_,
-           std::string fontname_serif_,
-           std::string fontname_sans_,
-           std::string fontname_mono_,
-           std::string fontname_symbol_,
+           Rcpp::List& aliases_,
            bool editable_, double offx_, double offy_ , int id_,
            std::string raster_prefix_,
            int next_rels_id_, int standalone_,
@@ -72,10 +68,8 @@ public:
 	    id(id_),
 	    offx(offx_), offy(offy_),
 	    raster_prefix(raster_prefix_), img_id(next_rels_id_),
-	    fontname_serif(fontname_serif_),
-	    fontname_sans(fontname_sans_),
-	    fontname_mono(fontname_mono_),
-	    fontname_symbol(fontname_symbol_),
+	    system_aliases(Rcpp::wrap(aliases_["system"])),
+	    user_aliases(Rcpp::wrap(aliases_["user"])),
 	    editable(editable_),
 	    standalone(standalone_),
       cc(gdtools::context_create()){
@@ -133,9 +127,7 @@ void write_t_pptx(pDevDesc dev, const char* text) {
 void write_text_body_pptx(pDevDesc dd, R_GE_gcontext *gc, const char* text, double hadj, double fontsize, double fontheight) {
   PPTX_dev *pptx_obj = (PPTX_dev *) dd->deviceSpecific;
   ppr a_ppr_(hadj, fontsize);
-  std::string fontname_ = fontname(gc->fontfamily, gc->fontface,
-    pptx_obj->fontname_serif, pptx_obj->fontname_sans,
-    pptx_obj->fontname_mono, pptx_obj->fontname_symbol);
+  std::string fontname_ = fontname(gc->fontfamily, gc->fontface, pptx_obj->system_aliases, pptx_obj->user_aliases);
 
   rpr rpr_(fontsize, is_italic(gc->fontface), is_bold(gc->fontface), gc->col, fontname_);
 
@@ -165,13 +157,11 @@ static void pptx_metric_info(int c, const pGEcontext gc, double* ascent,
     str[1] = '\0';
   }
 
-  std::string fn = fontname(gc->fontfamily, gc->fontface,
-           pptx_obj->fontname_serif, pptx_obj->fontname_sans,
-           pptx_obj->fontname_mono, pptx_obj->fontname_symbol);
-
-  gdtools::context_set_font(pptx_obj->cc, fn,
-    gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface));
+  std::string file = fontfile(gc->fontfamily, gc->fontface, pptx_obj->user_aliases);
+  std::string name = fontname(gc->fontfamily, gc->fontface, pptx_obj->system_aliases, pptx_obj->user_aliases);
+  gdtools::context_set_font(pptx_obj->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
   FontMetric fm = gdtools::context_extents(pptx_obj->cc, std::string(str));
+
   *ascent = fm.ascent;
   *descent = fm.descent;
   *width = fm.width;
@@ -198,12 +188,9 @@ static void pptx_close(pDevDesc dd) {
 static double pptx_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
 
-  std::string fn = fontname(gc->fontfamily, gc->fontface,
-                            pptx_obj->fontname_serif, pptx_obj->fontname_sans,
-                            pptx_obj->fontname_mono, pptx_obj->fontname_symbol);
-
-  gdtools::context_set_font(pptx_obj->cc, fn,
-                            gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface));
+  std::string file = fontfile(gc->fontfamily, gc->fontface, pptx_obj->user_aliases);
+  std::string name = fontname(gc->fontfamily, gc->fontface, pptx_obj->system_aliases, pptx_obj->user_aliases);
+  gdtools::context_set_font(pptx_obj->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
   FontMetric fm = gdtools::context_extents(pptx_obj->cc, std::string(str));
 
   return fm.width;
@@ -212,14 +199,10 @@ static double pptx_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
 
 static double pptx_strheight(const char *str, const pGEcontext gc, pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
-  std::string fn = fontname(gc->fontfamily, gc->fontface,
-                            pptx_obj->fontname_serif, pptx_obj->fontname_sans,
-                            pptx_obj->fontname_mono, pptx_obj->fontname_symbol);
-
-  gdtools::context_set_font(pptx_obj->cc, fn,
-                            gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface));
+  std::string file = fontfile(gc->fontfamily, gc->fontface, pptx_obj->user_aliases);
+  std::string name = fontname(gc->fontfamily, gc->fontface, pptx_obj->system_aliases, pptx_obj->user_aliases);
+  gdtools::context_set_font(pptx_obj->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
   FontMetric fm = gdtools::context_extents(pptx_obj->cc, std::string(str));
-  // Rprintf( "%s : ascent %.3f descent %.3f height %.3f width  %.3f\n", str, fm.ascent, fm.descent, fm.height, fm.width);
   return fm.height;
 }
 
@@ -527,10 +510,7 @@ static void pptx_new_page(const pGEcontext gc, pDevDesc dd) {
 pDevDesc pptx_driver_new(std::string filename, int bg, double width, double height,
                          double offx, double offy,
                         int pointsize,
-                        std::string fontname_serif,
-                        std::string fontname_sans,
-                        std::string fontname_mono,
-                        std::string fontname_symbol,
+                        Rcpp::List aliases,
                         bool editable, int id,
                         std::string raster_prefix,
                         int next_rels_id,
@@ -600,7 +580,7 @@ pDevDesc pptx_driver_new(std::string filename, int bg, double width, double heig
   dd->haveTransparentBg = 2;
 
   dd->deviceSpecific = new PPTX_dev(filename,
-    fontname_serif, fontname_sans, fontname_mono, fontname_symbol,
+                                    aliases,
     editable, offx*72, offy*72, id,
     raster_prefix,
     next_rels_id, standalone,
@@ -614,10 +594,7 @@ pDevDesc pptx_driver_new(std::string filename, int bg, double width, double heig
 bool PPTX_(std::string file, std::string bg_, double width, double height,
     double offx, double offy,
     int pointsize,
-    std::string fontname_serif,
-    std::string fontname_sans,
-    std::string fontname_mono,
-    std::string fontname_symbol,
+    Rcpp::List aliases,
     bool editable, int id,
     std::string raster_prefix,
     int next_rels_id, int standalone) {
@@ -628,7 +605,7 @@ bool PPTX_(std::string file, std::string bg_, double width, double height,
   R_CheckDeviceAvailable();
   BEGIN_SUSPEND_INTERRUPTS {
     pDevDesc dev = pptx_driver_new(file, bg, width, height, offx, offy, pointsize,
-      fontname_serif, fontname_sans, fontname_mono, fontname_symbol,
+                                   aliases,
       editable,
       id,
       raster_prefix,

@@ -31,19 +31,16 @@
 dml_xlsx <- function(file = "Rplots.dml", width = 6, height = 6,
                      offx = 1, offy = 1,
                      bg = "white",
-                     fontname_serif = "Times New Roman",
-                     fontname_sans = "Calibri",
-                     fontname_mono = "Courier New",
-                     fontname_symbol = "Symbol",
+                     system_fonts = list(), user_fonts = list(),
                      pointsize = 12, editable = TRUE,
                      id = 1L,
                      next_rels_id = 1L,
                      raster_prefix = "raster_", standalone = TRUE ) {
 
-    invisible(XLSX_(file, bg, width, height, offx = offx, offy = offy,
-              pointsize = pointsize, fontname_serif = fontname_serif,
-              fontname_sans = fontname_sans, fontname_mono = fontname_mono,
-              fontname_symbol = fontname_symbol,
+  aliases <- validate_aliases(system_fonts, user_fonts)
+  invisible(XLSX_(file, bg, width, height, offx = offx, offy = offy,
+              pointsize = pointsize,
+              aliases,
               editable = editable, id = id, raster_prefix = raster_prefix,
               next_rels_id = next_rels_id, standalone = standalone
             ))

@@ -47,20 +47,16 @@ public:
   std::string raster_prefix;
   int img_id;
 
-  std::string fontname_serif;
-  std::string fontname_sans;
-  std::string fontname_mono;
-  std::string fontname_symbol;
+  Rcpp::List system_aliases;
+  Rcpp::List user_aliases;
+
   bool editable;
   int standalone;
   XPtrCairoContext cc;
   clipper *clp;
 
   DOCX_dev(std::string filename_,
-           std::string fontname_serif_,
-           std::string fontname_sans_,
-           std::string fontname_mono_,
-           std::string fontname_symbol_,
+           Rcpp::List& aliases_,
            bool editable_, int id_,
            std::string raster_prefix_,
            int next_rels_id_, int standalone_,
@@ -69,10 +65,8 @@ public:
       pageno(0),
 	    id(id_),
 	    raster_prefix(raster_prefix_), img_id(next_rels_id_),
-	    fontname_serif(fontname_serif_),
-	    fontname_sans(fontname_sans_),
-	    fontname_mono(fontname_mono_),
-	    fontname_symbol(fontname_symbol_),
+	    system_aliases(Rcpp::wrap(aliases_["system"])),
+	    user_aliases(Rcpp::wrap(aliases_["user"])),
 	    editable(editable_),
 	    standalone(standalone_),
       cc(gdtools::context_create()){
@@ -130,10 +124,7 @@ void write_t_docx(pDevDesc dev, const char* text) {
 void write_text_body_docx(pDevDesc dd, R_GE_gcontext *gc, const char* text, double hadj, double fontsize, double fontheight) {
   DOCX_dev *docx_obj = (DOCX_dev *) dd->deviceSpecific;
   ppr a_ppr_(hadj, fontsize);
-  std::string fontname_ = fontname(gc->fontfamily, gc->fontface,
-    docx_obj->fontname_serif, docx_obj->fontname_sans,
-    docx_obj->fontname_mono, docx_obj->fontname_symbol);
-
+  std::string fontname_ = fontname(gc->fontfamily, gc->fontface, docx_obj->system_aliases, docx_obj->user_aliases);
   rpr rpr_(fontsize, is_italic(gc->fontface), is_bold(gc->fontface), gc->col, fontname_);
 
   fputs("<wps:txbx>", docx_obj->file );
@@ -167,13 +158,11 @@ static void docx_metric_info(int c, const pGEcontext gc, double* ascent,
     str[1] = '\0';
   }
 
-  std::string fn = fontname(gc->fontfamily, gc->fontface,
-           docx_obj->fontname_serif, docx_obj->fontname_sans,
-           docx_obj->fontname_mono, docx_obj->fontname_symbol);
-
-  gdtools::context_set_font(docx_obj->cc, fn,
-    gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface));
+  std::string file = fontfile(gc->fontfamily, gc->fontface, docx_obj->user_aliases);
+  std::string name = fontname(gc->fontfamily, gc->fontface, docx_obj->system_aliases, docx_obj->user_aliases);
+  gdtools::context_set_font(docx_obj->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
   FontMetric fm = gdtools::context_extents(docx_obj->cc, std::string(str));
+
   *ascent = fm.ascent;
   *descent = fm.descent;
   *width = fm.width;
@@ -199,13 +188,9 @@ static void docx_close(pDevDesc dd) {
 static double docx_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
   DOCX_dev *docx_obj = (DOCX_dev*) dd->deviceSpecific;
 
-  std::string fn = fontname(
-    gc->fontfamily, gc->fontface,
-    docx_obj->fontname_serif, docx_obj->fontname_sans,
-    docx_obj->fontname_mono, docx_obj->fontname_symbol);
-
-  gdtools::context_set_font(docx_obj->cc, fn,
-                            gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface));
+  std::string file = fontfile(gc->fontfamily, gc->fontface, docx_obj->user_aliases);
+  std::string name = fontname(gc->fontfamily, gc->fontface, docx_obj->system_aliases, docx_obj->user_aliases);
+  gdtools::context_set_font(docx_obj->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
   FontMetric fm = gdtools::context_extents(docx_obj->cc, std::string(str));
 
   return fm.width;
@@ -214,12 +199,9 @@ static double docx_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
 
 static double docx_strheight(const char *str, const pGEcontext gc, pDevDesc dd) {
   DOCX_dev *docx_obj = (DOCX_dev*) dd->deviceSpecific;
-  std::string fn = fontname(gc->fontfamily, gc->fontface,
-                            docx_obj->fontname_serif, docx_obj->fontname_sans,
-                            docx_obj->fontname_mono, docx_obj->fontname_symbol);
-
-  gdtools::context_set_font(docx_obj->cc, fn,
-                            gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface));
+  std::string file = fontfile(gc->fontfamily, gc->fontface, docx_obj->user_aliases);
+  std::string name = fontname(gc->fontfamily, gc->fontface, docx_obj->system_aliases, docx_obj->user_aliases);
+  gdtools::context_set_font(docx_obj->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
   FontMetric fm = gdtools::context_extents(docx_obj->cc, std::string(str));
   return fm.height;
 }
@@ -394,8 +376,8 @@ static void docx_text(double x, double y, const char *str, double rot,
   DOCX_dev *docx_obj = (DOCX_dev*) dd->deviceSpecific;
 
   double fs = gc->cex * gc->ps;
-  double w = docx_strwidth(str, gc, dd)*1.02;
-  double h = docx_strheight(str, gc, dd)*1.45;
+  double w = docx_strwidth(str, gc, dd);
+  double h = docx_strheight(str, gc, dd);
   if( fs*2 < 1.0 ) return;
 
   double corrected_offx = translate_rotate_x(x, y, rot, h, w, hadj) ;
@@ -510,10 +492,7 @@ static void docx_new_page(const pGEcontext gc, pDevDesc dd) {
 
 pDevDesc docx_driver_new(std::string filename, int bg, double width, double height,
                         int pointsize,
-                        std::string fontname_serif,
-                        std::string fontname_sans,
-                        std::string fontname_mono,
-                        std::string fontname_symbol,
+                        Rcpp::List aliases,
                         bool editable, int id,
                         std::string raster_prefix,
                         int next_rels_id, int standalone) {
@@ -582,7 +561,7 @@ pDevDesc docx_driver_new(std::string filename, int bg, double width, double heig
   dd->haveTransparentBg = 2;
 
   dd->deviceSpecific = new DOCX_dev(filename,
-    fontname_serif, fontname_sans, fontname_mono, fontname_symbol,
+                                    aliases,
     editable, id,
     raster_prefix,
     next_rels_id, standalone,
@@ -593,10 +572,7 @@ pDevDesc docx_driver_new(std::string filename, int bg, double width, double heig
 // [[Rcpp::export]]
 bool DOCX_(std::string file, std::string bg_, double width, double height,
     int pointsize,
-    std::string fontname_serif,
-    std::string fontname_sans,
-    std::string fontname_mono,
-    std::string fontname_symbol,
+    Rcpp::List aliases,
     bool editable, int id,
     std::string raster_prefix,
     int next_rels_id, int standalone) {
@@ -607,12 +583,8 @@ bool DOCX_(std::string file, std::string bg_, double width, double height,
   R_CheckDeviceAvailable();
   BEGIN_SUSPEND_INTERRUPTS {
     pDevDesc dev = docx_driver_new(file, bg, width, height, pointsize,
-      fontname_serif, fontname_sans, fontname_mono, fontname_symbol,
-      editable,
-      id,
-      raster_prefix,
-      next_rels_id,
-      standalone);
+                                   aliases,
+                                   editable, id, raster_prefix, next_rels_id, standalone);
     if (dev == NULL)
       Rcpp::stop("Failed to start docx device");
 

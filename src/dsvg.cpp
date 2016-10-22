@@ -41,19 +41,15 @@ public:
   int tracer_on;
   int tracer_is_init;
 
-  std::string fontname_serif;
-  std::string fontname_sans;
-  std::string fontname_mono;
-  std::string fontname_symbol;
+  Rcpp::List system_aliases;
+  Rcpp::List user_aliases;
 
   XPtrCairoContext cc;
 
   DSVG_dev(std::string filename_, bool standalone_, int canvas_id_,
            int bg_,
-           std::string fontname_serif_,
-           std::string fontname_sans_,
-           std::string fontname_mono_,
-           std::string fontname_symbol_, double width_, double height_ ):
+           Rcpp::List& aliases_,
+           double width_, double height_ ):
       filename(filename_),
       pageno(0),
 	    id(-1),
@@ -62,10 +58,8 @@ public:
       standalone(standalone_),
       tracer_on(0),
       tracer_is_init(0),
-      fontname_serif(fontname_serif_),
-      fontname_sans(fontname_sans_),
-      fontname_mono(fontname_mono_),
-      fontname_symbol(fontname_symbol_),
+      system_aliases(Rcpp::wrap(aliases_["system"])),
+      user_aliases(Rcpp::wrap(aliases_["user"])),
       cc(gdtools::context_create() ) {
     file = fopen(R_ExpandFileName(filename.c_str()), "w");
     clipleft = 0.0;
@@ -129,14 +123,9 @@ static void dsvg_metric_info(int c, const pGEcontext gc, double* ascent,
     str[0] = (char) c;
     str[1] = '\0';
   }
-
-  std::string fn = fontname(
-    gc->fontfamily, gc->fontface,
-    svgd->fontname_serif, svgd->fontname_sans,
-    svgd->fontname_mono, svgd->fontname_symbol);
-
-  gdtools::context_set_font(svgd->cc, fn,
-    gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface));
+  std::string file = fontfile(gc->fontfamily, gc->fontface, svgd->user_aliases);
+  std::string name = fontname(gc->fontfamily, gc->fontface, svgd->system_aliases, svgd->user_aliases);
+  gdtools::context_set_font(svgd->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
   FontMetric fm = gdtools::context_extents(svgd->cc, std::string(str));
 
   *ascent = fm.ascent;
@@ -273,15 +262,10 @@ void dsvg_path(double *x, double *y,
 static double dsvg_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
   DSVG_dev *svgd = (DSVG_dev*) dd->deviceSpecific;
 
-  std::string fn = fontname(
-    gc->fontfamily, gc->fontface,
-    svgd->fontname_serif, svgd->fontname_sans,
-    svgd->fontname_mono, svgd->fontname_symbol);
-
-  gdtools::context_set_font(svgd->cc, fn,
-    gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface));
+  std::string file = fontfile(gc->fontfamily, gc->fontface, svgd->user_aliases);
+  std::string name = fontname(gc->fontfamily, gc->fontface, svgd->system_aliases, svgd->user_aliases);
+  gdtools::context_set_font(svgd->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
   FontMetric fm = gdtools::context_extents(svgd->cc, std::string(str));
-
   return fm.width;
 }
 
@@ -347,10 +331,7 @@ static void dsvg_text(double x, double y, const char *str, double rot,
     fprintf(svgd->file, "%s", fill_.svg_fill_attr().c_str());
   } // black
 
-  std::string font = fontname(
-    gc->fontfamily, gc->fontface,
-    svgd->fontname_serif, svgd->fontname_sans,
-    svgd->fontname_mono, svgd->fontname_symbol);
+  std::string font = fontname(gc->fontfamily, gc->fontface, svgd->system_aliases, svgd->user_aliases);
 
   fprintf(svgd->file, " font-family='%s'", font.c_str());
 
@@ -459,10 +440,7 @@ static void dsvg_new_page(const pGEcontext gc, pDevDesc dd) {
 
 pDevDesc dsvg_driver_new(std::string filename, int bg, double width,
                         double height, int pointsize, bool standalone, int canvas_id,
-                        std::string fontname_serif,
-                        std::string fontname_sans,
-                        std::string fontname_mono,
-                        std::string fontname_symbol) {
+                        Rcpp::List aliases) {
 
   pDevDesc dd = (DevDesc*) calloc(1, sizeof(DevDesc));
   if (dd == NULL)
@@ -528,18 +506,14 @@ pDevDesc dsvg_driver_new(std::string filename, int bg, double width,
   dd->haveTransparentBg = 2;
 
   dd->deviceSpecific = new DSVG_dev(filename, standalone, canvas_id, bg,
-                                  fontname_serif, fontname_sans, fontname_mono, fontname_symbol,
+                                    aliases,
                                   width * 72, height * 72);
   return dd;
 }
 
 // [[Rcpp::export]]
 bool DSVG_(std::string file, double width, double height, std::string bg,
-             int pointsize, bool standalone, int canvas_id,
-             std::string fontname_serif,
-             std::string fontname_sans,
-             std::string fontname_mono,
-             std::string fontname_symbol) {
+             int pointsize, bool standalone, int canvas_id, Rcpp::List aliases) {
 
   int bg_ = R_GE_str2col(bg.c_str());
 
@@ -547,7 +521,7 @@ bool DSVG_(std::string file, double width, double height, std::string bg,
   R_CheckDeviceAvailable();
   BEGIN_SUSPEND_INTERRUPTS {
     pDevDesc dev = dsvg_driver_new(file, bg_, width, height, pointsize, standalone, canvas_id,
-                                   fontname_serif, fontname_sans, fontname_mono, fontname_symbol);
+                                   aliases);
     if (dev == NULL)
       Rcpp::stop("Failed to start SVG2 device");
 

@@ -5,9 +5,8 @@
 \title{DrawingML graphic device for Microsoft Word}
 \usage{
 dml_docx(file = "Rplots.dml", width = 6, height = 6, bg = "white",
-  fontname_serif = "Times New Roman", fontname_sans = "Calibri",
-  fontname_mono = "Courier New", fontname_symbol = "Symbol",
-  pointsize = 12, editable = TRUE, id = 1L, next_rels_id = 1L,
+  system_fonts = list(), user_fonts = list(), pointsize = 12,
+  editable = TRUE, id = 1L, next_rels_id = 1L,
   raster_prefix = "raster_", standalone = TRUE)
 }
 \arguments{
@@ -16,10 +15,6 @@ dml_docx(file = "Rplots.dml", width = 6, height = 6, bg = "white",
 \item{height, width}{Height and width in inches.}
 
 \item{bg}{Default background color for the plot (defaults to "white").}
-
-\item{fontname_serif, fontname_sans, fontname_mono, fontname_symbol}{font
-names for font faces.
-Used fonts should be available in the operating system.}
 
 \item{pointsize}{default point size.}
 
@@ -39,6 +34,10 @@ graphical device.}
 
 \item{standalone}{produce a standalone drawingml file? If \code{FALSE}, omits
 xml header and namespaces.}
+
+\item{fontname_serif, fontname_sans, fontname_mono, fontname_symbol}{font
+names for font faces.
+Used fonts should be available in the operating system.}
 }
 \description{
 Graphics devices for Microsoft Word DrawingML format.

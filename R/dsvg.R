@@ -29,18 +29,12 @@
 #' @export
 dsvg <- function(file = "Rplots.svg", width = 6, height = 6, bg = "white",
                 pointsize = 12, standalone = TRUE, canvas_id = 1,
-                fontname_serif = "Times New Roman",
-                fontname_sans = "Calibri",
-                fontname_mono = "Courier New",
-                fontname_symbol = "Symbol" ) {
+                system_fonts = list(), user_fonts = list() ) {
 
+  aliases <- validate_aliases(system_fonts, user_fonts)
 
   invisible(DSVG_(file=file, width=width, height=height, bg=bg, pointsize=pointsize, standalone=standalone,
-                  canvas_id=canvas_id,
-                  fontname_serif = fontname_serif,
-                  fontname_sans = fontname_sans,
-                  fontname_mono = fontname_mono,
-                  fontname_symbol = fontname_symbol)
+                  canvas_id=canvas_id, aliases)
             )
 }
 

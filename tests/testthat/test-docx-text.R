@@ -178,8 +178,9 @@ test_that("font sets weight/style", {
 test_that("font sets weight/style", {
   file <- tempfile()
   dml_docx( file = file, bg = "transparent",
-            fontname_serif = "Times New Roman", fontname_sans = "Arial",
-            fontname_mono = "Courier New")
+            system_fonts = list(sans="Arial", serif = "Times New Roman",
+                                mono = "Courier New", symbol = "DejaVu Math TeX Gyre")
+  )
   plot.new()
   text(0.5, 0.1, "a", family = "serif")
   text(0.5, 0.5, "a", family = "sans")
@@ -199,18 +200,18 @@ test_that("font sets weight/style", {
 test_that("a symbol has width greater than 0", {
   file <- tempfile()
   dml_docx( file = file, bg = "transparent",
-            fontname_symbol = "Symbol")
+            system_fonts = list(symbol = "DejaVu Math TeX Gyre"))
   plot(c(0,2), c(0,2), type = "n")
   strw <- strwidth(expression(symbol("\042")))
   dev.off()
 
-  expect_lt(.Machine$double.eps, strw)
+  expect_gt(strw, 0)
 })
 
 test_that("symbol font family is 'Symbol'", {
   file <- tempfile()
   dml_docx( file = file, bg = "transparent",
-            fontname_symbol = "Symbol")
+            system_fonts = list(symbol = "DejaVu Math TeX Gyre"))
   plot(c(0,2), c(0,2), type = "n", axes = FALSE, xlab = "", ylab = "")
   text(1, 1, expression(symbol("\042")))
   dev.off()
@@ -219,7 +220,7 @@ test_that("symbol font family is 'Symbol'", {
   ns <-  xml_ns( x )
   xpath_ <- ".//wps:wsp/wps:txbx/w:txbxContent/w:p/w:r/w:rPr/w:rFonts"
   font_node <- xml_find_first(x, xpath_, ns = xml_ns( x ))
-  expect_equal(xml_attr(font_node, "ascii"), "Symbol")
-  expect_equal(xml_attr(font_node, "hAnsi"), "Symbol")
-  expect_equal(xml_attr(font_node, "cs"), "Symbol")
+  expect_equal(xml_attr(font_node, "ascii"), "DejaVu Math TeX Gyre")
+  expect_equal(xml_attr(font_node, "hAnsi"), "DejaVu Math TeX Gyre")
+  expect_equal(xml_attr(font_node, "cs"), "DejaVu Math TeX Gyre")
 })

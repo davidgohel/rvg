@@ -88,8 +88,8 @@ test_that("font sets weight/style", {
 test_that("font sets weight/style", {
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, bg = "transparent",
-        fontname_serif = "Times New Roman", fontname_sans = "Arial",
-        fontname_mono = "Courier New")
+        system_fonts = list(sans="Arial", serif = "Times New Roman",
+                            mono = "Courier New", symbol = "DejaVu Math TeX Gyre"))
   plot.new()
   text(0.5, 0.1, "a", family = "serif")
   text(0.5, 0.5, "a", family = "sans")
@@ -107,18 +107,19 @@ test_that("a symbol has width greater than 0", {
   plot(c(0,2), c(0,2), type = "n")
   strw <- strwidth(expression(symbol("\042")))
   dev.off()
-  expect_lt(.Machine$double.eps, strw)
+  expect_gt(strw, 0)
 })
 
 test_that("symbol font family is 'symbol'", {
   file <- tempfile(fileext = ".svg")
-  dsvg( file = file, standalone = FALSE, bg = "transparent", fontname_symbol = "Symbol")
+  dsvg( file = file, standalone = FALSE, bg = "transparent",
+        system_fonts = list(symbol = "DejaVu Math TeX Gyre"))
   plot(c(0,2), c(0,2), type = "n", axes = FALSE, xlab = "", ylab = "")
   text(1, 1, expression(symbol("\042")))
   dev.off()
   x <- read_xml(file)
 
   text <- xml_find_all(x, ".//text")
-  expect_equal(xml_attr(text, "font-family"), c("Symbol"))
+  expect_equal(xml_attr(text, "font-family"), c("DejaVu Math TeX Gyre"))
 })
 
