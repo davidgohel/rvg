@@ -108,7 +108,7 @@ test_that("font sets weight/style", {
 test_that("font sets weight/style", {
   file <- tempfile()
   dml_xlsx( file = file, bg = "transparent",
-            system_fonts = list(sans="Arial", serif = "Times New Roman",
+            fonts = list(sans="Arial", serif = "Times New Roman",
                                 mono = "Courier New", symbol = "DejaVu Math TeX Gyre"))
   plot.new()
   text(0.5, 0.1, "a", family = "serif")
@@ -127,7 +127,7 @@ test_that("font sets weight/style", {
 test_that("a symbol has width greater than 0", {
   file <- tempfile()
   dml_xlsx( file = file, bg = "transparent",
-            system_fonts = list(symbol = "DejaVu Math TeX Gyre"))
+            fonts = list(symbol = "DejaVu Math TeX Gyre"))
   plot(c(0,2), c(0,2), type = "n")
   strw <- strwidth(expression(symbol("\042")))
   dev.off()
@@ -138,7 +138,7 @@ test_that("a symbol has width greater than 0", {
 test_that("symbol font family is 'Symbol'", {
   file <- tempfile()
   dml_xlsx( file = file, bg = "transparent",
-            system_fonts = list(symbol = "DejaVu Math TeX Gyre"))
+            fonts = list(symbol = "DejaVu Math TeX Gyre"))
   plot(c(0,2), c(0,2), type = "n", axes = FALSE, xlab = "", ylab = "")
   text(1, 1, expression(symbol("\042")))
   dev.off()

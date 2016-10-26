@@ -6,9 +6,10 @@
 #' @param file DrawingML file.
 #' @param height,width Height and width in inches.
 #' @param bg Default background color for the plot (defaults to "white").
-#' @param fontname_serif,fontname_sans,fontname_mono,fontname_symbol font
-#' names for font faces.
-#' Used fonts should be available in the operating system.
+#' @param fonts Named list of font names to be aliased with
+#'   fonts installed on your system. If unspecified, the R default
+#'   families \code{sans}, \code{serif}, \code{mono} and \code{symbol}
+#'   are aliased to the family returned by \code{\link[gdtools]{match_family}()}.
 #' @param pointsize default point size.
 #' @param editable should vector graphics elements (points, text, etc.)
 #' be editable.
@@ -31,15 +32,17 @@
 #' @export
 dml_docx <- function(file = "Rplots.dml", width = 6, height = 6,
                      bg = "white",
-                     system_fonts = list(), user_fonts = list(),
+                     fonts = list(),
                      pointsize = 12, editable = TRUE,
                      id = 1L,
                      next_rels_id = 1L,
                      raster_prefix = "raster_", standalone = TRUE ) {
 
-  aliases <- validate_aliases(system_fonts, user_fonts)
+  system_fonts <- validate_fonts( fonts )
+
   invisible(DOCX_(file, bg, width, height,
-                  pointsize = pointsize, aliases,
+                  pointsize = pointsize,
+                  aliases = list(system = system_fonts, user = list()),
                   editable = editable, id = id, raster_prefix = raster_prefix,
                   next_rels_id = next_rels_id, standalone = standalone
   ))
