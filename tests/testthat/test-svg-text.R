@@ -115,17 +115,3 @@ test_that("a symbol has width greater than 0", {
   expect_gt(strw, 0)
 })
 
-test_that("symbol font family", {
-  symbol_font <- gdtools::match_family("Symbol")
-  file <- tempfile(fileext = ".svg")
-  dsvg( file = file, standalone = FALSE, bg = "transparent",
-        fonts = list(symbol = "Symbol"))
-  plot(c(0,2), c(0,2), type = "n", axes = FALSE, xlab = "", ylab = "")
-  text(1, 1, expression(symbol("\042")))
-  dev.off()
-  x <- read_xml(file)
-
-  text <- xml_find_all(x, ".//text")
-  expect_equal(xml_attr(text, "font-family"), symbol_font)
-})
-

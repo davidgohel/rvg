@@ -213,20 +213,3 @@ test_that("a symbol has width greater than 0", {
   expect_gt(strw, 0)
 })
 
-test_that("symbol font family", {
-
-  symbol_font <- gdtools::match_family("Symbol")
-  file <- tempfile()
-  dml_docx( file = file, bg = "transparent")
-  plot(c(0,2), c(0,2), type = "n", axes = FALSE, xlab = "", ylab = "")
-  text(1, 1, expression(symbol("\042")))
-  dev.off()
-
-  x <- read_xml(file)
-  ns <-  xml_ns( x )
-  xpath_ <- ".//wps:wsp/wps:txbx/w:txbxContent/w:p/w:r/w:rPr/w:rFonts"
-  font_node <- xml_find_first(x, xpath_, ns = xml_ns( x ))
-  expect_equal(xml_attr(font_node, "ascii"), symbol_font)
-  expect_equal(xml_attr(font_node, "hAnsi"), symbol_font)
-  expect_equal(xml_attr(font_node, "cs"), symbol_font)
-})
