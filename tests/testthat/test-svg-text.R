@@ -107,7 +107,6 @@ test_that("font sets weight/style", {
 })
 
 test_that("a symbol has width greater than 0", {
-  skip_if_not(font_family_exists("Symbol"))
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, bg = "transparent")
   plot(c(0,2), c(0,2), type = "n")
@@ -116,8 +115,8 @@ test_that("a symbol has width greater than 0", {
   expect_gt(strw, 0)
 })
 
-test_that("symbol font family is 'symbol'", {
-  skip_if_not(font_family_exists("Symbol"))
+test_that("symbol font family", {
+  symbol_font <- gdtools::match_family("Symbol")
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, bg = "transparent",
         fonts = list(symbol = "Symbol"))
@@ -127,6 +126,6 @@ test_that("symbol font family is 'symbol'", {
   x <- read_xml(file)
 
   text <- xml_find_all(x, ".//text")
-  expect_equal(xml_attr(text, "font-family"), c("Symbol"))
+  expect_equal(xml_attr(text, "font-family"), symbol_font)
 })
 

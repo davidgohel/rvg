@@ -204,10 +204,8 @@ test_that("font sets weight/style", {
 })
 
 test_that("a symbol has width greater than 0", {
-  skip_if_not(font_family_exists("Symbol"))
   file <- tempfile()
-  dml_docx( file = file, bg = "transparent",
-            fonts = list(symbol = "Symbol"))
+  dml_docx( file = file, bg = "transparent" )
   plot(c(0,2), c(0,2), type = "n")
   strw <- strwidth(expression(symbol("\042")))
   dev.off()
@@ -215,8 +213,9 @@ test_that("a symbol has width greater than 0", {
   expect_gt(strw, 0)
 })
 
-test_that("symbol font family is 'Symbol'", {
-  skip_if_not(font_family_exists("Symbol"))
+test_that("symbol font family", {
+
+  symbol_font <- gdtools::match_family("Symbol")
   file <- tempfile()
   dml_docx( file = file, bg = "transparent")
   plot(c(0,2), c(0,2), type = "n", axes = FALSE, xlab = "", ylab = "")
@@ -227,7 +226,7 @@ test_that("symbol font family is 'Symbol'", {
   ns <-  xml_ns( x )
   xpath_ <- ".//wps:wsp/wps:txbx/w:txbxContent/w:p/w:r/w:rPr/w:rFonts"
   font_node <- xml_find_first(x, xpath_, ns = xml_ns( x ))
-  expect_equal(xml_attr(font_node, "ascii"), "Symbol")
-  expect_equal(xml_attr(font_node, "hAnsi"), "Symbol")
-  expect_equal(xml_attr(font_node, "cs"), "Symbol")
+  expect_equal(xml_attr(font_node, "ascii"), symbol_font)
+  expect_equal(xml_attr(font_node, "hAnsi"), symbol_font)
+  expect_equal(xml_attr(font_node, "cs"), symbol_font)
 })
