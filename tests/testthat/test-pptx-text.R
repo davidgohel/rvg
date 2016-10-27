@@ -109,7 +109,7 @@ test_that("font sets weight/style", {
   file <- tempfile()
   dml_pptx( file = file, bg = "transparent",
             fonts = list(sans="Arial", serif = "Times New Roman",
-                                mono = "Courier New", symbol = "DejaVu Math TeX Gyre"))
+                                mono = "Courier New", symbol = "Symbol"))
   plot.new()
   text(0.5, 0.1, "a", family = "serif")
   text(0.5, 0.5, "a", family = "sans")
@@ -127,7 +127,7 @@ test_that("font sets weight/style", {
 test_that("a symbol has width greater than 0", {
   file <- tempfile()
   dml_pptx( file = file, bg = "transparent",
-            fonts = list(symbol = "DejaVu Math TeX Gyre"))
+            fonts = list(symbol = "Symbol"))
   plot(c(0,2), c(0,2), type = "n")
   strw <- strwidth(expression(symbol("\042")))
   dev.off()
@@ -138,7 +138,7 @@ test_that("a symbol has width greater than 0", {
 test_that("symbol font family is 'Symbol'", {
   file <- tempfile()
   dml_pptx( file = file, bg = "transparent",
-            fonts = list(symbol = "DejaVu Math TeX Gyre"))
+            fonts = list(symbol = "Symbol"))
   plot(c(0,2), c(0,2), type = "n", axes = FALSE, xlab = "", ylab = "")
   text(1, 1, expression(symbol("\042")))
   dev.off()
@@ -147,6 +147,6 @@ test_that("symbol font family is 'Symbol'", {
   ns <-  xml_ns( x )
   rPr_latin <- xml_find_first(x, ".//p:sp/p:txBody/a:p/a:r/a:rPr/a:latin", ns = ns )
   rPr_cs <- xml_find_first(x, ".//p:sp/p:txBody/a:p/a:r/a:rPr/a:cs", ns = ns )
-  expect_equal(xml_attr(rPr_latin, "typeface"), c("DejaVu Math TeX Gyre"))
-  expect_equal(xml_attr(rPr_cs, "typeface"), c("DejaVu Math TeX Gyre"))
+  expect_equal(xml_attr(rPr_latin, "typeface"), c("Symbol"))
+  expect_equal(xml_attr(rPr_cs, "typeface"), c("Symbol"))
 })
