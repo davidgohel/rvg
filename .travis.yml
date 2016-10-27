@@ -1,7 +1,10 @@
 language: r
 
-r_packages:
-- covr
+cache: packages
+
+warnings_are_errors: false
+
+r_github_packages: davidgohel/gdtools
 
 after_success:
   - Rscript -e 'covr::codecov()'
