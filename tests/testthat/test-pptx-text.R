@@ -1,5 +1,6 @@
 context("PPTX text")
 library(xml2)
+library(gdtools)
 
 test_that("text can be found", {
   file <- tempfile()
@@ -106,10 +107,14 @@ test_that("font sets weight/style", {
 
 
 test_that("font sets weight/style", {
+  skip_if_not(font_family_exists("Arial"))
+  skip_if_not(font_family_exists("Times New Roman"))
+  skip_if_not(font_family_exists("Courier New"))
+
   file <- tempfile()
   dml_pptx( file = file, bg = "transparent",
             fonts = list(sans="Arial", serif = "Times New Roman",
-                                mono = "Courier New", symbol = "Symbol"))
+                                mono = "Courier New"))
   plot.new()
   text(0.5, 0.1, "a", family = "serif")
   text(0.5, 0.5, "a", family = "sans")
@@ -125,6 +130,7 @@ test_that("font sets weight/style", {
 })
 
 test_that("a symbol has width greater than 0", {
+  skip_if_not(font_family_exists("Symbol"))
   file <- tempfile()
   dml_pptx( file = file, bg = "transparent",
             fonts = list(symbol = "Symbol"))
@@ -136,6 +142,7 @@ test_that("a symbol has width greater than 0", {
 })
 
 test_that("symbol font family is 'Symbol'", {
+  skip_if_not(font_family_exists("Symbol"))
   file <- tempfile()
   dml_pptx( file = file, bg = "transparent",
             fonts = list(symbol = "Symbol"))

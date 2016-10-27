@@ -1,5 +1,6 @@
 context("dsvg text")
 library(xml2)
+library(gdtools)
 
 test_that("cex affects strwidth", {
 
@@ -86,10 +87,14 @@ test_that("font sets weight/style", {
 })
 
 test_that("font sets weight/style", {
+  skip_if_not(font_family_exists("Arial"))
+  skip_if_not(font_family_exists("Times New Roman"))
+  skip_if_not(font_family_exists("Courier New"))
+
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, bg = "transparent",
         fonts = list(sans="Arial", serif = "Times New Roman",
-                            mono = "Courier New", symbol = "Symbol"))
+                            mono = "Courier New"))
   plot.new()
   text(0.5, 0.1, "a", family = "serif")
   text(0.5, 0.5, "a", family = "sans")
@@ -102,6 +107,7 @@ test_that("font sets weight/style", {
 })
 
 test_that("a symbol has width greater than 0", {
+  skip_if_not(font_family_exists("Symbol"))
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, bg = "transparent")
   plot(c(0,2), c(0,2), type = "n")
@@ -111,6 +117,7 @@ test_that("a symbol has width greater than 0", {
 })
 
 test_that("symbol font family is 'symbol'", {
+  skip_if_not(font_family_exists("Symbol"))
   file <- tempfile(fileext = ".svg")
   dsvg( file = file, standalone = FALSE, bg = "transparent",
         fonts = list(symbol = "Symbol"))
