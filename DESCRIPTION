@@ -20,7 +20,7 @@ Imports:
     grDevices,
     Rcpp,
     xml2 (>= 1.0.0),
-    gdtools,
+    gdtools (>= 0.1.0),
     utils, R.utils
 LinkingTo: Rcpp,
     gdtools
@@ -31,6 +31,4 @@ Suggests:
     grid
 URL: https://github.com/davidgohel/rvg
 BugReports: https://github.com/davidgohel/rvg/issues
-RoxygenNote: 5.0.1
-Remotes:
-    davidgohel/gdtools
+RoxygenNote: 5.0.1.9000

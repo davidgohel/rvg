@@ -1,8 +1,12 @@
-# rvg 1.0
+# rvg 0.1.1
+
+* adapt code to gdtools 0.1.1
+
+# rvg 0.1.0
 
 * adapt code to xml2 1.0 (use xml_find_first instead of deprecated xml_find_one)
 
-# rvg 0.9
+# rvg 0.0.9
 
 ## New features
 
@@ -13,14 +17,14 @@
 
 * make cliping region id unique in dsvg
 
-# rvg 0.8
+# rvg 0.0.8
 
 ## Bug fixes
 
 * fix rectangle clipping
 * stop wrapping text in DrawingML devices
 
-# rvg 0.7
+# rvg 0.0.7
 
 ## New features
 
@@ -29,7 +33,7 @@
   without dependency to jquery nor bootstrap (suggested by
   Bob Rudis).
 
-# rvg 0.6
+# rvg 0.0.6
 
 ## Bug fixes
 
