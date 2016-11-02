@@ -7,7 +7,8 @@
 dml_pptx(file = "Rplots.dml", width = 6, height = 6, offx = 1,
   offy = 1, bg = "white", fonts = list(), pointsize = 12,
   editable = TRUE, id = 1L, next_rels_id = 1L,
-  raster_prefix = "raster_", standalone = TRUE)
+  raster_prefix = "raster_", standalone = TRUE, fontname_serif = NULL,
+  fontname_sans = NULL, fontname_mono = NULL, fontname_symbol = NULL)
 }
 \arguments{
 \item{file}{the file where output will appear.}
@@ -40,6 +41,10 @@ graphical device.}
 
 \item{standalone}{produce a standalone drawingml file? If \code{FALSE}, omits
 xml header and namespaces.}
+
+\item{fontname_serif, fontname_sans, fontname_mono, fontname_symbol}{font
+names for font faces. Used fonts should be available in the operating system.
+These arguments are deprecated in favor of the \code{fonts} argument.}
 }
 \description{
 Graphics devices for Microsoft PowerPoint DrawingML format.

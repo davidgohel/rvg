@@ -5,7 +5,9 @@
 \title{SVG Graphics Driver}
 \usage{
 dsvg(file = "Rplots.svg", width = 6, height = 6, bg = "white",
-  pointsize = 12, standalone = TRUE, canvas_id = 1, fonts = list())
+  pointsize = 12, standalone = TRUE, canvas_id = 1, fonts = list(),
+  fontname_serif = NULL, fontname_sans = NULL, fontname_mono = NULL,
+  fontname_symbol = NULL)
 }
 \arguments{
 \item{file}{the file where output will appear.}
@@ -25,6 +27,10 @@ xml header and default namespace.}
 fonts installed on your system. If unspecified, the R default
 families \code{sans}, \code{serif}, \code{mono} and \code{symbol}
 are aliased to the family returned by \code{\link[gdtools]{match_family}()}.}
+
+\item{fontname_serif, fontname_sans, fontname_mono, fontname_symbol}{font
+names for font faces. Used fonts should be available in the operating system.
+These arguments are deprecated in favor of the \code{fonts} argument.}
 }
 \description{
 This function produces SVG files (compliant to the current w3 svg XML standard)

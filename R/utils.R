@@ -72,7 +72,6 @@ set_attr = function( ids, attribute, str ){
   invisible()
 }
 
-
 #' @importFrom utils zip
 #' @importFrom R.utils getAbsolutePath
 pack_folder <- function( folder, target ){
