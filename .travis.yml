@@ -4,7 +4,5 @@ cache: packages
 
 warnings_are_errors: false
 
-r_check_revdep: true
-
 after_success:
   - Rscript -e 'covr::codecov()'
