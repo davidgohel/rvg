@@ -6,9 +6,9 @@
 \usage{
 dml_pptx(file = "Rplots.dml", width = 6, height = 6, offx = 1,
   offy = 1, bg = "white", fonts = list(), pointsize = 12,
-  editable = TRUE, id = 1L, next_rels_id = 1L,
-  raster_prefix = "raster_", standalone = TRUE, fontname_serif = NULL,
-  fontname_sans = NULL, fontname_mono = NULL, fontname_symbol = NULL)
+  editable = TRUE, id = 1L, last_rel_id = 1L, raster_prefix = "raster_",
+  standalone = TRUE, fontname_serif = NULL, fontname_sans = NULL,
+  fontname_mono = NULL, fontname_symbol = NULL)
 }
 \arguments{
 \item{file}{the file where output will appear.}
@@ -31,7 +31,7 @@ are aliased to the family returned by \code{\link[gdtools]{match_family}()}.}
 \item{id}{specifies a unique identifier (integer) within the slide
 that will contain the DrawingML instructions.}
 
-\item{next_rels_id}{specifies the next unique identifier (integer)
+\item{last_rel_id}{specifies the last unique identifier (integer)
 within relationship file that will be used to reference embedded
 raster images if any.}
 

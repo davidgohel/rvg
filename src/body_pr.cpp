@@ -19,14 +19,13 @@ std::string body_pr::a_tag()
 std::string body_pr::wps_tag()
 {
   std::stringstream os;
-  // fputs("spcFirstLastPara=\"0\"/>", dml_dev->file );
 
   os << "<wps:bodyPr ";
   os << "lIns=\"0\" rIns=\"0\" tIns=\"0\" bIns=\"0\" ";
   os << "anchor=\"b\" ";
-  os << "vert=\"horz\" wrap=\"none\"/>";
-  //os << "<a:spAutoFit/>";
-  //os << "</wps:bodyPr>";
+  os << "vert=\"horz\" wrap=\"none\">";
+  os << "<a:spAutoFit/>";
+  os << "</wps:bodyPr>";
 
   return os.str();
 }

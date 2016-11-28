@@ -37,14 +37,13 @@ write_pptx <- function(
   pars <- list(...)
   pars$file <- dml_file
   pars$id <- 0L
-  pars$next_rels_id <- as.integer( relationships$max_int - 1 )
+  pars$last_rel_id <- as.integer( relationships$max_int )
   pars$raster_prefix <- img_directory
   pars$standalone <- FALSE
 
   do.call("dml_pptx", pars)
 
   tryCatch(code, finally = dev.off() )
-
   raster_files <- list.files(path = getwd(), pattern = paste0("^", uid, "(.*)\\.png$"), full.names = TRUE )
 
   if( length(raster_files ) > 0 ){
@@ -52,6 +51,7 @@ write_pptx <- function(
 
 
     ids <- seq_along(raster_files) + relationships$max_int
+
     expected_rels <- data.frame(
       id = paste0("rId", ids ),
       int_id = ids,

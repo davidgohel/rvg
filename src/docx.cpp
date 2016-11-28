@@ -45,7 +45,7 @@ public:
   double clipleft, clipright, cliptop, clipbottom;
 
   std::string raster_prefix;
-  int img_id;
+  int img_last_id;
 
   Rcpp::List system_aliases;
   Rcpp::List user_aliases;
@@ -59,12 +59,12 @@ public:
            Rcpp::List& aliases_,
            bool editable_, int id_,
            std::string raster_prefix_,
-           int next_rels_id_, int standalone_,
+           int rel_last_id_, int standalone_,
            double width_, double height_ ):
       filename(filename_),
       pageno(0),
 	    id(id_),
-	    raster_prefix(raster_prefix_), img_id(next_rels_id_),
+	    raster_prefix(raster_prefix_), img_last_id(rel_last_id_),
 	    system_aliases(Rcpp::wrap(aliases_["system"])),
 	    user_aliases(Rcpp::wrap(aliases_["user"])),
 	    editable(editable_),
@@ -88,8 +88,8 @@ public:
   	return id;
   }
   int nex_id_rel() {
-    img_id++;
-    return img_id;
+    img_last_id++;
+    return img_last_id;
   }
   ~DOCX_dev() {
     if (ok())
@@ -140,7 +140,6 @@ void write_text_body_docx(pDevDesc dd, R_GE_gcontext *gc, const char* text, doub
   fputs("</w:txbxContent>", docx_obj->file );
   fputs("</wps:txbx>", docx_obj->file );
 
-  fprintf(docx_obj->file, "%s", body_pr::wps_tag().c_str() );
 
 }
 // Callback functions for graphics device --------------------------------------
@@ -393,8 +392,10 @@ static void docx_text(double x, double y, const char *str, double rot,
       fprintf(docx_obj->file,"%s", a_prstgeom::a_tag("rect").c_str());
       fputs("<a:noFill/>", docx_obj->file);
     fputs("</wps:spPr>", docx_obj->file);
-
     write_text_body_docx(dd, gc, str, hadj, fs, h);
+    fprintf(docx_obj->file, "%s", body_pr::wps_tag().c_str() );
+
+
   fputs("</wps:wsp>", docx_obj->file);
 }
 
@@ -414,7 +415,6 @@ static void docx_raster(unsigned int *raster, int w, int h,
                        const pGEcontext gc, pDevDesc dd)
 {
   DOCX_dev *docx_obj = (DOCX_dev*) dd->deviceSpecific;
-  docx_obj->img_id++;
   std::stringstream os;
   int id_img_rel = docx_obj->nex_id_rel();
 
@@ -495,7 +495,7 @@ pDevDesc docx_driver_new(std::string filename, int bg, double width, double heig
                         Rcpp::List aliases,
                         bool editable, int id,
                         std::string raster_prefix,
-                        int next_rels_id, int standalone) {
+                        int last_rel_id, int standalone) {
 
   pDevDesc dd = (DevDesc*) calloc(1, sizeof(DevDesc));
   if (dd == NULL)
@@ -564,7 +564,7 @@ pDevDesc docx_driver_new(std::string filename, int bg, double width, double heig
                                     aliases,
     editable, id,
     raster_prefix,
-    next_rels_id, standalone,
+    last_rel_id, standalone,
     width * 72, height * 72);
   return dd;
 }
@@ -575,7 +575,7 @@ bool DOCX_(std::string file, std::string bg_, double width, double height,
     Rcpp::List aliases,
     bool editable, int id,
     std::string raster_prefix,
-    int next_rels_id, int standalone) {
+    int last_rel_id, int standalone) {
 
   int bg = R_GE_str2col(bg_.c_str());
 
@@ -584,7 +584,7 @@ bool DOCX_(std::string file, std::string bg_, double width, double height,
   BEGIN_SUSPEND_INTERRUPTS {
     pDevDesc dev = docx_driver_new(file, bg, width, height, pointsize,
                                    aliases,
-                                   editable, id, raster_prefix, next_rels_id, standalone);
+                                   editable, id, raster_prefix, last_rel_id, standalone);
     if (dev == NULL)
       Rcpp::stop("Failed to start docx device");
 

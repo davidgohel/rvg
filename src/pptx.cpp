@@ -47,7 +47,7 @@ public:
   double offy;
 
   std::string raster_prefix;
-  int img_id;
+  int img_last_id;
 
   Rcpp::List system_aliases;
   Rcpp::List user_aliases;
@@ -61,13 +61,13 @@ public:
            Rcpp::List& aliases_,
            bool editable_, double offx_, double offy_ , int id_,
            std::string raster_prefix_,
-           int next_rels_id_, int standalone_,
+           int rel_last_id_, int standalone_,
            double width_, double height_ ):
       filename(filename_),
       pageno(0),
 	    id(id_),
 	    offx(offx_), offy(offy_),
-	    raster_prefix(raster_prefix_), img_id(next_rels_id_),
+	    raster_prefix(raster_prefix_), img_last_id(rel_last_id_),
 	    system_aliases(Rcpp::wrap(aliases_["system"])),
 	    user_aliases(Rcpp::wrap(aliases_["user"])),
 	    editable(editable_),
@@ -91,8 +91,8 @@ public:
   	return id;
   }
   int nex_id_rel() {
-    img_id++;
-    return img_id;
+    img_last_id++;
+    return img_last_id;
   }
   ~PPTX_dev() {
     if (ok())
@@ -427,7 +427,6 @@ static void pptx_raster(unsigned int *raster, int w, int h,
                        const pGEcontext gc, pDevDesc dd)
 {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
-  pptx_obj->img_id++;
   std::stringstream os;
   int idx = pptx_obj->new_id();
   int id_img_rel = pptx_obj->nex_id_rel();
@@ -513,7 +512,7 @@ pDevDesc pptx_driver_new(std::string filename, int bg, double width, double heig
                         Rcpp::List aliases,
                         bool editable, int id,
                         std::string raster_prefix,
-                        int next_rels_id,
+                        int last_rel_id,
                         int standalone) {
 
   pDevDesc dd = (DevDesc*) calloc(1, sizeof(DevDesc));
@@ -583,7 +582,7 @@ pDevDesc pptx_driver_new(std::string filename, int bg, double width, double heig
                                     aliases,
     editable, offx*72, offy*72, id,
     raster_prefix,
-    next_rels_id, standalone,
+    last_rel_id, standalone,
     width * 72,
     height * 72
     );
@@ -597,7 +596,7 @@ bool PPTX_(std::string file, std::string bg_, double width, double height,
     Rcpp::List aliases,
     bool editable, int id,
     std::string raster_prefix,
-    int next_rels_id, int standalone) {
+    int last_rel_id, int standalone) {
 
   int bg = R_GE_str2col(bg_.c_str());
 
@@ -609,7 +608,7 @@ bool PPTX_(std::string file, std::string bg_, double width, double height,
       editable,
       id,
       raster_prefix,
-      next_rels_id, standalone);
+      last_rel_id, standalone);
     if (dev == NULL)
       Rcpp::stop("Failed to start pptx device");
 

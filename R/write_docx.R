@@ -42,7 +42,7 @@ write_docx <- function( file, code,
   pars <- list(...)
   pars$file <- dml_file
   pars$id <- 1L
-  pars$next_rels_id <- as.integer( relationships$max_int - 1 )
+  pars$last_rel_id <- as.integer( relationships$max_int )
   pars$raster_prefix <- img_directory
   pars$standalone <- FALSE
 

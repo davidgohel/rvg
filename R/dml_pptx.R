@@ -18,7 +18,7 @@
 #' @param editable should vector graphics elements (points, text, etc.) be editable.
 #' @param id specifies a unique identifier (integer) within the slide
 #' that will contain the DrawingML instructions.
-#' @param next_rels_id specifies the next unique identifier (integer)
+#' @param last_rel_id specifies the last unique identifier (integer)
 #' within relationship file that will be used to reference embedded
 #' raster images if any.
 #' @param raster_prefix string value used as prefix for png
@@ -39,7 +39,7 @@ dml_pptx <- function(file = "Rplots.dml", width = 6, height = 6,
                      fonts = list(),
                      pointsize = 12, editable = TRUE,
                      id = 1L,
-                     next_rels_id = 1L,
+                     last_rel_id = 1L,
                      raster_prefix = "raster_", standalone = TRUE,
                      fontname_serif = NULL,
                      fontname_sans = NULL,
@@ -66,7 +66,7 @@ dml_pptx <- function(file = "Rplots.dml", width = 6, height = 6,
               pointsize = pointsize,
               aliases = list(system = system_fonts, user = list()),
               editable = editable, id = id, raster_prefix = raster_prefix,
-              next_rels_id = next_rels_id, standalone = standalone
+              last_rel_id = last_rel_id, standalone = standalone
             ))
 }
 
