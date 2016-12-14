@@ -70,8 +70,6 @@ write_pptx <- function(
     cat("</Relationships>")
     sink( )
 
-    document_rel <- file.path( template_dir, "ppt/slides/", "_rels/slide1.xml.rels" )
-
     media_dir <- file.path(template_dir, "ppt", "media")
     if( !file.exists(media_dir))
       dir.create(media_dir)

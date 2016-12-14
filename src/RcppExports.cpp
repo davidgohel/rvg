@@ -115,8 +115,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // XLSX_
-bool XLSX_(std::string file, std::string bg_, double width, double height, double offx, double offy, int pointsize, Rcpp::List aliases, bool editable, int id, std::string raster_prefix, int next_rels_id, int standalone);
-RcppExport SEXP rvg_XLSX_(SEXP fileSEXP, SEXP bg_SEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP offxSEXP, SEXP offySEXP, SEXP pointsizeSEXP, SEXP aliasesSEXP, SEXP editableSEXP, SEXP idSEXP, SEXP raster_prefixSEXP, SEXP next_rels_idSEXP, SEXP standaloneSEXP) {
+bool XLSX_(std::string file, std::string bg_, double width, double height, double offx, double offy, int pointsize, Rcpp::List aliases, bool editable, int id, std::string raster_prefix, int last_rel_id, int standalone);
+RcppExport SEXP rvg_XLSX_(SEXP fileSEXP, SEXP bg_SEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP offxSEXP, SEXP offySEXP, SEXP pointsizeSEXP, SEXP aliasesSEXP, SEXP editableSEXP, SEXP idSEXP, SEXP raster_prefixSEXP, SEXP last_rel_idSEXP, SEXP standaloneSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -131,9 +131,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type editable(editableSEXP);
     Rcpp::traits::input_parameter< int >::type id(idSEXP);
     Rcpp::traits::input_parameter< std::string >::type raster_prefix(raster_prefixSEXP);
-    Rcpp::traits::input_parameter< int >::type next_rels_id(next_rels_idSEXP);
+    Rcpp::traits::input_parameter< int >::type last_rel_id(last_rel_idSEXP);
     Rcpp::traits::input_parameter< int >::type standalone(standaloneSEXP);
-    rcpp_result_gen = Rcpp::wrap(XLSX_(file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, next_rels_id, standalone));
+    rcpp_result_gen = Rcpp::wrap(XLSX_(file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone));
     return rcpp_result_gen;
 END_RCPP
 }

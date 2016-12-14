@@ -6,9 +6,9 @@
 \usage{
 dml_pptx(file = "Rplots.dml", width = 6, height = 6, offx = 1,
   offy = 1, bg = "white", fonts = list(), pointsize = 12,
-  editable = TRUE, id = 1L, last_rel_id = 1L, raster_prefix = "raster_",
-  standalone = TRUE, fontname_serif = NULL, fontname_sans = NULL,
-  fontname_mono = NULL, fontname_symbol = NULL)
+  editable = TRUE, id = 1L, last_rel_id = 1L, next_rels_id,
+  raster_prefix = "raster_", standalone = TRUE, fontname_serif = NULL,
+  fontname_sans = NULL, fontname_mono = NULL, fontname_symbol = NULL)
 }
 \arguments{
 \item{file}{the file where output will appear.}
@@ -34,6 +34,8 @@ that will contain the DrawingML instructions.}
 \item{last_rel_id}{specifies the last unique identifier (integer)
 within relationship file that will be used to reference embedded
 raster images if any.}
+
+\item{next_rels_id}{deprecated. Use last_rel_id instead.}
 
 \item{raster_prefix}{string value used as prefix for png
 files produced when raster objects are printed on the

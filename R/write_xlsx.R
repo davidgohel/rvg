@@ -36,7 +36,7 @@ write_xlsx <- function(
   pars <- list(...)
   pars$file <- dml_file
   pars$id <- 0L
-  pars$next_rels_id <- -1L
+  pars$next_rels_id <- 0L
   pars$raster_prefix <- img_directory
   pars$standalone <- TRUE
 
@@ -70,7 +70,7 @@ write_xlsx <- function(
     media_dir <- file.path(template_dir, "xl", "media")
     if( !file.exists(media_dir))
       dir.create(media_dir)
-
+    #browser()
     for(i in seq_len(nrow(new_rels))){
       file.copy(from = raster_files[i], to = media_dir)
     }
