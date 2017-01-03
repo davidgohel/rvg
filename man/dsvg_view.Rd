@@ -16,9 +16,11 @@ This is useful primarily for testing. Requires the \code{htmltools}
 package.
 }
 \examples{
+\donttest{
 if (require("htmltools")) {
   dsvg_view(plot(1:10))
   dsvg_view(hist(rnorm(100)))
+}
 }
 }
 
