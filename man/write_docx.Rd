@@ -25,8 +25,10 @@ A named vector (\code{left}, \code{right}, \code{top}, \code{bottom}).}
 A graphical device for Microsoft Word documents.
 }
 \examples{
+\donttest{
 write_docx(file = "my_plot_1.docx", code = plot(rnorm(10)) )
 write_docx(file = "my_plot_2.docx", code = barplot(1:7, col = 1:7))
+}
 }
 \keyword{device}
 

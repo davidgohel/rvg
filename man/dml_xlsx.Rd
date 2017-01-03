@@ -52,12 +52,14 @@ These arguments are deprecated in favor of the \code{fonts} argument.}
 Graphics devices for Microsoft Excel DrawingML format.
 }
 \examples{
+\donttest{
 dml_xlsx( file = tempfile() )
 plot(1:11,(-5:5)^2, type='b', main="Simple Example")
 dev.off()
 }
+}
 \seealso{
-\code{\link{Devices}}, \code{\link{dml_docx}}, \code{\link{dml_pptx}}, \code{\link{dsvg}}
+\code{\link{Devices}}
 }
 \keyword{device}
 

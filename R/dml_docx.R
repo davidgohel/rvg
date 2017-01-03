@@ -27,12 +27,25 @@
 #' graphical device.
 #' @param standalone produce a standalone drawingml file? If \code{FALSE}, omits
 #'   xml header and namespaces.
+#' @note
+#' Text rendering is not optimal, this device should not be considered as a
+#' valid R graphical device.
+#'
+#' The DrawingML implementation for 'Microsoft Word' is different from standard
+#' DrawingML particulary with text boxes. The major point is that the exact size
+#' and position of text boxes cannot be exactly defined regarding to text widths
+#' and heights.
+#'
+#' Autofit option has been set as a workaround, this moves text slightly on the produced graphic when
+#' edited in 'Microsoft Word' but this makes sure the text can be read.
 #' @examples
+#' \donttest{
 #' dml_docx( file = tempfile() )
 #' plot(1:11,(-5:5)^2, type='b', main="Simple Example")
 #' dev.off()
+#' }
 #' @keywords device
-#' @seealso \code{\link{Devices}}, \code{\link{dml_docx}}, \code{\link{dsvg}}
+#' @seealso \code{\link{Devices}}
 #' @export
 dml_docx <- function(file = "Rplots.dml", width = 6, height = 6,
                      bg = "white",

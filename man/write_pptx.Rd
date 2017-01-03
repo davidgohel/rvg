@@ -20,8 +20,10 @@ extension must be \code{.pptx}.}
 A graphical device for Microsoft PowerPoint documents.
 }
 \examples{
+\donttest{
 write_pptx(file = "my_plot_1.pptx", code = plot(rnorm(10)))
 write_pptx(file = "my_plot_2.pptx", code = barplot(1:7, col = 1:7))
+}
 }
 \keyword{device}
 

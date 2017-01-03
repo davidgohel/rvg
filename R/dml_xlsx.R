@@ -28,11 +28,13 @@
 #' @param standalone produce a standalone drawingml file? If \code{FALSE}, omits
 #'   xml header and namespaces.
 #' @examples
+#' \donttest{
 #' dml_xlsx( file = tempfile() )
 #' plot(1:11,(-5:5)^2, type='b', main="Simple Example")
 #' dev.off()
+#' }
 #' @keywords device
-#' @seealso \code{\link{Devices}}, \code{\link{dml_docx}}, \code{\link{dml_pptx}}, \code{\link{dsvg}}
+#' @seealso \code{\link{Devices}}
 #' @export
 dml_xlsx <- function(file = "Rplots.dml", width = 6, height = 6,
                      offx = 1, offy = 1,

@@ -1,3 +1,8 @@
+# rvg 0.1.2
+
+* add donttest tags in all examples to avoid long runs due to fontconfig initialisation
+* change textbox in Word graphics so that text auto-adjusts.
+
 # rvg 0.1.1
 
 * adapt code to gdtools 0.1.1

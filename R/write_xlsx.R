@@ -10,8 +10,10 @@
 #' @param size slide size in inches.
 #' @param ... arguments for \code{fun} (passed on to \code{\link{dml_xlsx}}.)
 #' @examples
+#' \donttest{
 #' write_xlsx(file = "my_plot_1.xlsx", code = plot(rnorm(10)))
 #' write_xlsx(file = "my_plot_2.xlsx", code = barplot(1:7, col = 1:7))
+#' }
 #' @keywords device
 #' @export
 write_xlsx <- function(

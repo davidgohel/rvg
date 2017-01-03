@@ -37,12 +37,14 @@ This function produces SVG files (compliant to the current w3 svg XML standard)
 where elements can be made interactive.
 }
 \examples{
+\donttest{
 dsvg()
 plot(rnorm(10), main="Simple Example", xlab = "", ylab = "")
 dev.off()
 }
+}
 \seealso{
-\code{\link{Devices}}, \code{\link{dml_docx}}, \code{\link{dml_pptx}}
+\code{\link{Devices}}
 }
 \keyword{device}
 

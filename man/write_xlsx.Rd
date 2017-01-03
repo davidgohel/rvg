@@ -20,8 +20,10 @@ extension must be \code{.xlsx}.}
 A graphical device for Microsoft Excel documents.
 }
 \examples{
+\donttest{
 write_xlsx(file = "my_plot_1.xlsx", code = plot(rnorm(10)))
 write_xlsx(file = "my_plot_2.xlsx", code = barplot(1:7, col = 1:7))
+}
 }
 \keyword{device}
 

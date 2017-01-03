@@ -17,11 +17,13 @@
 #'   fonts installed on your system. If unspecified, the R default
 #'   families \code{sans}, \code{serif}, \code{mono} and \code{symbol}
 #'   are aliased to the family returned by \code{\link[gdtools]{match_family}()}.
-#' @seealso \code{\link{Devices}}, \code{\link{dml_docx}}, \code{\link{dml_pptx}}
+#' @seealso \code{\link{Devices}}
 #' @examples
+#' \donttest{
 #' dsvg()
 #' plot(rnorm(10), main="Simple Example", xlab = "", ylab = "")
 #' dev.off()
+#' }
 #' @keywords device
 #' @useDynLib rvg
 #' @importFrom Rcpp sourceCpp

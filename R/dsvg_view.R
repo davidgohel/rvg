@@ -7,9 +7,11 @@
 #' @param ... Other arguments passed on to \code{\link{dsvg}}.
 #' @export
 #' @examples
+#' \donttest{
 #' if (require("htmltools")) {
 #'   dsvg_view(plot(1:10))
 #'   dsvg_view(hist(rnorm(100)))
+#' }
 #' }
 dsvg_view <- function(code, ...) {
   path <- tempfile()
@@ -17,10 +19,10 @@ dsvg_view <- function(code, ...) {
   tryCatch(code,
            finally = dev.off()
   )
-  if( interactive() )
-    htmltools::browsable(
-      htmltools::HTML(paste0(readLines(path), collapse = "\n"))
-    )
+  if( interactive() ){
+    doc <- read_xml(path)
+    htmltools::browsable(htmltools::HTML(as.character(doc)) )
+  }
   else invisible()
 }
 
