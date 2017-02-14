@@ -85,6 +85,7 @@ pack_folder <- function( folder, target ){
   target
 }
 
+#' @importFrom xml2 read_xml xml_children xml_ns xml_attr
 read_relationship <- function(filename) {
   doc <- read_xml( x = filename )
   children <- xml_children( doc )

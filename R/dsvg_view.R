@@ -13,6 +13,7 @@
 #'   dsvg_view(hist(rnorm(100)))
 #' }
 #' }
+#' @importFrom xml2 read_xml
 dsvg_view <- function(code, ...) {
   path <- tempfile()
   dsvg(path, ...)

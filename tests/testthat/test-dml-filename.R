@@ -14,11 +14,7 @@ test_that("docx filename", {
 test_that("pptx filename", {
 
   file_abs_path <- try( write_pptx(file = "my_plot.pptx", code = plot(rnorm(10))), silent = TRUE )
-  expected <- file.path(getwd(), "my_plot.pptx")
-  expect_equal(object = file_abs_path, expected = expected )
-
-  file_abs_path <- try( write_pptx(file = expected, code = plot(rnorm(10))), silent = TRUE )
-  expect_equal(object = file_abs_path, expected = expected )
+  expect_equal(object = file_abs_path, expected = "my_plot.pptx" )
 })
 
 test_that("xlsx filename", {

@@ -1,5 +1,4 @@
-#' @importFrom utils unzip
-#' @import xml2
+#' @importFrom officer pptx add_slide
 #' @title Microsoft PowerPoint Graphics Device
 #'
 #' @description
@@ -7,8 +6,7 @@
 #' @param file filename of the Microsoft PowerPoint document to produce. File
 #' extension must be \code{.pptx}.
 #' @param code Plotting code to execute
-#' @param size slide size in inches.
-#' @param ... arguments for \code{fun} (passed on to \code{\link{dml_pptx}}.)
+#' @param ... arguments passed on to \code{\link{dml_pptx}}.
 #' @examples
 #' \donttest{
 #' write_pptx(file = "my_plot_1.pptx", code = plot(rnorm(10)))
@@ -16,30 +14,46 @@
 #' }
 #' @keywords device
 #' @export
-write_pptx <- function(
-  file, code,
-  size = c(width = 10, height = 7.5), ...) {
+write_pptx <- function( file, code, ...) {
 
-  .reg = regexpr( paste( "(\\.(?i)(pptx))$", sep = "" ), file )
-  if( .reg < 1 ) stop(file , " should have '.pptx' as extension.")
+  doc <- pptx()
+  doc <- add_slide(doc, layout = "Title and Content", master = "Office Theme")
+  doc <- placeholder_add_vgplot(doc, id = "body", code = code, ... )
+  print(doc, target = file )
 
-  template_dir <- tempfile()
-  unzip( zipfile = file.path( system.file(package = "rvg"), "templates/vanilla.pptx" ), exdir = template_dir )
-  drop_dir <- file.path(template_dir, "__MACOSX")
-  if( file.exists(drop_dir) ) unlink(drop_dir, force = TRUE, recursive = TRUE)
+  file
+}
 
-  document_rel <- file.path( template_dir, "ppt/slides/", "_rels/slide1.xml.rels" )
-  relationships <- read_relationship( filename = document_rel )
+
+#' @export
+#' @title pml graph code
+#' @description produces the pml of a graph
+#' @param x a pptx device
+#' @param code \code{flextable} object
+#' @param id placeholder id
+#' @param index placeholder index. This is to be used when a placeholder id
+#' is not unique in the current slide, e.g. two placeholders with id 'body'.
+#' @param ... arguments passed on to \code{\link{dml_pptx}}.
+#' @importFrom officer placeholder_set_xml
+#' @importFrom xml2 xml_find_first as_xml_document
+placeholder_add_vgplot <- function( x, code, id, index = 1, ... ){
+  slide <- x$slide$get_slide(x$cursor)
 
   uid <- basename(tempfile(pattern = ""))
   img_directory = file.path(getwd(), uid )
-
   dml_file <- tempfile()
 
+  id_xfrm <- slide$get_xfrm(type = id, index = index)
+  id_xfrm <- as.list(id_xfrm[c("cx", "cy", "offx", "offy")])
+  names(id_xfrm) <- c("width", "height", "offx", "offy")
+
   pars <- list(...)
+  add_named_args <- setdiff ( names(id_xfrm), names( pars ) )
+  pars[add_named_args] <- id_xfrm[add_named_args]
+
   pars$file <- dml_file
   pars$id <- 0L
-  pars$last_rel_id <- as.integer( relationships$max_int )
+  pars$last_rel_id <- slide$relationship()$get_next_id() - 1
   pars$raster_prefix <- img_directory
   pars$standalone <- FALSE
 
@@ -48,75 +62,25 @@ write_pptx <- function(
   tryCatch(code, finally = dev.off() )
   raster_files <- list.files(path = getwd(), pattern = paste0("^", uid, "(.*)\\.png$"), full.names = TRUE )
 
-  if( length(raster_files ) > 0 ){
-    raster_names <- gsub( pattern = "\\.png$", replacement = "", basename(raster_files) )
+  dml_str <- scan( dml_file, what = "character", quiet = T, sep = "\n" )
 
-
-    ids <- seq_along(raster_files) + relationships$max_int
-
-    expected_rels <- data.frame(
-      id = paste0("rId", ids ),
-      int_id = ids,
-      type = rep("http://schemas.openxmlformats.org/officeDocument/2006/relationships/image", length(ids)),
-      target = file.path("../media", basename(raster_files) ),
-      stringsAsFactors = FALSE )
-    new_rels <- rbind( relationships$data, expected_rels)
-
-    Relationship <- paste0("<Relationship Id=\"", new_rels$id, "\" Type=\"", new_rels$type, "\" Target=\"", new_rels$target , "\"/>")
-    Relationship <- paste0(Relationship, collapse = "")
-
-    sink(file = document_rel )
-    cat("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>")
-    cat("<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">")
-    cat(Relationship)
-    cat("</Relationships>")
-    sink( )
-
-    media_dir <- file.path(template_dir, "ppt", "media")
-    if( !file.exists(media_dir))
-      dir.create(media_dir)
-
-    for(i in seq_len(nrow(expected_rels))){
-      file.copy(from = raster_files[i], to = file.path(template_dir, "ppt", "media"))
-    }
+  if( length(raster_files) ){
+    slide$reference_img(src = raster_files, dir_name = file.path(x$package_dir, "ppt/media"))
     unlink(raster_files, force = TRUE)
   }
 
-  document_xml <- file.path( template_dir, "ppt/slides/", "slide1.xml" )
-  dml_str <- scan( dml_file, what = "character", quiet = T, sep = "\n" )
-  sink(file = document_xml )
-  cat("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n")
-  cat("<p:sld ")
-  cat("xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" ")
-  cat("xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" ")
-  cat("xmlns:p=\"http://schemas.openxmlformats.org/presentationml/2006/main\" ")
-  cat("xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"")
-  cat(">")
-
-  cat("<p:cSld>")
-  cat(dml_str)
-  cat("</p:cSld>")
-  cat("</p:sld>")
-  sink()
-
-  # set slide size
-  slide_size_str <- sprintf( "<p:sldSz cx=\"%d\" cy=\"%d\"/>", as.integer(size["width"] * 914400),  as.integer(size["height"] * 914400) )
-  presentation_file <- file.path( template_dir, "ppt", "presentation.xml" )
-  presentation_str <- scan( presentation_file, what = "character", quiet = T, sep = "\n" )
-  presentation_str <- gsub(pattern = "<p:sldSz cx=\"9144000\" cy=\"6858000\" type=\"screen4x3\"/>",
-       replacement =  slide_size_str, x = presentation_str )
-  sink(file = presentation_file )
-  cat(presentation_str, sep = "")
-  sink()
-
-
-  # delete out_file if existing
-  if( file.exists(file))
-    unlink(file, force = TRUE)
-  # write out_file
-  out_file <- pack_folder(template_dir, file )
-  # delete temporary dir
-  unlink(template_dir, recursive = TRUE, force = TRUE)
-  out_file
+  dml_str <- gsub(pattern = "<p:spTree>",
+                  replacement = paste0("<p:spTree xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" ",
+                                       "xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" ",
+                                       "xmlns:p=\"http://schemas.openxmlformats.org/presentationml/2006/main\" ",
+                                       "xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">"),
+                  x = dml_str )
+  dml_str <- as.character( xml_find_first( as_xml_document(dml_str), "//p:grpSp" ) )
+  dml_str <- gsub(pattern = "<p:grpSp>",
+                  replacement = paste0("<p:grpSp xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" ",
+                                       "xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" ",
+                                       "xmlns:p=\"http://schemas.openxmlformats.org/presentationml/2006/main\" ",
+                                       "xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">"),
+                  x = dml_str )
+  placeholder_set_xml(x = x, value = dml_str, id = id, index = index )
 }
-

@@ -4,7 +4,7 @@
 \alias{write_pptx}
 \title{Microsoft PowerPoint Graphics Device}
 \usage{
-write_pptx(file, code, size = c(width = 10, height = 7.5), ...)
+write_pptx(file, code, ...)
 }
 \arguments{
 \item{file}{filename of the Microsoft PowerPoint document to produce. File
@@ -12,9 +12,7 @@ extension must be \code{.pptx}.}
 
 \item{code}{Plotting code to execute}
 
-\item{size}{slide size in inches.}
-
-\item{...}{arguments for \code{fun} (passed on to \code{\link{dml_pptx}}.)}
+\item{...}{arguments passed on to \code{\link{dml_pptx}}.}
 }
 \description{
 A graphical device for Microsoft PowerPoint documents.
