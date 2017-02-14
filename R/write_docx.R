@@ -1,5 +1,4 @@
 #' @importFrom utils unzip
-#' @import xml2
 #' @title Microsoft Word Graphics Device
 #'
 #' @description
