@@ -1,4 +1,4 @@
-#' @importFrom officer docx
+#' @importFrom officer read_docx
 #' @title Microsoft Word Graphics Device
 #'
 #' @description
@@ -16,8 +16,8 @@
 #' @export
 write_docx <- function( file, code, ...) {
 
-  doc <- docx()
-  doc <- docx_add_vgplot(doc, code = code, ...)
+  doc <- read_docx()
+  doc <- body_add_vg(doc, code = code, ...)
   print(doc, target = file )
 }
 
@@ -33,9 +33,9 @@ write_docx <- function( file, code, ...) {
 #' @param pos where to add the new element relative to the cursor,
 #' one of "after", "before", "on".
 #' @param ... arguments passed on to \code{\link{dml_docx}}.
-#' @importFrom officer add_xml_node docx_reference_img wml_link_images
+#' @importFrom officer body_add_xml docx_reference_img wml_link_images
 #' @importFrom xml2 xml_find_first as_xml_document
-docx_add_vgplot <- function( x, code, pos = "after", ... ){
+body_add_vg <- function( x, code, pos = "after", ... ){
 
   uid <- basename(tempfile(pattern = ""))
   img_directory = file.path(getwd(), uid )
@@ -73,7 +73,7 @@ docx_add_vgplot <- function( x, code, pos = "after", ... ){
     unlink(raster_files)
   }
 
-  add_xml_node(x = x, str = xml_elt, pos = pos)
+  body_add_xml(x = x, str = xml_elt, pos = pos)
 
 }
 
