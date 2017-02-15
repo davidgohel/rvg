@@ -1,4 +1,4 @@
-#' @importFrom officer pptx add_slide
+#' @importFrom officer read_pptx add_slide
 #' @title Microsoft PowerPoint Graphics Device
 #'
 #' @description
@@ -16,9 +16,9 @@
 #' @export
 write_pptx <- function( file, code, ...) {
 
-  doc <- pptx()
+  doc <- read_pptx()
   doc <- add_slide(doc, layout = "Title and Content", master = "Office Theme")
-  doc <- placeholder_add_vgplot(doc, id = "body", code = code, ... )
+  doc <- ph_with_vg(doc, type = "body", code = code, ... )
   print(doc, target = file )
 
   file
@@ -29,21 +29,21 @@ write_pptx <- function( file, code, ...) {
 #' @title pml graph code
 #' @description produces the pml of a graph
 #' @param x a pptx device
-#' @param code \code{flextable} object
-#' @param id placeholder id
-#' @param index placeholder index. This is to be used when a placeholder id
-#' is not unique in the current slide, e.g. two placeholders with id 'body'.
+#' @param code plot instructions
+#' @param type placeholder type
+#' @param index placeholder index (integer). This is to be used when a placeholder type
+#' is not unique in the current slide, e.g. two placeholders with type 'body'.
 #' @param ... arguments passed on to \code{\link{dml_pptx}}.
-#' @importFrom officer placeholder_set_xml
+#' @importFrom officer ph_from_xml
 #' @importFrom xml2 xml_find_first as_xml_document
-placeholder_add_vgplot <- function( x, code, id, index = 1, ... ){
+ph_with_vg <- function( x, code, type, index = 1, ... ){
   slide <- x$slide$get_slide(x$cursor)
 
   uid <- basename(tempfile(pattern = ""))
   img_directory = file.path(getwd(), uid )
   dml_file <- tempfile()
 
-  id_xfrm <- slide$get_xfrm(type = id, index = index)
+  id_xfrm <- slide$get_xfrm(type = type, index = index)
   id_xfrm <- as.list(id_xfrm[c("cx", "cy", "offx", "offy")])
   names(id_xfrm) <- c("width", "height", "offx", "offy")
 
@@ -82,5 +82,5 @@ placeholder_add_vgplot <- function( x, code, id, index = 1, ... ){
                                        "xmlns:p=\"http://schemas.openxmlformats.org/presentationml/2006/main\" ",
                                        "xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">"),
                   x = dml_str )
-  placeholder_set_xml(x = x, value = dml_str, id = id, index = index )
+  ph_from_xml(x = x, value = dml_str, type = type, index = index )
 }

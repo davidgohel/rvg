@@ -1,3 +1,4 @@
+#' @importFrom officer pack_folder
 #' @importFrom utils unzip
 #' @import xml2
 #' @title Microsoft Excel Graphics Device
@@ -7,7 +8,6 @@
 #' @param file filename of the Microsoft Excel document to produce. File
 #' extension must be \code{.xlsx}.
 #' @param code Plotting code to execute
-#' @param size slide size in inches.
 #' @param ... arguments for \code{fun} (passed on to \code{\link{dml_xlsx}}.)
 #' @examples
 #' \donttest{
@@ -18,7 +18,7 @@
 #' @export
 write_xlsx <- function(
   file, code,
-  size = c(width = 10, height = 7.5), ...) {
+  ...) {
 
   .reg = regexpr( paste( "(\\.(?i)(xlsx))$", sep = "" ), file )
   if( .reg < 1 ) stop(file , " should have '.xlsx' as extension.")

@@ -29,7 +29,6 @@ gg = ggplot( iris, aes(Sepal.Length, Sepal.Width,
 
 write_docx(file = "my_plot.docx", code = print( gg ))
 write_pptx(file = "my_plot.pptx", code = print( gg ))
-write_xlsx(file = "my_plot.xlsx", code = print( gg ))
 ```
 
 ## Installation

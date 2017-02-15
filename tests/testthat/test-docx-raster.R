@@ -19,7 +19,7 @@ test_that("raster is generated", {
 })
 
 test_that("docx raster is in media", {
-  skip_if_not( nchar( getOption("unzip") > 0 ) )
+  skip_if_not( nchar( getOption("unzip") > 0 ), require(utils) )
   doc_file <- write_docx(file = "doc.docx",
              code = {
                pushViewport(viewport(width = 0.8, height = 0.5, name = "vp1"))
@@ -34,7 +34,7 @@ test_that("docx raster is in media", {
 })
 
 test_that("pptx raster is in media", {
-  skip_if_not( nchar( getOption("unzip") > 0 ) )
+  skip_if_not( nchar( getOption("unzip") > 0 ), require(utils) )
   doc_file <- write_pptx(file = "doc.pptx",
                          code = {
                            pushViewport(viewport(width = 0.8, height = 0.5, name = "vp1"))

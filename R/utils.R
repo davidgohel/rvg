@@ -72,18 +72,6 @@ set_attr = function( ids, attribute, str ){
   invisible()
 }
 
-#' @importFrom utils zip
-#' @importFrom R.utils getAbsolutePath
-pack_folder <- function( folder, target ){
-  target <- getAbsolutePath(target, expandTilde = TRUE)
-  curr_wd <- getwd()
-  zip_dir <- folder
-  setwd(zip_dir)
-  zip(zipfile = target, flags = "-r9Xq",
-      files = list.files(all.files = TRUE, recursive = TRUE, include.dirs = FALSE))
-  setwd(curr_wd)
-  target
-}
 
 #' @importFrom xml2 read_xml xml_children xml_ns xml_attr
 read_relationship <- function(filename) {
