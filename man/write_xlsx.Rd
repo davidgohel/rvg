@@ -4,15 +4,13 @@
 \alias{write_xlsx}
 \title{Microsoft Excel Graphics Device}
 \usage{
-write_xlsx(file, code, size = c(width = 10, height = 7.5), ...)
+write_xlsx(file, code, ...)
 }
 \arguments{
 \item{file}{filename of the Microsoft Excel document to produce. File
 extension must be \code{.xlsx}.}
 
 \item{code}{Plotting code to execute}
-
-\item{size}{slide size in inches.}
 
 \item{...}{arguments for \code{fun} (passed on to \code{\link{dml_xlsx}}.)}
 }
@@ -26,4 +24,3 @@ write_xlsx(file = "my_plot_2.xlsx", code = barplot(1:7, col = 1:7))
 }
 }
 \keyword{device}
-

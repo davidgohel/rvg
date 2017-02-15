@@ -9,4 +9,3 @@ rvg_tracer_on()
 \description{
 Start collecting id of an rvg device.
 }
-

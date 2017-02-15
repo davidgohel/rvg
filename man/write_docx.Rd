@@ -4,20 +4,13 @@
 \alias{write_docx}
 \title{Microsoft Word Graphics Device}
 \usage{
-write_docx(file, code, pagesize = c(width = 8.5, height = 11),
-  margins = c(left = 1, right = 1, top = 1, bottom = 1), ...)
+write_docx(file, code, ...)
 }
 \arguments{
 \item{file}{filename of the Microsoft Word document to produce. File
 extension must be \code{.docx}.}
 
 \item{code}{Plotting code to execute}
-
-\item{pagesize}{Word document page size in inches.
-A named vector (\code{width} and \code{height}).}
-
-\item{margins}{Word document margins size in inches.
-A named vector (\code{left}, \code{right}, \code{top}, \code{bottom}).}
 
 \item{...}{arguments for \code{fun} (passed on to \code{\link{dml_docx}}.)}
 }
@@ -31,4 +24,3 @@ write_docx(file = "my_plot_2.docx", code = barplot(1:7, col = 1:7))
 }
 }
 \keyword{device}
-

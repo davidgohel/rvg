@@ -18,4 +18,3 @@ set_attr(ids, attribute, str)
 set attributes with javascript instructions
 to graphical elements.
 }
-

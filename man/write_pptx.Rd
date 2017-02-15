@@ -24,4 +24,3 @@ write_pptx(file = "my_plot_2.pptx", code = barplot(1:7, col = 1:7))
 }
 }
 \keyword{device}
-

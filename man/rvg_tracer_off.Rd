@@ -13,4 +13,3 @@ graphical elements id as integer values.
 get collected id of an rvg device and
 stop collecting.
 }
-

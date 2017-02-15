@@ -47,4 +47,3 @@ dev.off()
 \code{\link{Devices}}
 }
 \keyword{device}
-
