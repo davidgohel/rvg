@@ -21,7 +21,7 @@ Imports:
     Rcpp,
     xml2 (>= 1.0.0),
     gdtools (>= 0.1.0),
-    officer, utils
+    officer
 LinkingTo: Rcpp, gdtools
 Suggests:
     htmltools,

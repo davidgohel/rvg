@@ -1,5 +1,4 @@
-#' @importFrom officer pack_folder
-#' @importFrom utils unzip
+#' @importFrom officer pack_folder unpack_folder
 #' @import xml2
 #' @title Microsoft Excel Graphics Device
 #'
@@ -20,11 +19,12 @@ write_xlsx <- function(
   file, code,
   ...) {
 
-  .reg = regexpr( paste( "(\\.(?i)(xlsx))$", sep = "" ), file )
-  if( .reg < 1 ) stop(file , " should have '.xlsx' as extension.")
+  if( !grepl(x = file, pattern = "\\.(xlsx)$", ignore.case = TRUE) )
+    stop(file , " should have '.xlsx' as extension.")
 
   template_dir <- tempfile(tmpdir = ".")
-  unzip( zipfile = file.path( system.file(package = "rvg"), "templates/vanilla.xlsx" ), exdir = template_dir )
+  zipfile <- file.path( system.file(package = "rvg"), "templates/vanilla.xlsx" )
+  unpack_folder(file = zipfile, folder = template_dir )
 
   document_rel_dir <- file.path( template_dir, "xl/drawings/_rels" )
   document_rel <- file.path( document_rel_dir, "drawing1.xml.rels" )
@@ -72,7 +72,7 @@ write_xlsx <- function(
     media_dir <- file.path(template_dir, "xl", "media")
     if( !file.exists(media_dir))
       dir.create(media_dir)
-    #browser()
+
     for(i in seq_len(nrow(new_rels))){
       file.copy(from = raster_files[i], to = media_dir)
     }

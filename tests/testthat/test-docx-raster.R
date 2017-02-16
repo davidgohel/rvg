@@ -19,7 +19,7 @@ test_that("raster is generated", {
 })
 
 test_that("docx raster is in media", {
-  skip_if_not( nchar( getOption("unzip") > 0 ), require(utils) )
+  skip_if_not( nchar( getOption("unzip") > 0 ), require(officer) )
   doc_file <- write_docx(file = "doc.docx",
              code = {
                pushViewport(viewport(width = 0.8, height = 0.5, name = "vp1"))
@@ -29,12 +29,12 @@ test_that("docx raster is in media", {
                grid.raster(redGradient)
              })
   expect_true(file.exists(doc_file))
-  utils::unzip( zipfile = doc_file, exdir = "doc_content" )
+  officer::unpack_folder( file = doc_file, folder = "doc_content" )
   expect_true( length( list.files( file.path("doc_content", "word/media")) ) == 1 )
 })
 
 test_that("pptx raster is in media", {
-  skip_if_not( nchar( getOption("unzip") > 0 ), require(utils) )
+  skip_if_not( nchar( getOption("unzip") > 0 ), require(officer) )
   doc_file <- write_pptx(file = "doc.pptx",
                          code = {
                            pushViewport(viewport(width = 0.8, height = 0.5, name = "vp1"))
@@ -44,7 +44,7 @@ test_that("pptx raster is in media", {
                            grid.raster(redGradient)
                          })
   expect_true(file.exists(doc_file))
-  utils::unzip( zipfile = doc_file, exdir = "pres_content" )
+  officer::unpack_folder( file = doc_file, folder = "pres_content" )
   expect_true( length( list.files( file.path("pres_content", "ppt/media")) ) == 1 )
 })
 
