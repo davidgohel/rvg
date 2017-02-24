@@ -45,7 +45,7 @@ body_add_vg <- function( x, code, pos = "after", ... ){
 
   pars$file <- dml_file
   pars$id <- 0L
-  pars$last_rel_id <- x$rels$get_next_id() - 1
+  pars$last_rel_id <- x$doc_obj$relationship()$get_next_id() - 1
   pars$raster_prefix <- img_directory
   pars$standalone <- FALSE
 
