@@ -25,7 +25,7 @@
 #' dev.off()
 #' }
 #' @keywords device
-#' @useDynLib rvg
+#' @useDynLib rvg,.registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #' @importFrom gdtools raster_view
 #' @export

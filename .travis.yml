@@ -2,7 +2,13 @@ language: r
 
 cache: packages
 
-warnings_are_errors: false
+r_github_packages:
+  - jimhester/covr
+
+r:
+ - oldrel
+ - release
+ - devel
 
 after_success:
-  - Rscript -e 'covr::codecov()'
+  - Rscript -e 'library(covr);codecov()'
