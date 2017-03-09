@@ -26,7 +26,8 @@ is providing:
  document, check for dependencies `d3.js` in the document.
 * DrawingML for Microsoft Word (>=2007) with `dml_docx`, for Microsoft PowerPoint 
   with `dml_docx` and for Microsoft Excel with `dml_xlsx`. Theses formats let users 
-  edit the graphic elements (*editable graphics*) and have a very good rendering. 
+  edit the graphic elements (*editable graphics*) within Word, PowerPoint or Excel 
+  and have a very good rendering. 
 
 These raw XML outputs cannot be used *as is*. Function `body_add_vg` can be used with package `officer` to add vector graphics in Word documents. Function `ph_with_vg` can be used with package `officer` to add vector graphics in PowerPoint documents. By default, theses graphics are *editable*, element edition can be disabled with  option `editable = FALSE`.
 
