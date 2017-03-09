@@ -1,30 +1,3 @@
-#' @importFrom officer read_docx
-#' @title Microsoft Word Graphics Device
-#'
-#' @description
-#' A graphical device for Microsoft Word documents.
-#' @param file filename of the Microsoft Word document to produce. File
-#' extension must be \code{.docx}.
-#' @param code Plotting code to execute
-#' @param ... arguments for \code{fun} (passed on to \code{\link{dml_docx}}.)
-#' @examples
-#' \donttest{
-#' write_docx(file = "my_plot_1.docx", code = plot(rnorm(10)) )
-#' write_docx(file = "my_plot_2.docx", code = barplot(1:7, col = 1:7))
-#' }
-#' @keywords device
-#' @export
-write_docx <- function( file, code, ...) {
-
-  doc <- read_docx()
-  doc <- body_add_vg(doc, code = code, ...)
-  print(doc, target = file )
-}
-
-
-
-
-
 #' @export
 #' @title vml graph code
 #' @description produces the vml of a graph
@@ -34,7 +7,6 @@ write_docx <- function( file, code, ...) {
 #' one of "after", "before", "on".
 #' @param ... arguments passed on to \code{\link{dml_docx}}.
 #' @importFrom officer body_add_xml docx_reference_img wml_link_images
-#' @importFrom xml2 xml_find_first as_xml_document
 body_add_vg <- function( x, code, pos = "after", ... ){
 
   uid <- basename(tempfile(pattern = ""))

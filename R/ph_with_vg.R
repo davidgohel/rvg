@@ -1,30 +1,3 @@
-#' @importFrom officer read_pptx add_slide
-#' @title Microsoft PowerPoint Graphics Device
-#'
-#' @description
-#' A graphical device for Microsoft PowerPoint documents.
-#' @param file filename of the Microsoft PowerPoint document to produce. File
-#' extension must be \code{.pptx}.
-#' @param code Plotting code to execute
-#' @param ... arguments passed on to \code{\link{dml_pptx}}.
-#' @examples
-#' \donttest{
-#' write_pptx(file = "my_plot_1.pptx", code = plot(rnorm(10)))
-#' write_pptx(file = "my_plot_2.pptx", code = barplot(1:7, col = 1:7))
-#' }
-#' @keywords device
-#' @export
-write_pptx <- function( file, code, ...) {
-
-  doc <- read_pptx()
-  doc <- add_slide(doc, layout = "Title and Content", master = "Office Theme")
-  doc <- ph_with_vg(doc, type = "body", code = code, ... )
-  print(doc, target = file )
-
-  file
-}
-
-
 #' @export
 #' @title pml graph code
 #' @description produces the pml of a graph
