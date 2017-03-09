@@ -2,7 +2,7 @@
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^todo\.md$
-^README\.md$
+^README\.Rmd$
 ^appveyor\.yml$
 ^\.travis\.yml$
 ^revdep$
