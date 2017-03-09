@@ -1,6 +1,7 @@
 # rvg 0.1.3
 
 * new 'body_add_vg' and 'ph_with_vg' methods for package officer
+* deletion of write_* functions, these are now available in officer (functions print)
 
 # rvg 0.1.2
 
