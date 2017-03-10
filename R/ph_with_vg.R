@@ -10,11 +10,13 @@
 #' @importFrom officer ph_from_xml
 #' @importFrom xml2 xml_find_first as_xml_document
 #' @examples
+#' \donttest{
 #' library(officer)
 #' doc <- read_pptx()
 #' doc <- add_slide(doc, "Title and Content", "Office Theme")
 #' doc <- ph_with_vg(doc, code = barplot(1:5, col = 2:6), type = "body")
 #' print(doc, target = "vg.pptx")
+#' }
 ph_with_vg <- function( x, code, type, index = 1, ... ){
   slide <- x$slide$get_slide(x$cursor)
 

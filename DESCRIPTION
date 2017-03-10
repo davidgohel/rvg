@@ -22,7 +22,7 @@ Imports:
     Rcpp,
     xml2 (>= 1.0.0),
     gdtools (>= 0.1.0),
-    officer
+    officer (>= 0.1.1)
 LinkingTo: Rcpp, gdtools
 Suggests:
     htmltools,
