@@ -19,3 +19,9 @@ one of "after", "before", "on".}
 \description{
 produces the vml of a graph
 }
+\examples{
+library(officer)
+x <- read_docx()
+x <- body_add_vg(x, code = barplot(1:5, col = 2:6) )
+print(x, target = "vg.docx")
+}

@@ -7,6 +7,11 @@
 #' one of "after", "before", "on".
 #' @param ... arguments passed on to \code{\link{dml_docx}}.
 #' @importFrom officer body_add_xml docx_reference_img wml_link_images
+#' @examples
+#' library(officer)
+#' x <- read_docx()
+#' x <- body_add_vg(x, code = barplot(1:5, col = 2:6) )
+#' print(x, target = "vg.docx")
 body_add_vg <- function( x, code, pos = "after", ... ){
 
   uid <- basename(tempfile(pattern = ""))
