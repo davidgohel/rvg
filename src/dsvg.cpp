@@ -376,7 +376,7 @@ static void dsvg_raster(unsigned int *raster, int w, int h,
     raster_[i] = raster[i] ;
   }
 
-  std::string base64_str = gdtools::raster_to_str(raster_, w, h, width, height, (Rboolean) interpolate);
+  std::string base64_str = gdtools::raster_to_str(raster_, w, h, width*(25/6), height*(25/6), interpolate);
 
   fprintf(svgd->file, "<image x='%.2f' y='%.2f' ", x, y - height );
   fprintf(svgd->file, "width='%.2f' height='%.2f' ", width, height);

@@ -446,7 +446,7 @@ static void pptx_raster(unsigned int *raster, int w, int h,
   for (std::vector<unsigned int>::size_type i = 0 ; i < raster_.size(); ++i) {
     raster_[i] = raster[i] ;
   }
-  gdtools::raster_to_file(raster_, w, h, width, height, (Rboolean) interpolate, os.str());
+  gdtools::raster_to_file(raster_, w, h, width*(25/6), height*(25/6), interpolate, os.str());
   fputs("<p:pic>", pptx_obj->file);
     fputs("<p:nvPicPr>", pptx_obj->file);
       fprintf(pptx_obj->file,
