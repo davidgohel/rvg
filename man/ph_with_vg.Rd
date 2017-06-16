@@ -2,9 +2,12 @@
 % Please edit documentation in R/ph_with_vg.R
 \name{ph_with_vg}
 \alias{ph_with_vg}
+\alias{ph_with_vg_at}
 \title{pml graph code}
 \usage{
 ph_with_vg(x, code, type, index = 1, ...)
+
+ph_with_vg_at(x, code, left, top, width, height, ...)
 }
 \arguments{
 \item{x}{a pptx device}
@@ -17,6 +20,10 @@ ph_with_vg(x, code, type, index = 1, ...)
 is not unique in the current slide, e.g. two placeholders with type 'body'.}
 
 \item{...}{arguments passed on to \code{\link{dml_pptx}}.}
+
+\item{left, top}{left and top origin of the plot on the slide in inches.}
+
+\item{height, width}{Height and width in inches.}
 }
 \description{
 produces the pml of a graph
@@ -27,6 +34,9 @@ library(officer)
 doc <- read_pptx()
 doc <- add_slide(doc, "Title and Content", "Office Theme")
 doc <- ph_with_vg(doc, code = barplot(1:5, col = 2:6), type = "body")
+doc <- add_slide(doc, "Title and Content", "Office Theme")
+doc <- ph_with_vg_at(doc, code = barplot(1:5, col = 2:6),
+  left = 1, top = 2, width = 6, height = 4)
 print(doc, target = "vg.pptx")
 }
 }

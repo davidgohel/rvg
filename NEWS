@@ -1,6 +1,7 @@
 # rvg 0.1.4
 
 * raster images dpi has been increased
+* new 'ph_with_vg_at' methods for package officer
 
 # rvg 0.1.3
 
