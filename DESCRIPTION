@@ -1,7 +1,7 @@
 Package: rvg
 Type: Package
 Title: R Graphics Devices for Vector Graphics Output
-Version: 0.1.3.9000
+Version: 0.1.4
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
       email = "david.gohel@ardata.fr"),
@@ -13,7 +13,7 @@ Authors@R: c(
     )
 Description: Vector Graphics devices for 'SVG', 'DrawingML' for Microsoft Word, 
   PowerPoint and Excel. Functions extending package 'officer' are provided to 
-  embed DrawingML graphics into 'Microsoft Word' or 'Microsoft PowerPoint' documents.
+  embed DrawingML graphics into 'Microsoft PowerPoint' documents.
 License: GPL-3
 Depends:
     R (>= 3.0)
@@ -31,4 +31,4 @@ Suggests:
     grid
 URL: https://github.com/davidgohel/rvg
 BugReports: https://github.com/davidgohel/rvg/issues
-RoxygenNote: 6.0.1
+RoxygenNote: 6.0.1.9000
