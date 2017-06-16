@@ -7,6 +7,16 @@
 #' one of "after", "before", "on".
 #' @param ... arguments passed on to \code{\link{dml_docx}}.
 #' @importFrom officer body_add_xml docx_reference_img wml_link_images
+#' @note
+#' For backward compatibility reason the function is maintained but using it
+#' should be avoided: Word text boxes, the elements used to put text in a graphic,
+#' are adding extra space on top and bottom of the shape. As there is no clear rule
+#' available to handle that, it makes impossible to compute what should be the
+#' exact position of a text. This can affect the whole rendering of the graphic.
+#'
+#' The function should then be considered as a failed experience. An
+#' alternative is to use EMF format, this will not allow editing the graphic but
+#' the display is made as vector graphic.
 #' @examples
 #' \donttest{
 #' library(officer)
