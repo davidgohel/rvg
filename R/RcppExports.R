@@ -2,34 +2,34 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 DOCX_ <- function(file, bg_, width, height, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone) {
-    .Call('rvg_DOCX_', PACKAGE = 'rvg', file, bg_, width, height, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone)
+    .Call(rvg_DOCX_, file, bg_, width, height, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone)
 }
 
 DSVG_ <- function(file, width, height, bg, pointsize, standalone, canvas_id, aliases) {
-    .Call('rvg_DSVG_', PACKAGE = 'rvg', file, width, height, bg, pointsize, standalone, canvas_id, aliases)
+    .Call(rvg_DSVG_, file, width, height, bg, pointsize, standalone, canvas_id, aliases)
 }
 
 set_tracer_on <- function(dn) {
-    .Call('rvg_set_tracer_on', PACKAGE = 'rvg', dn)
+    .Call(rvg_set_tracer_on, dn)
 }
 
 set_tracer_off <- function(dn) {
-    .Call('rvg_set_tracer_off', PACKAGE = 'rvg', dn)
+    .Call(rvg_set_tracer_off, dn)
 }
 
 collect_id <- function(dn) {
-    .Call('rvg_collect_id', PACKAGE = 'rvg', dn)
+    .Call(rvg_collect_id, dn)
 }
 
 add_attribute <- function(dn, id, str, name) {
-    .Call('rvg_add_attribute', PACKAGE = 'rvg', dn, id, str, name)
+    .Call(rvg_add_attribute, dn, id, str, name)
 }
 
 PPTX_ <- function(file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone) {
-    .Call('rvg_PPTX_', PACKAGE = 'rvg', file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone)
+    .Call(rvg_PPTX_, file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone)
 }
 
 XLSX_ <- function(file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone) {
-    .Call('rvg_XLSX_', PACKAGE = 'rvg', file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone)
+    .Call(rvg_XLSX_, file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone)
 }
 
