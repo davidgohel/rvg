@@ -367,6 +367,7 @@ static void dsvg_raster(unsigned int *raster, int w, int h,
 {
   DSVG_dev *svgd = (DSVG_dev*) dd->deviceSpecific;
   int idx = svgd->new_id();
+  svgd->register_element();
 
   if (height < 0)
     height = -height;
