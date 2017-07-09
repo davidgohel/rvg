@@ -57,7 +57,9 @@ set_attr = function( ids, attribute, str ){
   stopifnot( is.character(attribute) )
   stopifnot( is.character(str) )
   stopifnot( is.numeric(ids) )
-  stopifnot( length(ids) == length(str) )
+  if( length(ids) != length(str) ){
+    stop("ids don't have the same length than str (most often, it occurs because of clipping)")
+  }
   stopifnot( length(attribute) == 1 )
 
   if( any( grepl(pattern = "'", str) ) )
