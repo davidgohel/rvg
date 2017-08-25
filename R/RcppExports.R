@@ -2,34 +2,34 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 DOCX_ <- function(file, bg_, width, height, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone) {
-    .Call(rvg_DOCX_, file, bg_, width, height, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone)
+    .Call(`_rvg_DOCX_`, file, bg_, width, height, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone)
 }
 
 DSVG_ <- function(file, width, height, bg, pointsize, standalone, canvas_id, aliases) {
-    .Call(rvg_DSVG_, file, width, height, bg, pointsize, standalone, canvas_id, aliases)
+    .Call(`_rvg_DSVG_`, file, width, height, bg, pointsize, standalone, canvas_id, aliases)
 }
 
 set_tracer_on <- function(dn) {
-    .Call(rvg_set_tracer_on, dn)
+    .Call(`_rvg_set_tracer_on`, dn)
 }
 
 set_tracer_off <- function(dn) {
-    .Call(rvg_set_tracer_off, dn)
+    .Call(`_rvg_set_tracer_off`, dn)
 }
 
 collect_id <- function(dn) {
-    .Call(rvg_collect_id, dn)
+    .Call(`_rvg_collect_id`, dn)
 }
 
 add_attribute <- function(dn, id, str, name) {
-    .Call(rvg_add_attribute, dn, id, str, name)
+    .Call(`_rvg_add_attribute`, dn, id, str, name)
 }
 
 PPTX_ <- function(file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone) {
-    .Call(rvg_PPTX_, file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone)
+    .Call(`_rvg_PPTX_`, file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone)
 }
 
 XLSX_ <- function(file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone) {
-    .Call(rvg_XLSX_, file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone)
+    .Call(`_rvg_XLSX_`, file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone)
 }
 
