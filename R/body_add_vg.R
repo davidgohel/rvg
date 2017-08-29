@@ -1,14 +1,16 @@
 #' @export
-#' @title vml graph code
-#' @description produces the vml of a graph
-#' @param x a docx device
+#' @title add a plot output as vector graphics into a Word object
+#' @description produces a vector graphics output from R plot instructions
+#' and add the result in an Word document object produced
+#' by \code{\link[officer]{read_docx}}.
+#' @param x an \code{rdocx} object produced by \code{officer::read_docx}
 #' @param code plot instructions
 #' @param pos where to add the new element relative to the cursor,
 #' one of "after", "before", "on".
 #' @param ... arguments passed on to \code{\link{dml_docx}}.
 #' @importFrom officer body_add_xml docx_reference_img wml_link_images
 #' @note
-#' For backward compatibility reason the function is maintained but using it
+#' The function is maintained but using it
 #' should be avoided: Word text boxes, the elements used to put text in a graphic,
 #' are adding extra space on top and bottom of the shape. As there is no clear rule
 #' available to handle that, it makes impossible to compute what should be the

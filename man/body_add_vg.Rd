@@ -2,12 +2,12 @@
 % Please edit documentation in R/body_add_vg.R
 \name{body_add_vg}
 \alias{body_add_vg}
-\title{vml graph code}
+\title{add a plot output as vector graphics into a Word object}
 \usage{
 body_add_vg(x, code, pos = "after", ...)
 }
 \arguments{
-\item{x}{a docx device}
+\item{x}{an \code{rdocx} object produced by \code{officer::read_docx}}
 
 \item{code}{plot instructions}
 
@@ -17,10 +17,12 @@ one of "after", "before", "on".}
 \item{...}{arguments passed on to \code{\link{dml_docx}}.}
 }
 \description{
-produces the vml of a graph
+produces a vector graphics output from R plot instructions
+and add the result in an Word document object produced
+by \code{\link[officer]{read_docx}}.
 }
 \note{
-For backward compatibility reason the function is maintained but using it
+The function is maintained but using it
 should be avoided: Word text boxes, the elements used to put text in a graphic,
 are adding extra space on top and bottom of the shape. As there is no clear rule
 available to handle that, it makes impossible to compute what should be the

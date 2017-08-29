@@ -29,9 +29,11 @@ extract_group_sp <- function(dml_str){
 }
 
 #' @export
-#' @title pml graph code
-#' @description produces the pml of a graph
-#' @param x a pptx device
+#' @title add a plot output as vector graphics into a PowerPoint object
+#' @description produces a vector graphics output from R plot instructions
+#' and add the result in a PowerPoint document object produced
+#' by \code{\link[officer]{read_pptx}}.
+#' @param x an \code{rpptx} object produced by \code{officer::read_pptx}
 #' @param code plot instructions
 #' @param type placeholder type
 #' @param index placeholder index (integer). This is to be used when a placeholder type

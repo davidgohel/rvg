@@ -3,14 +3,14 @@
 \name{ph_with_vg}
 \alias{ph_with_vg}
 \alias{ph_with_vg_at}
-\title{pml graph code}
+\title{add a plot output as vector graphics into a PowerPoint object}
 \usage{
 ph_with_vg(x, code, type, index = 1, ...)
 
 ph_with_vg_at(x, code, left, top, width, height, ...)
 }
 \arguments{
-\item{x}{a pptx device}
+\item{x}{an \code{rpptx} object produced by \code{officer::read_pptx}}
 
 \item{code}{plot instructions}
 
@@ -26,7 +26,9 @@ is not unique in the current slide, e.g. two placeholders with type 'body'.}
 \item{height, width}{Height and width in inches.}
 }
 \description{
-produces the pml of a graph
+produces a vector graphics output from R plot instructions
+and add the result in a PowerPoint document object produced
+by \code{\link[officer]{read_pptx}}.
 }
 \examples{
 \donttest{
