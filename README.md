@@ -1,8 +1,9 @@
 rvg package
 ================
 
-[![Travis-CI Build Status](https://travis-ci.org/davidgohel/rvg.svg?branch=master)](https://travis-ci.org/davidgohel/rvg) [![Build status](https://ci.appveyor.com/api/projects/status/github/davidgohel/rvg?branch=master)](https://ci.appveyor.com/project/davidgohel/rvg/branch/master) [![version](http://www.r-pkg.org/badges/version/rvg)](http://www.r-pkg.org/pkg/rvg) ![cranlogs](http://cranlogs.r-pkg.org./badges/rvg)
-
+<p>
+<a href="https://travis-ci.org/davidgohel/rvg"><img src="https://travis-ci.org/davidgohel/rvg.svg?branch=master" alt="Travis-CI Build Status" data-canonical-src="https://travis-ci.org/davidgohel/rvg.svg?branch=master" style="max-width:100%;"></a> <a href="http://cran.rstudio.com/web/packages/rvg/index.html"><img src="https://www.r-pkg.org/badges/version/rvg" alt="CRAN version" data-canonical-src="https://www.r-pkg.org/badges/version/rvg" style="max-width:100%;"></a> <img src="https://cranlogs.r-pkg.org/badges/rvg" alt="cranlogs" data-canonical-src="https://cranlogs.r-pkg.org./badges/rvg" style="max-width:100%;">
+</p>
 `rvg` is a set of graphics devices that produces Vector Graphics outputs. This package is providing:
 
 -   SVG (*Scalable Vector Graphics*) with `dsvg`. The graphic can be made interactive (tooltip, onclick and id attribute manipulation). To make that work in an HTML document, check for dependencies `d3.js` in the document. This is the svg device used by package [ggiraph](https://davidgohel.github.io/ggiraph).
