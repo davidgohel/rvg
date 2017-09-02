@@ -1,3 +1,8 @@
+# rvg 0.1.5
+
+* update with gdtools 1.6
+* raster ids are now registered
+
 # rvg 0.1.4
 
 * raster images dpi has been increased
