@@ -32,3 +32,4 @@ Suggests:
 URL: https://github.com/davidgohel/rvg
 BugReports: https://github.com/davidgohel/rvg/issues
 RoxygenNote: 6.0.1.9000
+Remotes: davidgohel/officer
