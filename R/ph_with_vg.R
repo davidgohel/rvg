@@ -62,6 +62,7 @@ ph_with_vg <- function( x, code, type, index = 1, ... ){
   id_xfrm <- slide$get_xfrm(type = type, index = index)
   id_xfrm <- as.list(id_xfrm[c("cx", "cy", "offx", "offy")])
   names(id_xfrm) <- c("width", "height", "offx", "offy")
+  id_xfrm <- lapply(id_xfrm, function(x) x / 914400 )
 
   pars <- list(...)
   add_named_args <- setdiff ( names(id_xfrm), names( pars ) )
