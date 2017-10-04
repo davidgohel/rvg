@@ -41,6 +41,7 @@ extract_group_sp <- function(dml_str){
 #' @param ... arguments passed on to \code{\link{dml_pptx}}.
 #' @importFrom officer ph_from_xml
 #' @importFrom xml2 xml_find_first as_xml_document
+#' @importFrom utils compareVersion packageDescription
 #' @examples
 #' \donttest{
 #' library(officer)
@@ -62,7 +63,12 @@ ph_with_vg <- function( x, code, type, index = 1, ... ){
   id_xfrm <- slide$get_xfrm(type = type, index = index)
   id_xfrm <- as.list(id_xfrm[c("cx", "cy", "offx", "offy")])
   names(id_xfrm) <- c("width", "height", "offx", "offy")
-  id_xfrm <- lapply(id_xfrm, function(x) x / 914400 )
+
+  # pach for officer get_xfrm change - rvg should
+  # import officer >= 0.1.8 for next version
+  officer_version <- packageDescription("officer")$Version
+  if( compareVersion("0.1.7", officer_version) < 0 )
+    id_xfrm <- lapply(id_xfrm, function(x) x / 914400 )
 
   pars <- list(...)
   add_named_args <- setdiff ( names(id_xfrm), names( pars ) )
