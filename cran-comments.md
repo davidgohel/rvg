@@ -6,14 +6,17 @@
 
 ## R CMD check results
 
-There were no ERROR, WARNING or NOTE. 
+There were no ERROR, WARNING and a NOTE on ubuntu:
+
+checking installed package size ... NOTE
+  installed size is  5.7Mb
+  sub-directories of 1Mb or more:
+    libs   5.6Mb
 
 ## Reverse dependencies
 
 There were no ERROR, WARNING or NOTE. 
   
-Checked flextable: 0 errors | 0 warnings | 0 notes
-Checked mschart  : 0 errors | 0 warnings | 0 notes
-Checked rvg      : 0 errors | 0 warnings | 0 notes
-Checked WordR    : 0 errors | 0 warnings | 0 notes
+Checked ggiraph  : 0 errors | 0 warnings | 0 notes
+Checked ReporteRs: 0 errors | 0 warnings | 0 notes
 
