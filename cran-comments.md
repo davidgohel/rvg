@@ -1,7 +1,3 @@
-Dear R Core Team,
-
-This is a resubmission, this release contains a minor update to handle a change to come with officer.
-
 ## Test environments
 
 - local OS X install (R 3.4.1)
@@ -24,8 +20,3 @@ There were no ERROR, WARNING or NOTE.
   
 Checked ggiraph  : 0 errors | 0 warnings | 0 notes
 Checked ReporteRs: 0 errors | 0 warnings | 0 notes
-
-
-
-Kind Regards,
-David Gohel
