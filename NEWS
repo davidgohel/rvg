@@ -1,3 +1,8 @@
+# rvg 0.1.7
+
+* add argument `ggobj` to `ph_with_vg()` and `ph_with_vg_at()`. It can be used as replacement
+to `code=print(gg)` when gg is a ggplot object.
+
 # rvg 0.1.6
 
 * update with officer 1.8

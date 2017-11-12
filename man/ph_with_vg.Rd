@@ -5,14 +5,17 @@
 \alias{ph_with_vg_at}
 \title{add a plot output as vector graphics into a PowerPoint object}
 \usage{
-ph_with_vg(x, code, type, index = 1, ...)
+ph_with_vg(x, code, ggobj = NULL, type, index = 1, ...)
 
-ph_with_vg_at(x, code, left, top, width, height, ...)
+ph_with_vg_at(x, code, ggobj = NULL, left, top, width, height, ...)
 }
 \arguments{
 \item{x}{an \code{rpptx} object produced by \code{officer::read_pptx}}
 
 \item{code}{plot instructions}
+
+\item{ggobj}{ggplot objet to print. argument \code{code} will
+be ignored if this argument is supplied.}
 
 \item{type}{placeholder type}
 

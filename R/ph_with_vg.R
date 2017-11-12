@@ -35,6 +35,8 @@ extract_group_sp <- function(dml_str){
 #' by \code{\link[officer]{read_pptx}}.
 #' @param x an \code{rpptx} object produced by \code{officer::read_pptx}
 #' @param code plot instructions
+#' @param ggobj ggplot objet to print. argument \code{code} will
+#' be ignored if this argument is supplied.
 #' @param type placeholder type
 #' @param index placeholder index (integer). This is to be used when a placeholder type
 #' is not unique in the current slide, e.g. two placeholders with type 'body'.
@@ -53,7 +55,7 @@ extract_group_sp <- function(dml_str){
 #'   left = 1, top = 2, width = 6, height = 4)
 #' print(doc, target = "vg.pptx")
 #' }
-ph_with_vg <- function( x, code, type, index = 1, ... ){
+ph_with_vg <- function( x, code, ggobj = NULL, type, index = 1, ... ){
   stopifnot(inherits(x, "rpptx"))
   slide <- x$slide$get_slide(x$cursor)
 
@@ -82,7 +84,14 @@ ph_with_vg <- function( x, code, type, index = 1, ... ){
 
   do.call("dml_pptx", pars)
 
-  tryCatch(code, finally = dev.off() )
+  tryCatch({
+    if( !is.null(ggobj) ){
+      stopifnot(inherits(ggobj, "ggplot"))
+      print(ggobj)
+    } else
+      code
+  }, finally = dev.off() )
+
   raster_files <- list_raster_files(img_dir = img_directory )
   dml_str <- scan( dml_file, what = "character", quiet = T, sep = "\n" )
 
@@ -102,7 +111,7 @@ ph_with_vg <- function( x, code, type, index = 1, ... ){
 #' @param left,top left and top origin of the plot on the slide in inches.
 #' @param height,width Height and width in inches.
 #' @importFrom officer ph_from_xml_at
-ph_with_vg_at <- function( x, code, left, top, width, height, ... ){
+ph_with_vg_at <- function( x, code, ggobj = NULL, left, top, width, height, ... ){
   stopifnot(inherits(x, "rpptx"))
   slide <- x$slide$get_slide(x$cursor)
 
@@ -114,7 +123,14 @@ ph_with_vg_at <- function( x, code, left, top, width, height, ... ){
            offy = top, id = 0L, raster_prefix = img_directory, standalone = FALSE,
            last_rel_id = slide$relationship()$get_next_id() - 1, ...)
 
-  tryCatch(code, finally = dev.off() )
+  tryCatch({
+    if( !is.null(ggobj) ){
+      stopifnot(inherits(ggobj, "ggplot"))
+      print(ggobj)
+    } else
+      code
+  }, finally = dev.off() )
+
   raster_files <- list_raster_files(img_dir = img_directory )
   dml_str <- scan( dml_file, what = "character", quiet = T, sep = "\n" )
 
