@@ -179,7 +179,7 @@ static void pptx_clip(double x0, double x1, double y0, double y1, pDevDesc dd) {
 
 static void pptx_close(pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
-  fprintf( pptx_obj->file, "%s", main_tree::a_closing_tag().c_str() );
+  fprintf( pptx_obj->file, "%s", main_tree::a_closing_tag(pptx_obj->standalone).c_str() );
   delete(pptx_obj);
 }
 

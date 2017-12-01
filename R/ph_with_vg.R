@@ -11,23 +11,6 @@ list_raster_files <- function(img_dir){
 }
 
 
-extract_group_sp <- function(dml_str){
-  dml_str <- gsub(pattern = "<p:spTree>",
-                  replacement = paste0("<p:spTree xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" ",
-                                       "xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" ",
-                                       "xmlns:p=\"http://schemas.openxmlformats.org/presentationml/2006/main\" ",
-                                       "xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">"),
-                  x = dml_str )
-  dml_str <- as.character( xml_find_first( as_xml_document(dml_str), "//p:grpSp" ) )
-  dml_str <- gsub(pattern = "<p:grpSp>",
-                  replacement = paste0("<p:grpSp xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" ",
-                                       "xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" ",
-                                       "xmlns:p=\"http://schemas.openxmlformats.org/presentationml/2006/main\" ",
-                                       "xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">"),
-                  x = dml_str )
-  dml_str
-}
-
 #' @export
 #' @title add a plot output as vector graphics into a PowerPoint object
 #' @description produces a vector graphics output from R plot instructions
@@ -94,13 +77,11 @@ ph_with_vg <- function( x, code, ggobj = NULL, type, index = 1, ... ){
 
   raster_files <- list_raster_files(img_dir = img_directory )
   dml_str <- scan( dml_file, what = "character", quiet = T, sep = "\n" )
-
   if( length(raster_files) ){
     slide$reference_img(src = raster_files, dir_name = file.path(x$package_dir, "ppt/media"))
     unlink(raster_files, force = TRUE)
   }
-
-  dml_str <- extract_group_sp( dml_str )
+  dml_str <- paste(dml_str, collapse = "")
   ph_from_xml(x = x, value = dml_str, type = type, index = index )
 }
 
@@ -139,6 +120,6 @@ ph_with_vg_at <- function( x, code, ggobj = NULL, left, top, width, height, ... 
     unlink(raster_files, force = TRUE)
   }
 
-  dml_str <- extract_group_sp( dml_str )
+  dml_str <- paste(dml_str, collapse = "")
   ph_from_xml_at(x = x, value = dml_str, left, top, width, height )
 }

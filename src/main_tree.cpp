@@ -14,24 +14,32 @@ std::string main_tree::a_opening_tag()
     os << "xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" ";
     os << "xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\" ";
     os << "xmlns:p=\"http://schemas.openxmlformats.org/presentationml/2006/main\" >";
+
+
+    os << "<p:nvGrpSpPr>";
+    os << "<p:cNvPr id=\"" << this->id << "\" name=\"plot" << this->id << "\"/>";
+    os << "<p:cNvGrpSpPr><a:grpSpLocks noResize=\"1\" noUngrp=\"1\" noChangeAspect=\"1\"/></p:cNvGrpSpPr>";
+    os << "<p:nvPr/>";
+    os << "</p:nvGrpSpPr>";
+    os << "<p:grpSpPr>";
+    os << "<a:xfrm>";
+    os << "<a:off x=\"" << (int)(this->offx * 12700) << "\" y=\"" << (int)(this->offy * 12700) << "\"/>";
+    os << "<a:ext cx=\"" << (int)(this->width * 12700) << "\" cy=\"" << (int)(this->height * 12700) << "\"/>";
+    os << "<a:chOff x=\"" << (int)(this->offx * 12700) << "\" y=\"" << (int)(this->offy * 12700) << "\"/>";
+    os << "<a:chExt cx=\"" << (int)(this->width * 12700) << "\" cy=\"" << (int)(this->height * 12700) << "\"/>";
+    os << "</a:xfrm>";
+    os << "</p:grpSpPr>";
+    os << "<p:grpSp>";
+
   } else {
-    os << "<p:spTree>";
+    os << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
+    os << "<p:grpSp xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" " <<
+      "xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" " <<
+        "xmlns:p=\"http://schemas.openxmlformats.org/presentationml/2006/main\" " <<
+          "xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">";
   }
 
-  os << "<p:nvGrpSpPr>";
-  os << "<p:cNvPr id=\"" << this->id << "\" name=\"plot" << this->id << "\"/>";
-  os << "<p:cNvGrpSpPr><a:grpSpLocks noResize=\"1\" noUngrp=\"1\" noChangeAspect=\"1\"/></p:cNvGrpSpPr>";
-  os << "<p:nvPr/>";
-  os << "</p:nvGrpSpPr>";
-  os << "<p:grpSpPr>";
-  os << "<a:xfrm>";
-  os << "<a:off x=\"" << (int)(this->offx * 12700) << "\" y=\"" << (int)(this->offy * 12700) << "\"/>";
-  os << "<a:ext cx=\"" << (int)(this->width * 12700) << "\" cy=\"" << (int)(this->height * 12700) << "\"/>";
-  os << "<a:chOff x=\"" << (int)(this->offx * 12700) << "\" y=\"" << (int)(this->offy * 12700) << "\"/>";
-  os << "<a:chExt cx=\"" << (int)(this->width * 12700) << "\" cy=\"" << (int)(this->height * 12700) << "\"/>";
-  os << "</a:xfrm>";
-  os << "</p:grpSpPr>";
-  os << "<p:grpSp>";
+
 
   os << "<p:nvGrpSpPr>";
   os << "<p:cNvPr id=\"" << this->group_id << "\" name=\"grp" << this->group_id << "\"/>";
@@ -51,12 +59,14 @@ std::string main_tree::a_opening_tag()
   return os.str();
 }
 
-std::string main_tree::a_closing_tag()
+std::string main_tree::a_closing_tag(int standalone)
 {
   std::stringstream os;
 
-  os << "</p:grpSp>";
-  os << "</p:spTree>";
+  if( standalone > 0 ){
+    os << "</p:grpSp>";
+    os << "</p:spTree>";
+  } else os << "</p:grpSp>";
 
   return os.str();
 }
