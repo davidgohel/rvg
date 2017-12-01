@@ -3,6 +3,9 @@
 * add argument `ggobj` to `ph_with_vg()` and `ph_with_vg_at()`. It can be used as replacement
 to `code=print(gg)` when gg is a ggplot object.
 
+* new function `xl_add_vg()` to add vector graphics produced from R into Excel workbooks. This requires
+  `officer >= 0.2.0`.
+
 # rvg 0.1.6
 
 * update with officer 1.8
