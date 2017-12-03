@@ -1,27 +1,15 @@
-language: r
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
+language: R
 cache: packages
 
 r_github_packages:
   - jimhester/covr
 
-matrix:
-  include:
-    # Ubuntu 12.04.5 LTS (Precise Pangolin)
-    - os: linux
-      dist: precise
-      r: release
-    - os: linux
-      dist: precise
-      r: devel
-    # Ubuntu 14.04.4 LTS (Trusty Tahr)
-    - os: linux
-      dist: trusty
-      r: release
-    - os: linux
-      dist: trusty
-      r: devel
-
+r:
+ - oldrel
+ - release
+ - devel
 
 after_success:
   - Rscript -e 'library(covr);codecov()'
