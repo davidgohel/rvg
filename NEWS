@@ -1,3 +1,7 @@
+# rvg 0.1.8
+
+* fix encoding issues with Windows platforms.
+
 # rvg 0.1.7
 
 * add argument `ggobj` to `ph_with_vg()` and `ph_with_vg_at()`.

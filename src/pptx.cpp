@@ -1,6 +1,6 @@
 /*
  * This file is part of rvg.
- * Copyright (c) 2015, David Gohel All rights reserved.
+ * Copyright (c) 2018, David Gohel All rights reserved.
  *
  * rvg is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with rvg. If not, see <http://www.gnu.org/licenses/>.
-**/
+ **/
 
 #include "Rcpp.h"
 #include <gdtools.h>
@@ -147,11 +147,16 @@ void write_text_body_pptx(pDevDesc dd, R_GE_gcontext *gc, const char* text, doub
 static void pptx_metric_info(int c, const pGEcontext gc, double* ascent,
                             double* descent, double* width, pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
-
-  // Convert to string - negative implies unicode code point
-  char str[16];
+  bool Unicode = mbcslocale;
   if (c < 0) {
-    Rf_ucstoutf8(str, (unsigned int) -c);
+    Unicode = TRUE;
+    c = -c;
+  }
+  char str[16];
+  if (!c) {
+    str[0]='M'; str[1]='g'; str[2]=0;
+  } else if (Unicode) {
+    Rf_ucstoutf8(str, (unsigned int) c);
   } else {
     str[0] = (char) c;
     str[1] = '\0';
@@ -184,8 +189,7 @@ static void pptx_close(pDevDesc dd) {
 }
 
 
-
-static double pptx_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
+static double pptx_strwidth_utf8(const char *str, const pGEcontext gc, pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
 
   std::string file = fontfile(gc->fontfamily, gc->fontface, pptx_obj->user_aliases);
@@ -196,8 +200,13 @@ static double pptx_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
   return fm.width;
 }
 
+static double pptx_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
+  return pptx_strwidth_utf8(Rf_translateCharUTF8(Rf_mkChar(str)), gc, dd);
+}
 
-static double pptx_strheight(const char *str, const pGEcontext gc, pDevDesc dd) {
+
+
+static double pptx_strheight_utf8(const char *str, const pGEcontext gc, pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
   std::string file = fontfile(gc->fontfamily, gc->fontface, pptx_obj->user_aliases);
   std::string name = fontname(gc->fontfamily, gc->fontface, pptx_obj->system_aliases, pptx_obj->user_aliases);
@@ -205,6 +214,7 @@ static double pptx_strheight(const char *str, const pGEcontext gc, pDevDesc dd) 
   FontMetric fm = gdtools::context_extents(pptx_obj->cc, std::string(str));
   return fm.height;
 }
+
 
 void pptx_do_polyline(NumericVector x, NumericVector y, const pGEcontext gc,
                           pDevDesc dd) {
@@ -384,13 +394,13 @@ static void pptx_circle(double x, double y, double r, const pGEcontext gc,
 }
 
 
-static void pptx_text(double x, double y, const char *str, double rot,
+static void pptx_text_utf8(double x, double y, const char *str, double rot,
                      double hadj, const pGEcontext gc, pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
 
   double fs = gc->cex * gc->ps ;
-  double w = pptx_strwidth(str, gc, dd);
-  double h = pptx_strheight(str, gc, dd);
+  double w = pptx_strwidth_utf8(str, gc, dd);
+  double h = pptx_strheight_utf8(str, gc, dd);
   if( fs*100 < 1.0 ) return;
 
   double corrected_offx = translate_rotate_x(x, y, rot, h, w, hadj) ;
@@ -409,6 +419,12 @@ static void pptx_text(double x, double y, const char *str, double rot,
 
     write_text_body_pptx(dd, gc, str, hadj, fs, h);
   fputs("</p:sp>", pptx_obj->file);
+}
+
+static void pptx_text(double x, double y, const char *str, double rot,
+                     double hadj, const pGEcontext gc, pDevDesc dd) {
+
+  return pptx_text_utf8(x, y, Rf_translateCharUTF8(Rf_mkChar(str)), rot, hadj, gc, dd);
 }
 
 static void pptx_size(double *left, double *right, double *bottom, double *top,
@@ -549,8 +565,8 @@ pDevDesc pptx_driver_new(std::string filename, int bg, double width, double heig
   // UTF-8 support
   dd->wantSymbolUTF8 = (Rboolean) 1;
   dd->hasTextUTF8 = (Rboolean) 1;
-  dd->textUTF8 = pptx_text;
-  dd->strWidthUTF8 = pptx_strwidth;
+  dd->textUTF8 = pptx_text_utf8;
+  dd->strWidthUTF8 = pptx_strwidth_utf8;
 
   // Screen Dimensions in pts
   dd->left = 0;

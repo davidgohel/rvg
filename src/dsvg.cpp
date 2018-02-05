@@ -1,6 +1,6 @@
 /*
  * This file is part of rvg.
- * Copyright (c) 2016, David Gohel All rights reserved.
+ * Copyright (c) 2018, David Gohel All rights reserved.
  *
  * rvg is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,8 +13,8 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with rvg.  If not, see <http://www.gnu.org/licenses/>.
-**/
+ * along with rvg. If not, see <http://www.gnu.org/licenses/>.
+ **/
 
 #include "Rcpp.h"
 #include <gdtools.h>
@@ -115,14 +115,21 @@ static void dsvg_metric_info(int c, const pGEcontext gc, double* ascent,
                             double* descent, double* width, pDevDesc dd) {
   DSVG_dev *svgd = (DSVG_dev*) dd->deviceSpecific;
 
-  // Convert to string - negative implies unicode code point
-  char str[16];
+  bool Unicode = mbcslocale;
   if (c < 0) {
-    Rf_ucstoutf8(str, (unsigned int) -c);
+    Unicode = TRUE;
+    c = -c;
+  }
+  char str[16];
+  if (!c) {
+    str[0]='M'; str[1]='g'; str[2]=0;
+  } else if (Unicode) {
+    Rf_ucstoutf8(str, (unsigned int) c);
   } else {
     str[0] = (char) c;
     str[1] = '\0';
   }
+
   std::string file = fontfile(gc->fontfamily, gc->fontface, svgd->user_aliases);
   std::string name = fontname(gc->fontfamily, gc->fontface, svgd->system_aliases, svgd->user_aliases);
   gdtools::context_set_font(svgd->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
@@ -259,7 +266,7 @@ void dsvg_path(double *x, double *y,
   fputs("/>", svgd->file);
 }
 
-static double dsvg_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
+static double dsvg_strwidth_utf8(const char *str, const pGEcontext gc, pDevDesc dd) {
   DSVG_dev *svgd = (DSVG_dev*) dd->deviceSpecific;
 
   std::string file = fontfile(gc->fontfamily, gc->fontface, svgd->user_aliases);
@@ -267,6 +274,9 @@ static double dsvg_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
   gdtools::context_set_font(svgd->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
   FontMetric fm = gdtools::context_extents(svgd->cc, std::string(str));
   return fm.width;
+}
+static double dsvg_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
+  return dsvg_strwidth_utf8(Rf_translateCharUTF8(Rf_mkChar(str)), gc, dd);
 }
 
 static void dsvg_rect(double x0, double y0, double x1, double y1,
@@ -305,7 +315,7 @@ static void dsvg_circle(double x, double y, double r, const pGEcontext gc,
   fputs("/>", svgd->file);
 }
 
-static void dsvg_text(double x, double y, const char *str, double rot,
+static void dsvg_text_utf8(double x, double y, const char *str, double rot,
                      double hadj, const pGEcontext gc, pDevDesc dd) {
   DSVG_dev *svgd = (DSVG_dev*) dd->deviceSpecific;
 
@@ -348,6 +358,11 @@ static void dsvg_text(double x, double y, const char *str, double rot,
 
   fputs("</text>", svgd->file);
   fputs("</g>", svgd->file);
+}
+
+static void dsvg_text(double x, double y, const char *str, double rot,
+                     double hadj, const pGEcontext gc, pDevDesc dd) {
+  return dsvg_text_utf8(x, y, Rf_translateCharUTF8(Rf_mkChar(str)), rot, hadj, gc, dd);
 }
 
 static void dsvg_size(double *left, double *right, double *bottom, double *top,
@@ -477,8 +492,8 @@ pDevDesc dsvg_driver_new(std::string filename, int bg, double width,
   // UTF-8 support
   dd->wantSymbolUTF8 = (Rboolean) 1;
   dd->hasTextUTF8 = (Rboolean) 1;
-  dd->textUTF8 = dsvg_text;
-  dd->strWidthUTF8 = dsvg_strwidth;
+  dd->textUTF8 = dsvg_text_utf8;
+  dd->strWidthUTF8 = dsvg_strwidth_utf8;
 
   // Screen Dimensions in pts
   dd->left = 0;
