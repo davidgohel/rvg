@@ -44,7 +44,7 @@ body_add_vg <- function( x, code, pos = "after", ... ){
 
   tryCatch(code, finally = dev.off() )
   raster_files <- list.files(path = getwd(), pattern = paste0("^", uid, "(.*)\\.png$"), full.names = TRUE )
-  xml_elt <- scan( dml_file, what = "character", quiet = T, sep = "\n" )
+  xml_elt <- scan( dml_file, what = "character", quiet = T, sep = "\n", encoding = "UTF-8" )
   xml_elt <- gsub(pattern = "<w:drawing>",
                   replacement = paste0("<w:p ",
                                        "xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" ",

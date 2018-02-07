@@ -26,7 +26,7 @@ test_that("text alpha col can be found", {
   text(0.2, 0.2, "hello", col = "#00000099")
   dev.off()
 
-  x <- scan(file, what = "character", sep = "\n", quiet = TRUE)
+  x <- scan(file, what = "character", sep = "\n", quiet = TRUE, encoding = "UTF-8" )
   expect_true(grepl("<w14:alpha val=\"60000\"/>", x))
 })
 
