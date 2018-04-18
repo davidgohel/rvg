@@ -331,6 +331,37 @@ static void pptx_polygon(int n, double *x, double *y, const pGEcontext gc,
   fputs("</p:sp>", pptx_obj->file);
 }
 
+static void pptx_path(double *x, double *y,
+                      int npoly, int *nper,
+                      Rboolean winding,
+                      const pGEcontext gc, pDevDesc dd) {
+  PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
+  int index = 0;
+  for (int i = 0; i < npoly; i++) {
+    Rcpp::NumericVector x_(nper[i]);
+    Rcpp::NumericVector y_(nper[i]);
+
+    for(int p = 0 ; p < nper[i] ; p++ ){
+      x_[p] = x[index];
+      y_[p] = y[index];
+      index++;
+    }
+    pptx_obj->clp->set_data(x_, y_);
+    pptx_obj->clp->clip_polyline();
+
+    std::vector<NumericVector> x_array = pptx_obj->clp->get_x_lines();
+    std::vector<NumericVector> y_array = pptx_obj->clp->get_y_lines();
+
+    for( size_t l = 0 ; l < x_array.size() ; l++ ){
+      double *tempx = x_array.at(l).begin();
+      double *tempy = y_array.at(l).begin();
+      pptx_polygon(nper[i], tempx, tempy, gc, dd);
+    }
+  }
+
+}
+
+
 static void pptx_rect(double x0, double y0, double x1, double y1,
                      const pGEcontext gc, pDevDesc dd) {
 
@@ -556,7 +587,7 @@ pDevDesc pptx_driver_new(std::string filename, int bg, double width, double heig
   dd->circle = pptx_circle;
   dd->polygon = pptx_polygon;
   dd->polyline = pptx_polyline;
-  dd->path = NULL;
+  dd->path = pptx_path;
   dd->mode = NULL;
   dd->metricInfo = pptx_metric_info;
   dd->cap = NULL;
