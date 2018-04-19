@@ -19,8 +19,9 @@
 #include "Rcpp.h"
 #include <gdtools.h>
 #include <string.h>
+#include <iostream>
 #include "R_ext/GraphicsEngine.h"
-#include "rotate.h"
+#include "utils.h"
 #include "fonts.h"
 #include "xfrm.h"
 #include "nv_pr.h"
@@ -29,11 +30,30 @@
 #include "ppr.h"
 #include "line_style.h"
 #include "main_tree.h"
-#include "body_pr.h"
-#include "a_path.h"
 #include "a_prstgeom.h"
-#include "empty_body_text.h"
 #include "clipper.h"
+
+
+std::string pptx_empty_body_text(){
+  std::stringstream os;
+  os << "<p:txBody>";
+  os << "<a:bodyPr/><a:lstStyle/><a:p/>";
+  os << "</p:txBody>";
+  return os.str();
+}
+
+std::string pptx_body_pr()
+{
+  std::stringstream os;
+
+  os << "<a:bodyPr ";
+  os << "lIns=\"0\" rIns=\"0\" tIns=\"0\" bIns=\"0\" ";
+  os << "anchorCtr=\"1\" anchor=\"ctr\" wrap=\"none\"/>";
+  os << "<a:lstStyle/>";
+
+  return os.str();
+}
+
 
 // SVG device metadata
 class PPTX_dev {
@@ -132,7 +152,7 @@ void write_text_body_pptx(pDevDesc dd, R_GE_gcontext *gc, const char* text, doub
   rpr rpr_(fontsize, is_italic(gc->fontface), is_bold(gc->fontface), gc->col, fontname_);
 
   fputs("<p:txBody>", pptx_obj->file );
-  fprintf(pptx_obj->file, "%s", body_pr::a_tag().c_str() );
+  fprintf(pptx_obj->file, "%s", pptx_body_pr().c_str() );
   fputs("<a:p>", pptx_obj->file );
   fprintf(pptx_obj->file, "%s", a_ppr_.a_tag().c_str() );
   fputs("<a:r>", pptx_obj->file );
@@ -234,12 +254,12 @@ void pptx_do_polyline(NumericVector x, NumericVector y, const pGEcontext gc,
   fprintf(pptx_obj->file, "%s", xfrm_.xml().c_str());
   fputs( "<a:custGeom><a:avLst/>", pptx_obj->file );
   fputs( "<a:pathLst>", pptx_obj->file );
-  fprintf(pptx_obj->file, "%s", a_path::a_tag(x, y, 0 ).c_str());
+  fprintf(pptx_obj->file, "%s", a_path(x, y, 0 ).c_str());
   fputs( "</a:pathLst>", pptx_obj->file );
   fputs( "</a:custGeom>", pptx_obj->file );
   fprintf(pptx_obj->file, "%s", line_style_.a_tag().c_str());
   fputs("</p:spPr>", pptx_obj->file);
-  fprintf(pptx_obj->file, "%s",empty_body_text::p_tag().c_str());
+  fprintf(pptx_obj->file, "%s",pptx_empty_body_text().c_str());
   fputs("</p:sp>", pptx_obj->file);
 }
 
@@ -320,14 +340,14 @@ static void pptx_polygon(int n, double *x, double *y, const pGEcontext gc,
       fprintf(pptx_obj->file, "%s", xfrm_.xml().c_str());
       fputs("<a:custGeom><a:avLst/>", pptx_obj->file );
         fputs( "<a:pathLst>", pptx_obj->file );
-          fprintf(pptx_obj->file, "%s", a_path::a_tag(x__, y__, 1 ).c_str());
+          fprintf(pptx_obj->file, "%s", a_path(x__, y__, 1 ).c_str());
         fputs( "</a:pathLst>", pptx_obj->file );
       fputs("</a:custGeom>", pptx_obj->file );
       if( fill_.is_visible() > 0 )
         fprintf(pptx_obj->file, "%s", fill_.solid_fill().c_str());
       fprintf(pptx_obj->file, "%s", line_style_.a_tag().c_str());
     fputs("</p:spPr>", pptx_obj->file);
-    fprintf(pptx_obj->file, "%s",empty_body_text::p_tag().c_str());
+    fprintf(pptx_obj->file, "%s",pptx_empty_body_text().c_str());
   fputs("</p:sp>", pptx_obj->file);
 }
 
@@ -398,7 +418,7 @@ static void pptx_rect(double x0, double y0, double x1, double y1,
         fprintf(pptx_obj->file, "%s", fill_.solid_fill().c_str());
       fprintf(pptx_obj->file, "%s", line_style_.a_tag().c_str());
     fputs("</p:spPr>", pptx_obj->file);
-    fprintf(pptx_obj->file, "%s",empty_body_text::p_tag().c_str());
+    fprintf(pptx_obj->file, "%s",pptx_empty_body_text().c_str());
   fputs("</p:sp>", pptx_obj->file);
 }
 
@@ -419,7 +439,7 @@ static void pptx_circle(double x, double y, double r, const pGEcontext gc,
         fprintf(pptx_obj->file, "%s", fill_.solid_fill().c_str());
       fprintf(pptx_obj->file, "%s", line_style_.a_tag().c_str());
     fputs("</p:spPr>", pptx_obj->file);
-    fprintf(pptx_obj->file, "%s",empty_body_text::p_tag().c_str());
+    fprintf(pptx_obj->file, "%s",pptx_empty_body_text().c_str());
 
   fputs("</p:sp>", pptx_obj->file);
 }

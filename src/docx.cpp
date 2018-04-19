@@ -20,7 +20,7 @@
 #include <gdtools.h>
 #include <string.h>
 #include "R_ext/GraphicsEngine.h"
-#include "rotate.h"
+#include "utils.h"
 #include "fonts.h"
 #include "xfrm.h"
 #include "nv_pr.h"
@@ -29,11 +29,27 @@
 #include "ppr.h"
 #include "line_style.h"
 #include "main_tree.h"
-#include "body_pr.h"
-#include "a_path.h"
 #include "a_prstgeom.h"
-#include "empty_body_text.h"
 #include "clipper.h"
+
+std::string docx_empty_body_text()
+{
+  return "<wps:bodyPr/>";
+}
+
+std::string docx_body_pr()
+{
+  std::stringstream os;
+
+  os << "<wps:bodyPr ";
+  os << "lIns=\"0\" rIns=\"0\" tIns=\"0\" bIns=\"0\" ";
+  os << "anchor=\"b\" ";
+  os << "vert=\"horz\" wrap=\"none\">";
+  os << "<a:spAutoFit/>";
+  os << "</wps:bodyPr>";
+
+  return os.str();
+}
 
 // SVG device metadata
 class DOCX_dev {
@@ -228,12 +244,12 @@ void docx_do_polyline(NumericVector x, NumericVector y, const pGEcontext gc,
   fprintf(docx_obj->file, "%s", xfrm_.xml().c_str());
   fputs( "<a:custGeom><a:avLst/>", docx_obj->file );
   fputs( "<a:pathLst>", docx_obj->file );
-  fprintf(docx_obj->file, "%s", a_path::a_tag(x, y, 0 ).c_str());
+  fprintf(docx_obj->file, "%s", a_path(x, y, 0 ).c_str());
   fputs( "</a:pathLst>", docx_obj->file );
   fputs( "</a:custGeom>", docx_obj->file );
   fprintf(docx_obj->file, "%s", line_style_.a_tag().c_str());
   fputs("</wps:spPr>", docx_obj->file);
-  fprintf(docx_obj->file, "%s",empty_body_text::wps_tag().c_str());
+  fprintf(docx_obj->file, "%s",docx_empty_body_text().c_str());
   fputs("</wps:wsp>", docx_obj->file);
 }
 
@@ -312,14 +328,14 @@ static void docx_polygon(int n, double *x, double *y, const pGEcontext gc,
       fprintf(docx_obj->file, "%s", xfrm_.xml().c_str());
       fputs("<a:custGeom><a:avLst/>", docx_obj->file );
         fputs( "<a:pathLst>", docx_obj->file );
-          fprintf(docx_obj->file, "%s", a_path::a_tag(x__, y__, 1 ).c_str());
+          fprintf(docx_obj->file, "%s", a_path(x__, y__, 1 ).c_str());
         fputs( "</a:pathLst>", docx_obj->file );
       fputs("</a:custGeom>", docx_obj->file );
       if( fill_.is_visible() > 0 )
         fprintf(docx_obj->file, "%s", fill_.solid_fill().c_str());
       fprintf(docx_obj->file, "%s", line_style_.a_tag().c_str());
     fputs("</wps:spPr>", docx_obj->file);
-    fprintf(docx_obj->file, "%s",empty_body_text::wps_tag().c_str());
+    fprintf(docx_obj->file, "%s",docx_empty_body_text().c_str());
   fputs("</wps:wsp>", docx_obj->file);
 }
 
@@ -352,7 +368,7 @@ static void docx_rect(double x0, double y0, double x1, double y1,
         fprintf(docx_obj->file, "%s", fill_.solid_fill().c_str());
       fprintf(docx_obj->file, "%s", line_style_.a_tag().c_str());
     fputs("</wps:spPr>", docx_obj->file);
-    fprintf(docx_obj->file, "%s",empty_body_text::wps_tag().c_str());
+    fprintf(docx_obj->file, "%s",docx_empty_body_text().c_str());
   fputs("</wps:wsp>", docx_obj->file);
 }
 
@@ -373,7 +389,7 @@ static void docx_circle(double x, double y, double r, const pGEcontext gc,
         fprintf(docx_obj->file, "%s", fill_.solid_fill().c_str());
       fprintf(docx_obj->file, "%s", line_style_.a_tag().c_str());
     fputs("</wps:spPr>", docx_obj->file);
-    fprintf(docx_obj->file, "%s",empty_body_text::wps_tag().c_str());
+    fprintf(docx_obj->file, "%s",docx_empty_body_text().c_str());
 
   fputs("</wps:wsp>", docx_obj->file);
 }
@@ -402,7 +418,7 @@ static void docx_text_utf8(double x, double y, const char *str, double rot,
       fputs("<a:noFill/>", docx_obj->file);
     fputs("</wps:spPr>", docx_obj->file);
     write_text_body_docx(dd, gc, str, hadj, fs, h);
-    fprintf(docx_obj->file, "%s", body_pr::wps_tag().c_str() );
+    fprintf(docx_obj->file, "%s", docx_body_pr().c_str() );
 
 
   fputs("</wps:wsp>", docx_obj->file);
@@ -463,7 +479,7 @@ static void docx_raster(unsigned int *raster, int w, int h,
   fputs("</a:blipFill>", docx_obj->file);
   fprintf(docx_obj->file, "%s", line_style_.a_tag().c_str());
   fputs("</wps:spPr>", docx_obj->file);
-  fprintf(docx_obj->file, "%s",empty_body_text::wps_tag().c_str());
+  fprintf(docx_obj->file, "%s",docx_empty_body_text().c_str());
   fputs("</wps:wsp>", docx_obj->file);
 }
 

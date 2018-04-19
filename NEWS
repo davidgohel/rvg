@@ -1,3 +1,7 @@
+# rvg 0.1.9
+
+* add path method to PowerPoint device
+
 # rvg 0.1.8
 
 * fix encoding issues with Windows platforms.
