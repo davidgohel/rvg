@@ -5,7 +5,7 @@
 \alias{ph_with_vg_at}
 \title{add a plot output as vector graphics into a PowerPoint object}
 \usage{
-ph_with_vg(x, code, ggobj = NULL, type, index = 1, ...)
+ph_with_vg(x, code, ggobj = NULL, type = "body", index = 1, ...)
 
 ph_with_vg_at(x, code, ggobj = NULL, left, top, width, height, ...)
 }

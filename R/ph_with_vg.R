@@ -37,7 +37,7 @@ list_raster_files <- function(img_dir){
 #'   left = 1, top = 2, width = 6, height = 4)
 #' print(doc, target = "vg.pptx")
 #' }
-ph_with_vg <- function( x, code, ggobj = NULL, type, index = 1, ... ){
+ph_with_vg <- function( x, code, ggobj = NULL, type = "body", index = 1, ... ){
   stopifnot(inherits(x, "rpptx"))
   slide <- x$slide$get_slide(x$cursor)
 
