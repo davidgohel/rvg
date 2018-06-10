@@ -1,6 +1,18 @@
 # rvg 0.1.9
 
-* add path method to PowerPoint device
+## Enhancement
+
+* add path method to PowerPoint device. As an effect
+  `ggplot2::geom_sf` is now supported.
+* argument `type` of function `ph_with_vg`
+  now default to "body".
+
+## Changes
+
+* `dml_docx` is deprecated and will be removed in later versions. It
+  was maintained for compatibility reasons with package ReporteRs.
+  As ReporteRs will be removed from CRAN 2018-07-16, this function
+  has no more reason to exist.
 
 # rvg 0.1.8
 

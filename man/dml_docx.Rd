@@ -53,6 +53,8 @@ and heights.
 
 Autofit option has been set as a workaround, this moves text slightly on the produced graphic when
 edited in 'Microsoft Word' but this makes sure the text can be read.
+
+This function is deprecated and should not be used as it will be removed in version > 0.1.9.
 }
 \examples{
 \donttest{

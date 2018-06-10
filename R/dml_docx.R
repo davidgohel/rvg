@@ -34,6 +34,8 @@
 #'
 #' Autofit option has been set as a workaround, this moves text slightly on the produced graphic when
 #' edited in 'Microsoft Word' but this makes sure the text can be read.
+#'
+#' This function is deprecated and should not be used as it will be removed in version > 0.1.9.
 #' @examples
 #' \donttest{
 #' dml_docx( file = tempfile() )
@@ -47,7 +49,7 @@ dml_docx <- function(file = "Rplots.dml", width = 6, height = 6,
                      bg = "white", fonts = list(),
                      pointsize = 12, editable = TRUE,
                      id = 1L, last_rel_id = 1L, raster_prefix = "raster_", standalone = TRUE ) {
-
+  .Deprecated(msg = "dml_docx() is deprecated, use devEMF::emf instead.")
 
   system_fonts <- validate_fonts( fonts )
 
