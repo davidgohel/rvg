@@ -11,7 +11,7 @@ Authors@R: c(
       email = "francois.brunetti@lysis-consultants.fr",
       comment = "clipping algorithms")
     )
-Description: Vector Graphics devices for 'SVG', 'DrawingML' for Microsoft Word, 
+Description: Vector Graphics devices for 'SVG', 'DrawingML' for Microsoft 
   PowerPoint and Excel. Functions extending package 'officer' are provided to 
   embed 'DrawingML' graphics into 'Microsoft PowerPoint' presentations and 
   'Microsoft Excel' workbooks.
