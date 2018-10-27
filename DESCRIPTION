@@ -24,7 +24,8 @@ Imports:
     officer (>= 0.2.0), 
     gdtools (>= 0.1.6),
     xml2 (>= 1.0.0),
-    rmarkdown (>= 1.10.14)
+    rmarkdown (>= 1.10.14),
+    memoise
 LinkingTo: Rcpp, gdtools
 Suggests:
     htmltools,
