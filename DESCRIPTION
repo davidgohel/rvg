@@ -23,13 +23,16 @@ Imports:
     Rcpp (>= 0.12.12),
     officer (>= 0.2.0), 
     gdtools (>= 0.1.6),
-    xml2 (>= 1.0.0)
+    xml2 (>= 1.0.0),
+    rmarkdown (>= 1.10.14)
 LinkingTo: Rcpp, gdtools
 Suggests:
     htmltools,
     testthat,
     covr,
     grid
+Remotes:
+    rstudio/rmarkdown
 URL: https://github.com/davidgohel/rvg
 BugReports: https://github.com/davidgohel/rvg/issues
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 6.1.0
