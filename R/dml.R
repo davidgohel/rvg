@@ -38,7 +38,7 @@ dml <- function(code, ggobj = NULL, layout = "default",
 #' @param x a \code{dml} object
 #' @param ... further arguments, not used.
 #' @author Noam Ross
-#' @importFrom knitr knit_print asis_output opts_knit opts_current
+#' @importFrom knitr knit_print asis_output opts_knit
 #' @importFrom rmarkdown pandoc_version
 #' @importFrom xml2 xml_find_first
 #' @export
@@ -145,7 +145,7 @@ get_slide_size <- function(ref_pptx) {
 get_reference_pptx_uncached <- function(reference_pptx = NULL) {
   if (!is.null(reference_pptx)) return(reference_pptx)
 
-  pandoc_args <- knitr::opts_knit$get("rmarkdown.pandoc.args")
+  pandoc_args <- opts_knit$get("rmarkdown.pandoc.args")
 
   rd <- grep("--reference-doc", pandoc_args)
   if (length(rd)) {
@@ -157,7 +157,6 @@ get_reference_pptx_uncached <- function(reference_pptx = NULL) {
 }
 
 #' @noRd
-#' @importFrom knitr opts_knit
 #' @importFrom memoise memoise
 get_reference_pptx <- memoise(get_reference_pptx_uncached)
 

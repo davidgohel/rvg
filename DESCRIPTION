@@ -25,6 +25,7 @@ Imports:
     gdtools (>= 0.1.6),
     xml2 (>= 1.0.0),
     rmarkdown (>= 1.10.14),
+    knitr,
     memoise
 LinkingTo: Rcpp, gdtools
 Suggests:
