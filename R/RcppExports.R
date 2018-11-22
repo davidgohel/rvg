@@ -5,26 +5,6 @@ DOCX_ <- function(file, bg_, width, height, pointsize, aliases, editable, id, ra
     .Call(`_rvg_DOCX_`, file, bg_, width, height, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone)
 }
 
-DSVG_ <- function(file, width, height, bg, pointsize, standalone, canvas_id, aliases) {
-    .Call(`_rvg_DSVG_`, file, width, height, bg, pointsize, standalone, canvas_id, aliases)
-}
-
-set_tracer_on <- function(dn) {
-    .Call(`_rvg_set_tracer_on`, dn)
-}
-
-set_tracer_off <- function(dn) {
-    .Call(`_rvg_set_tracer_off`, dn)
-}
-
-collect_id <- function(dn) {
-    .Call(`_rvg_collect_id`, dn)
-}
-
-add_attribute <- function(dn, id, str, name) {
-    .Call(`_rvg_add_attribute`, dn, id, str, name)
-}
-
 PPTX_ <- function(file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone) {
     .Call(`_rvg_PPTX_`, file, bg_, width, height, offx, offy, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone)
 }

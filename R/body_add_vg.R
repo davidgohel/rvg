@@ -9,6 +9,7 @@
 #' one of "after", "before", "on".
 #' @param ... arguments passed on to \code{\link{dml_docx}}.
 #' @importFrom officer body_add_xml docx_reference_img wml_link_images
+#' @importFrom grDevices dev.off
 #' @note
 #' The function is maintained but using it
 #' should be avoided: Word text boxes, the elements used to put text in a graphic,

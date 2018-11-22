@@ -26,71 +26,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// DSVG_
-bool DSVG_(std::string file, double width, double height, std::string bg, int pointsize, bool standalone, int canvas_id, Rcpp::List aliases);
-RcppExport SEXP _rvg_DSVG_(SEXP fileSEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP bgSEXP, SEXP pointsizeSEXP, SEXP standaloneSEXP, SEXP canvas_idSEXP, SEXP aliasesSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type file(fileSEXP);
-    Rcpp::traits::input_parameter< double >::type width(widthSEXP);
-    Rcpp::traits::input_parameter< double >::type height(heightSEXP);
-    Rcpp::traits::input_parameter< std::string >::type bg(bgSEXP);
-    Rcpp::traits::input_parameter< int >::type pointsize(pointsizeSEXP);
-    Rcpp::traits::input_parameter< bool >::type standalone(standaloneSEXP);
-    Rcpp::traits::input_parameter< int >::type canvas_id(canvas_idSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List >::type aliases(aliasesSEXP);
-    rcpp_result_gen = Rcpp::wrap(DSVG_(file, width, height, bg, pointsize, standalone, canvas_id, aliases));
-    return rcpp_result_gen;
-END_RCPP
-}
-// set_tracer_on
-bool set_tracer_on(int dn);
-RcppExport SEXP _rvg_set_tracer_on(SEXP dnSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type dn(dnSEXP);
-    rcpp_result_gen = Rcpp::wrap(set_tracer_on(dn));
-    return rcpp_result_gen;
-END_RCPP
-}
-// set_tracer_off
-bool set_tracer_off(int dn);
-RcppExport SEXP _rvg_set_tracer_off(SEXP dnSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type dn(dnSEXP);
-    rcpp_result_gen = Rcpp::wrap(set_tracer_off(dn));
-    return rcpp_result_gen;
-END_RCPP
-}
-// collect_id
-Rcpp::IntegerVector collect_id(int dn);
-RcppExport SEXP _rvg_collect_id(SEXP dnSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type dn(dnSEXP);
-    rcpp_result_gen = Rcpp::wrap(collect_id(dn));
-    return rcpp_result_gen;
-END_RCPP
-}
-// add_attribute
-bool add_attribute(int dn, Rcpp::IntegerVector id, std::vector< std::string > str, std::string name);
-RcppExport SEXP _rvg_add_attribute(SEXP dnSEXP, SEXP idSEXP, SEXP strSEXP, SEXP nameSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type dn(dnSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type id(idSEXP);
-    Rcpp::traits::input_parameter< std::vector< std::string > >::type str(strSEXP);
-    Rcpp::traits::input_parameter< std::string >::type name(nameSEXP);
-    rcpp_result_gen = Rcpp::wrap(add_attribute(dn, id, str, name));
-    return rcpp_result_gen;
-END_RCPP
-}
 // PPTX_
 bool PPTX_(std::string file, std::string bg_, double width, double height, double offx, double offy, int pointsize, Rcpp::List aliases, bool editable, int id, std::string raster_prefix, int last_rel_id, int standalone);
 RcppExport SEXP _rvg_PPTX_(SEXP fileSEXP, SEXP bg_SEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP offxSEXP, SEXP offySEXP, SEXP pointsizeSEXP, SEXP aliasesSEXP, SEXP editableSEXP, SEXP idSEXP, SEXP raster_prefixSEXP, SEXP last_rel_idSEXP, SEXP standaloneSEXP) {
@@ -140,11 +75,6 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rvg_DOCX_", (DL_FUNC) &_rvg_DOCX_, 11},
-    {"_rvg_DSVG_", (DL_FUNC) &_rvg_DSVG_, 8},
-    {"_rvg_set_tracer_on", (DL_FUNC) &_rvg_set_tracer_on, 1},
-    {"_rvg_set_tracer_off", (DL_FUNC) &_rvg_set_tracer_off, 1},
-    {"_rvg_collect_id", (DL_FUNC) &_rvg_collect_id, 1},
-    {"_rvg_add_attribute", (DL_FUNC) &_rvg_add_attribute, 4},
     {"_rvg_PPTX_", (DL_FUNC) &_rvg_PPTX_, 13},
     {"_rvg_XLSX_", (DL_FUNC) &_rvg_XLSX_, 13},
     {NULL, NULL, 0}

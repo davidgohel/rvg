@@ -1,3 +1,7 @@
+#' @useDynLib rvg,.registration = TRUE
+#' @importFrom Rcpp sourceCpp
+#' @importFrom gdtools raster_view
+
 r_font_families <- c("sans", "serif", "mono", "symbol")
 
 default_fontname <- function() {
