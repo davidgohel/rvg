@@ -20,5 +20,12 @@ checking installed package size ... NOTE
 
 There were no ERROR, WARNING or NOTE. 
   
-Checked ggiraph  : 0 errors | 0 warnings | 0 notes
-Checked ReporteRs: 0 errors | 0 warnings | 0 notes
+|package      |version |error |warning |note |
+|:------------|:-------|:-----|:-------|:----|
+|bfw          |0.3.0   |      |        |     |
+|customLayout |0.3.0   |      |        |     |
+|esquisse     |0.1.7   |      |        |     |
+|export       |0.2.2   |      |        |     |
+|rrtable      |0.1.0   |      |        |     |
+|thinkr       |0.13    |      |        |     |
+
