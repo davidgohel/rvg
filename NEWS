@@ -1,3 +1,9 @@
+# rvg 0.2.0
+
+## Changes
+
+* dsvg is now living in ggiraph package
+
 # rvg 0.1.9
 
 ## Enhancement

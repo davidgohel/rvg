@@ -49,7 +49,7 @@ dml_docx <- function(file = "Rplots.dml", width = 6, height = 6,
                      bg = "white", fonts = list(),
                      pointsize = 12, editable = TRUE,
                      id = 1L, last_rel_id = 1L, raster_prefix = "raster_", standalone = TRUE ) {
-  .Deprecated(msg = "dml_docx() is deprecated, use devEMF::emf instead.")
+  .Deprecated(msg = "dml_docx() is deprecated and will be removed in the next version (> 0.2.0), use devEMF::emf instead.")
 
   system_fonts <- validate_fonts( fonts )
 
