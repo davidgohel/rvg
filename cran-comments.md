@@ -6,15 +6,7 @@
 
 ## R CMD check results
 
-There were no ERROR or WARNING.
-
-There were 1 note on travis-ci/ubuntu:
-
-checking installed package size ... NOTE
-  installed size is  5.4Mb
-  sub-directories of 1Mb or more:
-    libs   5.2Mb
-
+There were no ERROR, WARNING or NOTE.
 
 ## Reverse dependencies
 
