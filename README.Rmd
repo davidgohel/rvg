@@ -19,14 +19,8 @@ knitr::opts_chunk$set(
 ![Active](http://www.repostatus.org/badges/latest/active.svg)
 
 
-`rvg` is a set of graphics devices that produces Vector Graphics outputs. 
-This package is providing:
-
-* SVG (*Scalable Vector Graphics*) with `dsvg`. The graphic can be made interactive 
-(tooltip, onclick and id attribute manipulation). To make that work in an HTML 
-document, check for dependencies `d3.js` in the document. This is the svg device 
-used by package [ggiraph](https://davidgohel.github.io/ggiraph).
-* DrawingML for Microsoft PowerPoint with `dml_pptx` and for Microsoft Excel 
+`rvg` is providing two graphics devices that produces Vector Graphics outputs in 
+DrawingML format for Microsoft PowerPoint with `dml_pptx` and for Microsoft Excel 
 with `dml_xlsx`. Theses formats let users edit the graphic elements (*editable 
 graphics*) within PowerPoint or Excel and have a very good rendering. 
 
