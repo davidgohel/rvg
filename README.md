@@ -15,18 +15,21 @@ for Microsoft Excel with `dml_xlsx`. Theses formats let users edit the
 graphic elements (*editable graphics*) within PowerPoint or Excel and
 have a very good rendering.
 
-These raw XML outputs cannot be used *as is*. Functions `ph_with_vg()`
-and `ph_with_vg_at()` can be used with package `officer` to add vector
-graphics in PowerPoint documents.
+These raw XML outputs cannot be used *as is*. Functions `dml` and
+`ph_with()` have to be used with package `officer` to add vector
+graphics in PowerPoint documents (`dml` function is a simple wrapper to
+mark the plot instructions as Vector Graphics instructions).
 
 ``` r
 library(rvg)
 library(ggplot2)
 library(officer)
 
+my_vec_graph <- dml(code = barplot(1:5, col = 2:6))
+
 doc <- read_pptx()
 doc <- add_slide(doc, layout = "Title and Content", master = "Office Theme")
-doc <- ph_with_vg(doc, code = barplot(1:10), type = "body")
+doc <- ph_with(doc, my_vec_graph, location = ph_location_fullsize() )
 print(doc, target = "my_plot.pptx")
 ```
 

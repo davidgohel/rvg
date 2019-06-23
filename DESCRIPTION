@@ -1,7 +1,7 @@
 Package: rvg
 Type: Package
 Title: R Graphics Devices for Vector Graphics Output
-Version: 0.2.0
+Version: 0.2.1.001
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
       email = "david.gohel@ardata.fr"),
@@ -16,14 +16,15 @@ Description: Vector Graphics devices for Microsoft
   embed 'DrawingML' graphics into 'Microsoft PowerPoint' presentations and 
   'Microsoft Excel' workbooks.
 License: GPL-3
+Encoding: UTF-8
 Depends:
     R (>= 3.0)
 Imports:
     grDevices,
     Rcpp (>= 0.12.12),
-    officer (>= 0.2.0), 
+    officer (>= 0.3.5), 
     gdtools (>= 0.1.6),
-    xml2 (>= 1.0.0)
+    xml2 (>= 1.0.0), rlang
 LinkingTo: Rcpp, gdtools
 Suggests:
     htmltools,
