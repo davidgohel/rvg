@@ -28,8 +28,9 @@ list_raster_files <- function(img_dir){
 #' doc <- read_pptx()
 #' doc <- add_slide(doc, "Title and Content", "Office Theme")
 #' doc <- ph_with(doc, anyplot, location = ph_location_fullsize())
-#'
-#' print(doc, target = "vg.pptx")
+#' fileout <- tempfile(fileext = ".pptx")
+#' # fileout <- "vg.pptx"
+#' print(doc, target = fileout)
 #' @export
 #' @seealso \code{\link{ph_with.dml}}
 dml <- function(code, ggobj = NULL,
@@ -149,7 +150,9 @@ ph_with.dml <- function( x, value, ... ){
 #' doc <- add_slide(doc, "Title and Content", "Office Theme")
 #' doc <- ph_with_vg_at(doc, code = barplot(1:5, col = 2:6),
 #'   left = 1, top = 2, width = 6, height = 4)
-#' print(doc, target = "vg.pptx")
+#' fileout <- tempfile(fileext = ".pptx")
+#' # fileout <- "vg.pptx"
+#' print(doc, target = fileout)
 #' }
 #' @importFrom officer ph_location
 ph_with_vg <- function( x, code, ggobj = NULL, type = "body", index = 1, location = NULL, ... ){

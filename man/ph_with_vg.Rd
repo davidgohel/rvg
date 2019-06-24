@@ -50,6 +50,8 @@ doc <- ph_with_vg(doc, code = barplot(1:5, col = 2:6), type = "body")
 doc <- add_slide(doc, "Title and Content", "Office Theme")
 doc <- ph_with_vg_at(doc, code = barplot(1:5, col = 2:6),
   left = 1, top = 2, width = 6, height = 4)
-print(doc, target = "vg.pptx")
+fileout <- tempfile(fileext = ".pptx")
+# fileout <- "vg.pptx"
+print(doc, target = fileout)
 }
 }

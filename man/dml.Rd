@@ -29,8 +29,9 @@ library(officer)
 doc <- read_pptx()
 doc <- add_slide(doc, "Title and Content", "Office Theme")
 doc <- ph_with(doc, anyplot, location = ph_location_fullsize())
-
-print(doc, target = "vg.pptx")
+fileout <- tempfile(fileext = ".pptx")
+# fileout <- "vg.pptx"
+print(doc, target = fileout)
 }
 \seealso{
 \code{\link{ph_with.dml}}
