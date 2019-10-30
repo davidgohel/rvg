@@ -1,42 +1,44 @@
 #' @useDynLib rvg,.registration = TRUE
 #' @importFrom Rcpp sourceCpp
-#' @importFrom gdtools raster_view
+#' @importFrom gdtools font_family_exists match_family
 
 r_font_families <- c("sans", "serif", "mono", "symbol")
 
 default_fontname <- function() {
-  if (.Platform$OS.type == "windows") {
-    serif_font <- "Times New Roman"
+  def_fonts <- if( Sys.info()["sysname"] == "windows" ){
+    c(
+      sans = "Arial",
+      serif = "Times New Roman",
+      mono = "Courier New",
+      symbol = "Symbol"
+    )
+  } else if( Sys.info()["sysname"] == "darwin" ){
+    c(
+      sans = "Helvetica",
+      serif = "Times",
+      mono = "Courier",
+      symbol = "Symbol"
+    )
   } else {
-    serif_font <- "Times"
+    c(
+      sans = "DejaVu Sans",
+      serif = "DejaVu serif",
+      mono = "DejaVu mono",
+      symbol = "DejaVu Sans"
+    )
   }
-  c(
-    sans = "Arial",
-    serif = serif_font,
-    mono = "Courier",
-    symbol = "Symbol"
-  )
+
+  def_fonts <- def_fonts[unlist(lapply(def_fonts, font_family_exists))]
+  missing_fonts <- setdiff(r_font_families, names(def_fonts) )
+  def_fonts[missing_fonts] <- lapply(def_fonts[missing_fonts], match_family)
+  def_fonts
 }
 
-match_sys_font <- function(x){
-  if( !( is.character(x) && length(x) == 1 ) ){
-    stop("System fonts must be scalar character vector", call. = FALSE)
-  }
-  matched <- gdtools::match_family(x)
-
-  if (x != matched) {
-    warning(call. = FALSE,
-            "System font `", x, "` not found. ",
-            "Closest match: `", matched, "`")
-  }
-  matched
-}
 
 validate_fonts <- function(system_fonts = list()) {
+  system_fonts <- system_fonts[unlist(lapply(system_fonts, font_family_exists))]
   missing_fonts <- setdiff(r_font_families, names(system_fonts) )
-  system_fonts[missing_fonts] <- lapply(default_fontname()[missing_fonts], gdtools::match_family)
-  system_fonts <- lapply(system_fonts, match_sys_font)
+  system_fonts[missing_fonts] <- default_fontname()[missing_fonts]
   system_fonts
 }
-
 
