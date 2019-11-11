@@ -1,0 +1,33 @@
+title: rvg
+
+template:
+  package: ardown
+  bootswatch: simplex
+
+home:
+  links:
+  - text: 'Visit <a href="https://www.ardata.fr"><img alt="ardata" src="https://www.ardata.fr/img/ardata-logo.svg" width="70"></a> website'
+    href: https://www.ardata.fr
+
+reference:
+  - title: PowerPoint content
+    contents:
+      - dml
+      - ph_with.dml
+      - dml_pptx
+  - title: Excel content
+    contents:
+      - xl_add_vg
+      - dml_xlsx
+
+navbar:
+  title: rvg
+  type: default
+  left:
+  - text: Customizing rvg objects
+    href: articles/offcran/customizing.html
+  - text: Function reference
+    href: reference/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/davidgohel/rvg
