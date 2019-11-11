@@ -21,6 +21,9 @@ argument is supplied.}
 A simple wrapper to mark
 the plot instructions as Vector Graphics instructions. It produces
 an object of class 'dml' with a corresponding method \code{\link[officer]{ph_with}}.
+
+The function enable usage of any R plot with argument \code{code} and with
+ggplot objects with argument \code{ggobj}.
 }
 \examples{
 anyplot = dml(code = barplot(1:5, col = 2:6), bg = "wheat")

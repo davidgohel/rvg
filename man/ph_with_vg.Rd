@@ -25,8 +25,7 @@ is not unique in the current slide, e.g. two placeholders with type 'body'.}
 
 \item{location}{a placeholder location object. This is a convenient
 argument that can replace usage of arguments \code{type} and \code{index}.
-See [ph_location_type], [ph_location], [ph_location_label],
-[ph_location_left], [ph_location_right], [ph_location_fullsize].}
+See \link{ph_location_type}, \link{ph_location} and other \code{ph_location*} functions.}
 
 \item{...}{arguments passed on to \code{\link{dml_pptx}}.}
 
@@ -37,21 +36,8 @@ See [ph_location_type], [ph_location], [ph_location_label],
 \description{
 produces a vector graphics output from R plot instructions
 and add the result in a PowerPoint document object produced
-by \code{\link[officer]{read_pptx}}. These functions will be deprecated
-in the next release and function \code{\link{ph_with.dml}} should
-be used instead.
-}
-\examples{
-\donttest{
-library(officer)
-doc <- read_pptx()
-doc <- add_slide(doc, "Title and Content", "Office Theme")
-doc <- ph_with_vg(doc, code = barplot(1:5, col = 2:6), type = "body")
-doc <- add_slide(doc, "Title and Content", "Office Theme")
-doc <- ph_with_vg_at(doc, code = barplot(1:5, col = 2:6),
-  left = 1, top = 2, width = 6, height = 4)
-fileout <- tempfile(fileext = ".pptx")
-# fileout <- "vg.pptx"
-print(doc, target = fileout)
-}
+by \code{\link[officer]{read_pptx}}.
+
+These functions will be deprecated in the next release and
+function \code{\link{ph_with.dml}} should be used instead.
 }

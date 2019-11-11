@@ -1,7 +1,7 @@
 Package: rvg
 Type: Package
 Title: R Graphics Devices for Vector Graphics Output
-Version: 0.2.2.001
+Version: 0.2.2.002
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
       email = "david.gohel@ardata.fr"),
@@ -22,7 +22,7 @@ Depends:
 Imports:
     grDevices,
     Rcpp (>= 0.12.12),
-    officer (>= 0.3.5), 
+    officer (>= 0.3.6), 
     gdtools (>= 0.1.6),
     xml2 (>= 1.0.0), rlang
 LinkingTo: Rcpp, gdtools
@@ -30,7 +30,9 @@ Suggests:
     htmltools,
     testthat,
     covr,
-    grid
+    grid, knitr
 URL: https://github.com/davidgohel/rvg
 BugReports: https://github.com/davidgohel/rvg/issues
 RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE)
+VignetteBuilder: knitr

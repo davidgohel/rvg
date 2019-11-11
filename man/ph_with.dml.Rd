@@ -4,21 +4,21 @@
 \alias{ph_with.dml}
 \title{add a plot output as vector graphics into a PowerPoint object}
 \usage{
-\method{ph_with}{dml}(x, value, ...)
+\method{ph_with}{dml}(x, value, location, ...)
 }
 \arguments{
 \item{x}{a pptx device}
 
 \item{value}{\code{\link{dml}} object}
 
-\item{...}{Arguments to be passed to methods, argument
-\code{location} is mandatory.}
+\item{location}{a location for a placeholder.}
+
+\item{...}{Arguments to be passed to methods}
 }
 \description{
 produces a vector graphics output from R plot instructions
-stored in a \code{\link{dml}} object
-and add the result in a PowerPoint document object produced
-by \code{\link[officer]{read_pptx}}.
+stored in a \code{\link{dml}} object and add the result in an \code{rpptx}
+object produced by \code{\link[officer]{read_pptx}}.
 }
 \examples{
 anyplot = dml(code = barplot(1:5, col = 2:6), bg = "wheat")

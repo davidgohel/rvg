@@ -21,7 +21,12 @@ dml_pptx(file = "Rplots.dml", width = 6, height = 6, offx = 1,
 \item{fonts}{Named list of font names to be aliased with
 fonts installed on your system. If unspecified, the R default
 families \code{sans}, \code{serif}, \code{mono} and \code{symbol}
-are aliased to the family returned by \code{\link[gdtools]{match_family}()}.}
+are aliased to the family returned by \code{\link[gdtools]{match_family}()}.
+
+When you use specific fonts, you will need that font installed on your system.
+This can be check with package \code{gdtools} and function \code{gdtools::font_family_exists()}.
+
+An example: \code{list(sans = "Roboto", serif = "Times", mono = "Courier")}.}
 
 \item{pointsize}{default point size.}
 

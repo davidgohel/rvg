@@ -16,6 +16,9 @@ list_raster_files <- function(img_dir){
 #' the plot instructions as Vector Graphics instructions. It produces
 #' an object of class 'dml' with a corresponding method \code{\link[officer]{ph_with}}.
 #'
+#' The function enable usage of any R plot with argument `code` and with
+#' ggplot objects with argument `ggobj`.
+#'
 #' @param code plotting instructions
 #' @param ggobj ggplot object to print. argument code will be ignored if this
 #'   argument is supplied.
@@ -47,18 +50,17 @@ dml <- function(code, ggobj = NULL,
   return(out)
 }
 
-#' @importFrom officer ph_with location_eval
-#' @importFrom rlang eval_tidy enexpr get_expr enquo enquos
+#' @importFrom officer ph_with fortify_location
+#' @importFrom rlang eval_tidy enquo
 #' @export
 #' @title add a plot output as vector graphics into a PowerPoint object
 #' @description produces a vector graphics output from R plot instructions
-#' stored in a \code{\link{dml}} object
-#' and add the result in a PowerPoint document object produced
-#' by \code{\link[officer]{read_pptx}}.
+#' stored in a \code{\link{dml}} object and add the result in an \code{rpptx}
+#' object produced by \code{\link[officer]{read_pptx}}.
 #' @param x a pptx device
 #' @param value \code{\link{dml}} object
-#' @param ... Arguments to be passed to methods, argument
-#' \code{location} is mandatory.
+#' @param location a location for a placeholder.
+#' @param ... Arguments to be passed to methods
 #' @examples
 #' anyplot = dml(code = barplot(1:5, col = 2:6), bg = "wheat")
 #'
@@ -69,25 +71,19 @@ dml <- function(code, ggobj = NULL,
 #'
 #' fileout <- tempfile(fileext = ".pptx")
 #' print(doc, target = fileout)
-ph_with.dml <- function( x, value, ... ){
-  stopifnot(inherits(x, "rpptx"))
-
-  slide <- x$slide$get_slide(x$cursor)
+ph_with.dml <- function( x, value, location, ... ){
 
   img_directory = get_img_dir()
   dml_file <- tempfile()
 
-  args <- enquos(...)
+  pars <- list(...)
 
-  xfrm <- location_eval(args$location, x)
+  loc <- fortify_location(location, doc = x)
 
-  args$location <- NULL
-  pars <- lapply(args, eval_tidy)
-  add_named_args <- setdiff ( names(xfrm), c(names( pars ), "left", "top", "ph_label", "ph", "type", "rotation") )
-  pars[add_named_args] <- xfrm[add_named_args]
-
-  pars$offx <- xfrm$left
-  pars$offy <- xfrm$top
+  pars$offx <- loc$left
+  pars$offy <- loc$top
+  pars$width <- loc$width
+  pars$height <- loc$height
 
   pars$bg <- value$bg
   pars$fonts <- value$fonts
@@ -96,7 +92,7 @@ ph_with.dml <- function( x, value, ... ){
 
   pars$file <- dml_file
   pars$id <- 0L
-  pars$last_rel_id <- slide$relationship()$get_next_id() - 1
+  pars$last_rel_id <- 1
   pars$raster_prefix <- img_directory
   pars$standalone <- FALSE
 
@@ -113,11 +109,12 @@ ph_with.dml <- function( x, value, ... ){
   raster_files <- list_raster_files(img_dir = img_directory )
   dml_str <- scan( dml_file, what = "character", quiet = T, sep = "\n", encoding = "UTF-8" )
   if( length(raster_files) ){
+    slide <- x$slide$get_slide(x$cursor)
     slide$reference_img(src = raster_files, dir_name = file.path(x$package_dir, "ppt/media"))
     unlink(raster_files, force = TRUE)
   }
   dml_str <- paste(dml_str, collapse = "")
-  ph_with(x = x, value = xml2::as_xml_document(dml_str), ... )
+  ph_with(x = x, value = xml2::as_xml_document(dml_str), location = location, ... )
 }
 
 
@@ -125,9 +122,10 @@ ph_with.dml <- function( x, value, ... ){
 #' @title add a plot output as vector graphics into a PowerPoint object
 #' @description produces a vector graphics output from R plot instructions
 #' and add the result in a PowerPoint document object produced
-#' by \code{\link[officer]{read_pptx}}. These functions will be deprecated
-#' in the next release and function \code{\link{ph_with.dml}} should
-#' be used instead.
+#' by \code{\link[officer]{read_pptx}}.
+#'
+#' These functions will be deprecated in the next release and
+#' function \code{\link{ph_with.dml}} should be used instead.
 #' @param x an \code{rpptx} object produced by \code{officer::read_pptx}
 #' @param code plot instructions
 #' @param ggobj ggplot objet to print. argument \code{code} will
@@ -137,30 +135,16 @@ ph_with.dml <- function( x, value, ... ){
 #' is not unique in the current slide, e.g. two placeholders with type 'body'.
 #' @param location a placeholder location object. This is a convenient
 #' argument that can replace usage of arguments \code{type} and \code{index}.
-#' See [ph_location_type], [ph_location], [ph_location_label],
-#' [ph_location_left], [ph_location_right], [ph_location_fullsize].
+#' See [ph_location_type], [ph_location] and other \code{ph_location*} functions.
 #' @param ... arguments passed on to \code{\link{dml_pptx}}.
 #' @importFrom xml2 xml_find_first as_xml_document
-#' @examples
-#' \donttest{
-#' library(officer)
-#' doc <- read_pptx()
-#' doc <- add_slide(doc, "Title and Content", "Office Theme")
-#' doc <- ph_with_vg(doc, code = barplot(1:5, col = 2:6), type = "body")
-#' doc <- add_slide(doc, "Title and Content", "Office Theme")
-#' doc <- ph_with_vg_at(doc, code = barplot(1:5, col = 2:6),
-#'   left = 1, top = 2, width = 6, height = 4)
-#' fileout <- tempfile(fileext = ".pptx")
-#' # fileout <- "vg.pptx"
-#' print(doc, target = fileout)
-#' }
 #' @importFrom officer ph_location
 ph_with_vg <- function( x, code, ggobj = NULL, type = "body", index = 1, location = NULL, ... ){
   stopifnot(inherits(x, "rpptx"))
   slide <- x$slide$get_slide(x$cursor)
   value <- dml(code = code, ggobj = ggobj, ...)
-  if( !is.null( get_expr(enquo(location)) ) )
-    ph_with(x, value, location = !!enexpr( location ), ...)
+  if( !is.null( location ) )
+    ph_with(x, value, location = location, ...)
   else {
     slide <- x$slide$get_slide(x$cursor)
     sh_pr_df <- slide$get_location(type = type, index = index)

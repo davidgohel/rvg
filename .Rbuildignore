@@ -7,3 +7,4 @@
 ^\.travis\.yml$
 ^revdep$
 ^cran-comments\.md$
+^_pkgdown\.yml$

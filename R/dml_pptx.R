@@ -11,6 +11,12 @@
 #'   fonts installed on your system. If unspecified, the R default
 #'   families \code{sans}, \code{serif}, \code{mono} and \code{symbol}
 #'   are aliased to the family returned by \code{\link[gdtools]{match_family}()}.
+#'
+#' When you use specific fonts, you will need that font installed on your system.
+#' This can be check with package `gdtools` and function `gdtools::font_family_exists()`.
+#'
+#' An example: `list(sans = "Roboto", serif = "Times", mono = "Courier")`.
+#'
 #' @param pointsize default point size.
 #' @param editable should vector graphics elements (points, text, etc.) be editable.
 #' @param id specifies a unique identifier (integer) within the slide

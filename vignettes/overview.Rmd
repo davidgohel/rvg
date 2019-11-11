@@ -1,0 +1,12 @@
+---
+title: "Using rvg"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using rvg}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<meta http-equiv="refresh" content="0; URL='https://davidgohel.github.io/rvg'" />
+
+<p>If not automatically redirected, please visit (<a href="https://davidgohel.github.io/rvg">https://davidgohel.github.io/rvg</a>) for the latest vignette.</p>
