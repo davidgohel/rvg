@@ -124,7 +124,7 @@ ph_with.dml <- function( x, value, location, ... ){
 #' and add the result in a PowerPoint document object produced
 #' by \code{\link[officer]{read_pptx}}.
 #'
-#' These functions are deprecated and function \code{\link{ph_with.dml}}
+#' These functions will be deprecated and function \code{\link{ph_with.dml}}
 #' should be used instead.
 #' @param x an \code{rpptx} object produced by \code{officer::read_pptx}
 #' @param code plot instructions
@@ -138,7 +138,6 @@ ph_with.dml <- function( x, value, location, ... ){
 #' @importFrom officer ph_location ph_location_type
 ph_with_vg <- function( x, code, ggobj = NULL, type = "body", index = 1, ... ){
   stopifnot(inherits(x, "rpptx"))
-  .Deprecated("ph_with")
   value <- dml(code = code, ggobj = ggobj, ...)
   ph_with(x, value, location = ph_location_type(type = type, id = index), ...)
 }
@@ -150,7 +149,6 @@ ph_with_vg <- function( x, code, ggobj = NULL, type = "body", index = 1, ... ){
 #' @param height,width Height and width in inches.
 ph_with_vg_at <- function( x, code, ggobj = NULL, left, top, width, height, ... ){
   stopifnot(inherits(x, "rpptx"))
-  .Deprecated("ph_with")
   value <- dml(code = code, ggobj = ggobj, ...)
   ph_with(x, value,
           location = ph_location(ph = "", label = "", left = left, top = top, width = width, height = height))

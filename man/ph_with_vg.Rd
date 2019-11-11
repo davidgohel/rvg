@@ -33,6 +33,6 @@ produces a vector graphics output from R plot instructions
 and add the result in a PowerPoint document object produced
 by \code{\link[officer]{read_pptx}}.
 
-These functions will be deprecated in the next release and
-function \code{\link{ph_with.dml}} should be used instead.
+These functions will be deprecated and function \code{\link{ph_with.dml}}
+should be used instead.
 }
