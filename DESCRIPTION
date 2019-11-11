@@ -1,7 +1,7 @@
 Package: rvg
 Type: Package
 Title: R Graphics Devices for Vector Graphics Output
-Version: 0.2.2.002
+Version: 0.2.2
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
       email = "david.gohel@ardata.fr"),
@@ -23,7 +23,7 @@ Imports:
     grDevices,
     Rcpp (>= 0.12.12),
     officer (>= 0.3.6), 
-    gdtools (>= 0.1.6),
+    gdtools (>= 0.2.1),
     xml2 (>= 1.0.0), rlang
 LinkingTo: Rcpp, gdtools
 Suggests:
