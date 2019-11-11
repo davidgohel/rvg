@@ -36,4 +36,4 @@ BugReports: https://github.com/davidgohel/rvg/issues
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
-remotes: davidgohel/officer
+Remotes: davidgohel/officer
