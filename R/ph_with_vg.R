@@ -124,8 +124,8 @@ ph_with.dml <- function( x, value, location, ... ){
 #' and add the result in a PowerPoint document object produced
 #' by \code{\link[officer]{read_pptx}}.
 #'
-#' These functions will be deprecated in the next release and
-#' function \code{\link{ph_with.dml}} should be used instead.
+#' These functions are deprecated and function \code{\link{ph_with.dml}}
+#' should be used instead.
 #' @param x an \code{rpptx} object produced by \code{officer::read_pptx}
 #' @param code plot instructions
 #' @param ggobj ggplot objet to print. argument \code{code} will
@@ -133,31 +133,14 @@ ph_with.dml <- function( x, value, location, ... ){
 #' @param type placeholder type
 #' @param index placeholder index (integer). This is to be used when a placeholder type
 #' is not unique in the current slide, e.g. two placeholders with type 'body'.
-#' @param location a placeholder location object. This is a convenient
-#' argument that can replace usage of arguments \code{type} and \code{index}.
-#' See [ph_location_type], [ph_location] and other \code{ph_location*} functions.
 #' @param ... arguments passed on to \code{\link{dml_pptx}}.
 #' @importFrom xml2 xml_find_first as_xml_document
-#' @importFrom officer ph_location
-ph_with_vg <- function( x, code, ggobj = NULL, type = "body", index = 1, location = NULL, ... ){
+#' @importFrom officer ph_location ph_location_type
+ph_with_vg <- function( x, code, ggobj = NULL, type = "body", index = 1, ... ){
   stopifnot(inherits(x, "rpptx"))
-  slide <- x$slide$get_slide(x$cursor)
+  .Deprecated("ph_with")
   value <- dml(code = code, ggobj = ggobj, ...)
-  if( !is.null( location ) )
-    ph_with(x, value, location = location, ...)
-  else {
-    slide <- x$slide$get_slide(x$cursor)
-    sh_pr_df <- slide$get_location(type = type, index = index)
-    width <- sh_pr_df$width
-    height <- sh_pr_df$height
-    ph_with(x, value,
-            location = ph_location(ph = sh_pr_df$ph,
-                                   label = sh_pr_df$ph_label,
-                                   left = sh_pr_df$left,
-                                   top = sh_pr_df$top,
-                                   width = width, height = height), ...)
-  }
-
+  ph_with(x, value, location = ph_location_type(type = type, id = index), ...)
 }
 
 
@@ -166,6 +149,8 @@ ph_with_vg <- function( x, code, ggobj = NULL, type = "body", index = 1, locatio
 #' @param left,top left and top origin of the plot on the slide in inches.
 #' @param height,width Height and width in inches.
 ph_with_vg_at <- function( x, code, ggobj = NULL, left, top, width, height, ... ){
+  stopifnot(inherits(x, "rpptx"))
+  .Deprecated("ph_with")
   value <- dml(code = code, ggobj = ggobj, ...)
   ph_with(x, value,
           location = ph_location(ph = "", label = "", left = left, top = top, width = width, height = height))

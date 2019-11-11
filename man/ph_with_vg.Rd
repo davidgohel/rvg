@@ -5,8 +5,7 @@
 \alias{ph_with_vg_at}
 \title{add a plot output as vector graphics into a PowerPoint object}
 \usage{
-ph_with_vg(x, code, ggobj = NULL, type = "body", index = 1,
-  location = NULL, ...)
+ph_with_vg(x, code, ggobj = NULL, type = "body", index = 1, ...)
 
 ph_with_vg_at(x, code, ggobj = NULL, left, top, width, height, ...)
 }
@@ -22,10 +21,6 @@ be ignored if this argument is supplied.}
 
 \item{index}{placeholder index (integer). This is to be used when a placeholder type
 is not unique in the current slide, e.g. two placeholders with type 'body'.}
-
-\item{location}{a placeholder location object. This is a convenient
-argument that can replace usage of arguments \code{type} and \code{index}.
-See \link{ph_location_type}, \link{ph_location} and other \code{ph_location*} functions.}
 
 \item{...}{arguments passed on to \code{\link{dml_pptx}}.}
 
