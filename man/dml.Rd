@@ -4,8 +4,15 @@
 \alias{dml}
 \title{Wrap plot instructions for DrawingML plotting in Powerpoint}
 \usage{
-dml(code, ggobj = NULL, bg = "white", fonts = list(),
-  pointsize = 12, editable = TRUE, ...)
+dml(
+  code,
+  ggobj = NULL,
+  bg = "white",
+  fonts = list(),
+  pointsize = 12,
+  editable = TRUE,
+  ...
+)
 }
 \arguments{
 \item{code}{plotting instructions}
