@@ -137,6 +137,7 @@ ph_with.dml <- function( x, value, location, ... ){
 #' @importFrom xml2 xml_find_first as_xml_document
 #' @importFrom officer ph_location ph_location_type
 ph_with_vg <- function( x, code, ggobj = NULL, type = "body", index = 1, ... ){
+  .Deprecated(new = "ph_with")
   stopifnot(inherits(x, "rpptx"))
   value <- dml(code = code, ggobj = ggobj, ...)
   ph_with(x, value, location = ph_location_type(type = type, id = index), ...)
@@ -148,6 +149,7 @@ ph_with_vg <- function( x, code, ggobj = NULL, type = "body", index = 1, ... ){
 #' @param left,top left and top origin of the plot on the slide in inches.
 #' @param height,width Height and width in inches.
 ph_with_vg_at <- function( x, code, ggobj = NULL, left, top, width, height, ... ){
+  .Deprecated(new = "ph_with")
   stopifnot(inherits(x, "rpptx"))
   value <- dml(code = code, ggobj = ggobj, ...)
   ph_with(x, value,
