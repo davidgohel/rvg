@@ -1,3 +1,15 @@
+# rvg 0.2.3
+
+## Deprecations
+
+* functions `ph_with_vg` and `ph_with_vg_at` are deprecated.
+
+# rvg 0.2.2
+
+## Fixes
+
+* fix issues with default font
+
 # rvg 0.2.1
 
 ## Enhancement
