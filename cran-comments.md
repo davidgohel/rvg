@@ -10,7 +10,7 @@ There were no ERROR, WARNING or NOTE.
 
 ## Reverse dependencies
 
-There were no error or warning. There were a note not related to rvg.
+There were no error or warning. There were a note with eoffice not related to rvg.
 
 bfw 0.4.1             ─ E: 0     | W: 0     | N: 0
 customLayout 0.3.1    ─ E: 0     | W: 0     | N: 0
