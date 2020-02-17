@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>add a plot output as vector graphics into a PowerPoint object — ph_with_vg • rvg</title>
+<title>Defunct Functions in Package rvg — rvg-defunct • rvg</title>
 
 
 <!-- jquery -->
@@ -35,12 +35,8 @@
 
 
 
-<meta property="og:title" content="add a plot output as vector graphics into a PowerPoint object — ph_with_vg" />
-<meta property="og:description" content="produces a vector graphics output from R plot instructions
-and add the result in a PowerPoint document object produced
-by read_pptx.
-These functions will be deprecated in the next release and
-function ph_with.dml should be used instead." />
+<meta property="og:title" content="Defunct Functions in Package rvg — rvg-defunct" />
+<meta property="og:description" content="Defunct Functions in Package rvg" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -73,7 +69,7 @@ function ph_with.dml should be used instead." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rvg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
       </span>
     </div>
 
@@ -106,75 +102,39 @@ function ph_with.dml should be used instead." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>add a plot output as vector graphics into a PowerPoint object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/davidgohel/rvg/blob/master/R/ph_with_vg.R'><code>R/ph_with_vg.R</code></a></small>
-    <div class="hidden name"><code>ph_with_vg.Rd</code></div>
+    <h1>Defunct Functions in Package rvg</h1>
+    
+    <div class="hidden name"><code>rvg-defunct.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>produces a vector graphics output from R plot instructions
-and add the result in a PowerPoint document object produced
-by <code><a href='https://rdrr.io/pkg/officer/man/read_pptx.html'>read_pptx</a></code>.</p>
-<p>These functions will be deprecated in the next release and
-function <code><a href='ph_with.dml.html'>ph_with.dml</a></code> should be used instead.</p>
+    <p>Defunct Functions in Package rvg</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ph_with_vg</span>(<span class='no'>x</span>, <span class='no'>code</span>, <span class='kw'>ggobj</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"body"</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>location</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>ph_with_vg</span>(<span class='no'>...</span>)
 
-<span class='fu'>ph_with_vg_at</span>(<span class='no'>x</span>, <span class='no'>code</span>, <span class='kw'>ggobj</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>left</span>, <span class='no'>top</span>, <span class='no'>width</span>, <span class='no'>height</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>ph_with_vg_at</span>(<span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>an <code>rpptx</code> object produced by <code><a href='https://rdrr.io/pkg/officer/man/read_pptx.html'>officer::read_pptx</a></code></p></td>
-    </tr>
-    <tr>
-      <th>code</th>
-      <td><p>plot instructions</p></td>
-    </tr>
-    <tr>
-      <th>ggobj</th>
-      <td><p>ggplot objet to print. argument <code>code</code> will
-be ignored if this argument is supplied.</p></td>
-    </tr>
-    <tr>
-      <th>type</th>
-      <td><p>placeholder type</p></td>
-    </tr>
-    <tr>
-      <th>index</th>
-      <td><p>placeholder index (integer). This is to be used when a placeholder type
-is not unique in the current slide, e.g. two placeholders with type 'body'.</p></td>
-    </tr>
-    <tr>
-      <th>location</th>
-      <td><p>a placeholder location object. This is a convenient
-argument that can replace usage of arguments <code>type</code> and <code>index</code>.
-See ph_location_type, ph_location and other <code>ph_location*</code> functions.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>arguments passed on to <code><a href='dml_pptx.html'>dml_pptx</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>left, top</th>
-      <td><p>left and top origin of the plot on the slide in inches.</p></td>
-    </tr>
-    <tr>
-      <th>height, width</th>
-      <td><p>Height and width in inches.</p></td>
+      <td><p>unused arguments</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>ph_with_vg()</code> is replaced by <code><a href='https://rdrr.io/pkg/officer/man/ph_with.html'>officer::ph_with</a></code>.</p>
+<p><code>ph_with_vg_at()</code> is replaced by <code><a href='https://rdrr.io/pkg/officer/man/ph_with.html'>officer::ph_with</a></code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#details">Details</a></li>
     </ul>
 
   </div>
@@ -184,7 +144,7 @@ See ph_location_type, ph_location and other <code>ph_location*</code> functions.
       <footer>
       <link href="../ardata.css" rel="stylesheet">
 <div class="author">
-  <p>Version&nbsp;0.2.2 - Developed by David Gohel - proudly brought to you by <a href="http://www.ardata.fr"><img alt="ardata" src='../ardata-logo.svg' style="vertical-align:middle;height:24px;"/></a>
+  <p>Version&nbsp;0.2.4 - Developed by David Gohel - proudly brought to you by <a href="http://www.ardata.fr"><img alt="ardata" src='../ardata-logo.svg' style="vertical-align:middle;height:24px;"/></a>
   </p>
 </div>
 <div class="pkgdown">
