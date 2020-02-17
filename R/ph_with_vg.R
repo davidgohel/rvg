@@ -50,6 +50,8 @@ dml <- function(code, ggobj = NULL,
   return(out)
 }
 
+#' @importFrom xml2 xml_find_first as_xml_document
+#' @importFrom officer ph_location ph_location_type
 #' @importFrom officer ph_with fortify_location
 #' @importFrom rlang eval_tidy enquo
 #' @export
@@ -118,41 +120,3 @@ ph_with.dml <- function( x, value, location, ... ){
 }
 
 
-#' @export
-#' @title add a plot output as vector graphics into a PowerPoint object
-#' @description produces a vector graphics output from R plot instructions
-#' and add the result in a PowerPoint document object produced
-#' by \code{\link[officer]{read_pptx}}.
-#'
-#' These functions will be deprecated and function \code{\link{ph_with.dml}}
-#' should be used instead.
-#' @param x an \code{rpptx} object produced by \code{officer::read_pptx}
-#' @param code plot instructions
-#' @param ggobj ggplot objet to print. argument \code{code} will
-#' be ignored if this argument is supplied.
-#' @param type placeholder type
-#' @param index placeholder index (integer). This is to be used when a placeholder type
-#' is not unique in the current slide, e.g. two placeholders with type 'body'.
-#' @param ... arguments passed on to \code{\link{dml_pptx}}.
-#' @importFrom xml2 xml_find_first as_xml_document
-#' @importFrom officer ph_location ph_location_type
-ph_with_vg <- function( x, code, ggobj = NULL, type = "body", index = 1, ... ){
-  .Deprecated(new = "ph_with")
-  stopifnot(inherits(x, "rpptx"))
-  value <- dml(code = code, ggobj = ggobj, ...)
-  ph_with(x, value, location = ph_location_type(type = type, id = index), ...)
-}
-
-
-#' @export
-#' @rdname ph_with_vg
-#' @param left,top left and top origin of the plot on the slide in inches.
-#' @param height,width Height and width in inches.
-ph_with_vg_at <- function( x, code, ggobj = NULL, left, top, width, height, ... ){
-  .Deprecated(new = "ph_with")
-  stopifnot(inherits(x, "rpptx"))
-  value <- dml(code = code, ggobj = ggobj, ...)
-  ph_with(x, value,
-          location = ph_location(ph = "", label = "", left = left, top = top, width = width, height = height))
-
-}

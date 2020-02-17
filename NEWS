@@ -1,5 +1,11 @@
 # rvg 0.2.3
 
+## Defunct functions
+
+* functions `ph_with_vg` and `ph_with_vg_at` are defunct and will be removed in the next release.
+
+# rvg 0.2.3
+
 ## Deprecations
 
 * functions `ph_with_vg` and `ph_with_vg_at` are deprecated.
