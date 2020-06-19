@@ -536,6 +536,23 @@ static void pptx_raster(unsigned int *raster, int w, int h,
   fputs("</p:pic>", pptx_obj->file);
 }
 
+static SEXP pptx_setPattern(SEXP pattern, pDevDesc dd) {
+    return R_NilValue;
+}
+
+static void pptx_releasePattern(SEXP ref, pDevDesc dd) {} 
+
+static SEXP pptx_setClipPath(SEXP path, SEXP ref, pDevDesc dd) {
+    return R_NilValue;
+}
+
+static void pptx_releaseClipPath(SEXP ref, pDevDesc dd) {}
+
+static SEXP pptx_setMask(SEXP path, SEXP ref, pDevDesc dd) {
+    return R_NilValue;
+}
+
+static void pptx_releaseMask(SEXP ref, pDevDesc dd) {}
 
 static void pptx_new_page(const pGEcontext gc, pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
@@ -612,6 +629,14 @@ pDevDesc pptx_driver_new(std::string filename, int bg, double width, double heig
   dd->metricInfo = pptx_metric_info;
   dd->cap = NULL;
   dd->raster = pptx_raster;
+#if R_GE_version >= 13
+  dd->setPattern      = pptx_setPattern;
+  dd->releasePattern  = pptx_releasePattern;
+  dd->setClipPath     = pptx_setClipPath;
+  dd->releaseClipPath = pptx_releaseClipPath;
+  dd->setMask         = pptx_setMask;
+  dd->releaseMask     = pptx_releaseMask;
+#endif
 
   // UTF-8 support
   dd->wantSymbolUTF8 = (Rboolean) 1;
@@ -644,6 +669,10 @@ pDevDesc pptx_driver_new(std::string filename, int bg, double width, double heig
   dd->displayListOn = FALSE;
   dd->haveTransparency = 2;
   dd->haveTransparentBg = 2;
+
+#if R_GE_version >= 13
+        dd->deviceVersion = R_GE_definitions;
+#endif
 
   dd->deviceSpecific = new PPTX_dev(filename,
                                     aliases,
