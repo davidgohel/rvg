@@ -503,6 +503,23 @@ static void xlsx_raster(unsigned int *raster, int w, int h,
   fputs("</xdr:pic>", xlsx_obj->file);
 }
 
+static SEXP xlsx_setPattern(SEXP pattern, pDevDesc dd) {
+    return R_NilValue;
+}
+
+static void xlsx_releasePattern(SEXP ref, pDevDesc dd) {} 
+
+static SEXP xlsx_setClipPath(SEXP path, SEXP ref, pDevDesc dd) {
+    return R_NilValue;
+}
+
+static void xlsx_releaseClipPath(SEXP ref, pDevDesc dd) {}
+
+static SEXP xlsx_setMask(SEXP path, SEXP ref, pDevDesc dd) {
+    return R_NilValue;
+}
+
+static void xlsx_releaseMask(SEXP ref, pDevDesc dd) {}
 
 static void xlsx_new_page(const pGEcontext gc, pDevDesc dd) {
   XLSX_dev *xlsx_obj = (XLSX_dev*) dd->deviceSpecific;
@@ -579,6 +596,14 @@ pDevDesc xlsx_driver_new(std::string filename, int bg, double width, double heig
   dd->metricInfo = xlsx_metric_info;
   dd->cap = NULL;
   dd->raster = xlsx_raster;
+#if R_GE_version >= 13
+  dd->setPattern      = xlsx_setPattern;
+  dd->releasePattern  = xlsx_releasePattern;
+  dd->setClipPath     = xlsx_setClipPath;
+  dd->releaseClipPath = xlsx_releaseClipPath;
+  dd->setMask         = xlsx_setMask;
+  dd->releaseMask     = xlsx_releaseMask;
+#endif
 
   // UTF-8 support
   dd->wantSymbolUTF8 = (Rboolean) 1;
@@ -611,6 +636,10 @@ pDevDesc xlsx_driver_new(std::string filename, int bg, double width, double heig
   dd->displayListOn = FALSE;
   dd->haveTransparency = 2;
   dd->haveTransparentBg = 2;
+
+#if R_GE_version >= 13
+        dd->deviceVersion = R_GE_definitions;
+#endif
 
   dd->deviceSpecific = new XLSX_dev(filename,
                                     aliases,

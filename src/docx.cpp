@@ -518,6 +518,23 @@ static void docx_new_page(const pGEcontext gc, pDevDesc dd) {
   docx_obj->pageno++;
 }
 
+static SEXP docx_setPattern(SEXP pattern, pDevDesc dd) {
+    return R_NilValue;
+}
+
+static void docx_releasePattern(SEXP ref, pDevDesc dd) {} 
+
+static SEXP docx_setClipPath(SEXP path, SEXP ref, pDevDesc dd) {
+    return R_NilValue;
+}
+
+static void docx_releaseClipPath(SEXP ref, pDevDesc dd) {}
+
+static SEXP docx_setMask(SEXP path, SEXP ref, pDevDesc dd) {
+    return R_NilValue;
+}
+
+static void docx_releaseMask(SEXP ref, pDevDesc dd) {}
 
 
 pDevDesc docx_driver_new(std::string filename, int bg, double width, double height,
@@ -557,7 +574,14 @@ pDevDesc docx_driver_new(std::string filename, int bg, double width, double heig
   dd->metricInfo = docx_metric_info;
   dd->cap = NULL;
   dd->raster = docx_raster;
-
+#if R_GE_version >= 13
+  dd->setPattern      = docx_setPattern;
+  dd->releasePattern  = docx_releasePattern;
+  dd->setClipPath     = docx_setClipPath;
+  dd->releaseClipPath = docx_releaseClipPath;
+  dd->setMask         = docx_setMask;
+  dd->releaseMask     = docx_releaseMask;
+#endif
   // UTF-8 support
   dd->wantSymbolUTF8 = (Rboolean) 1;
   dd->hasTextUTF8 = (Rboolean) 1;
@@ -589,6 +613,10 @@ pDevDesc docx_driver_new(std::string filename, int bg, double width, double heig
   dd->displayListOn = FALSE;
   dd->haveTransparency = 2;
   dd->haveTransparentBg = 2;
+
+#if R_GE_version >= 13
+  dd->deviceVersion = R_GE_definitions;
+#endif
 
   dd->deviceSpecific = new DOCX_dev(filename,
                                     aliases,
