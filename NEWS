@@ -2,8 +2,7 @@
 
 ## Changes
 
-* functions `ph_with_vg` and `ph_with_vg_at` are defunct and will be removed in the next release.
-* rvg web site is now indicated in DESCRIPTION file.
+* update for changes in the R graphics engine (thanks to Dr Paul Murrell)
 
 # rvg 0.2.4
 
