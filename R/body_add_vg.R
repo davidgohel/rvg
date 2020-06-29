@@ -25,7 +25,8 @@
 #' library(officer)
 #' x <- read_docx()
 #' x <- body_add_vg(x, code = barplot(1:5, col = 2:6) )
-#' print(x, target = "vg.docx")
+#' fileout <- tempfile(fileext = ".docx")
+#' print(x, target = fileout)
 #' }
 body_add_vg <- function( x, code, pos = "after", ... ){
 
