@@ -27,6 +27,7 @@ Imports:
     xml2 (>= 1.0.0), rlang
 LinkingTo: Rcpp, gdtools
 Suggests:
+    rmarkdown,
     htmltools,
     testthat,
     covr,
