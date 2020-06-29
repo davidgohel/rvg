@@ -5,27 +5,6 @@
 
 using namespace Rcpp;
 
-// DOCX_
-bool DOCX_(std::string file, std::string bg_, double width, double height, int pointsize, Rcpp::List aliases, bool editable, int id, std::string raster_prefix, int last_rel_id, int standalone);
-RcppExport SEXP _rvg_DOCX_(SEXP fileSEXP, SEXP bg_SEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP pointsizeSEXP, SEXP aliasesSEXP, SEXP editableSEXP, SEXP idSEXP, SEXP raster_prefixSEXP, SEXP last_rel_idSEXP, SEXP standaloneSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type file(fileSEXP);
-    Rcpp::traits::input_parameter< std::string >::type bg_(bg_SEXP);
-    Rcpp::traits::input_parameter< double >::type width(widthSEXP);
-    Rcpp::traits::input_parameter< double >::type height(heightSEXP);
-    Rcpp::traits::input_parameter< int >::type pointsize(pointsizeSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List >::type aliases(aliasesSEXP);
-    Rcpp::traits::input_parameter< bool >::type editable(editableSEXP);
-    Rcpp::traits::input_parameter< int >::type id(idSEXP);
-    Rcpp::traits::input_parameter< std::string >::type raster_prefix(raster_prefixSEXP);
-    Rcpp::traits::input_parameter< int >::type last_rel_id(last_rel_idSEXP);
-    Rcpp::traits::input_parameter< int >::type standalone(standaloneSEXP);
-    rcpp_result_gen = Rcpp::wrap(DOCX_(file, bg_, width, height, pointsize, aliases, editable, id, raster_prefix, last_rel_id, standalone));
-    return rcpp_result_gen;
-END_RCPP
-}
 // PPTX_
 bool PPTX_(std::string file, std::string bg_, double width, double height, double offx, double offy, int pointsize, Rcpp::List aliases, bool editable, int id, std::string raster_prefix, int last_rel_id, int standalone);
 RcppExport SEXP _rvg_PPTX_(SEXP fileSEXP, SEXP bg_SEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP offxSEXP, SEXP offySEXP, SEXP pointsizeSEXP, SEXP aliasesSEXP, SEXP editableSEXP, SEXP idSEXP, SEXP raster_prefixSEXP, SEXP last_rel_idSEXP, SEXP standaloneSEXP) {
@@ -74,7 +53,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_rvg_DOCX_", (DL_FUNC) &_rvg_DOCX_, 11},
     {"_rvg_PPTX_", (DL_FUNC) &_rvg_PPTX_, 13},
     {"_rvg_XLSX_", (DL_FUNC) &_rvg_XLSX_, 13},
     {NULL, NULL, 0}

@@ -38,6 +38,7 @@
 #' @keywords device
 #' @seealso \code{\link{Devices}}
 #' @export
+#' @importFrom grDevices dev.off
 dml_pptx <- function(file = "Rplots.dml", width = 6, height = 6,
                      offx = 1, offy = 1,
                      bg = "white",

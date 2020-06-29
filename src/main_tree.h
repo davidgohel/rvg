@@ -6,8 +6,6 @@ public:
   static std::string a_closing_tag(int standalone);
   std::string x_opening_tag();
   static std::string x_closing_tag();
-  std::string w_opening_tag();
-  static std::string w_closing_tag();
 
 private:
   int id;
