@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 124.44 144.00" id="svg2" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <defs id="defs4">
+    <style type="text/css" id="style6">
+    line, polyline, path, rect, circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+  </style>
+  </defs>
+  <polyline points="2.285 37.429 2.285 106.799 62.105 141.486 121.926 106.799 121.926 37.429 62.105 2.743 2.285 37.429" style="stroke-width: 4; fill-opacity: 0.5; fill: rgb(240, 240, 240); stroke: rgb(0, 102, 153);" clip-path="url(#cpMHwxMjQuNDQxfDE0My45OTd8MC4xNDMxMzc=)" id="polyline29"/>
+  <text x="0" y="50" transform="matrix(0.866025, -0.5, 0.5, 0.866026, 46.601307, 88.062561)" style="fill: rgb(0, 102, 153); font-family: sans-serif; font-size: 7px; white-space: pre;">www.ardata.fr</text>
+  <g transform="matrix(2.022577, 0, 0, 1.988474, -110.964394, -78.671165)" style="">
+    <ellipse cx="67.798" cy="62.272" rx="1.714" ry="1.714" style="fill: rgb(170, 153, 97);"/>
+    <ellipse cx="63.172" cy="71.363" rx="1.714" ry="1.714" style="fill: rgb(0, 102, 153);"/>
+    <ellipse cx="77.781" cy="57.256" rx="1.714" ry="1.714" style="fill: rgb(170, 153, 97);"/>
+    <ellipse cx="106.988" cy="78.574" rx="1.714" ry="1.714" style="fill: rgb(170, 153, 97);"/>
+    <ellipse cx="105.16" cy="57.546" rx="1.714" ry="1.714" style="fill: rgb(170, 153, 97);"/>
+    <ellipse cx="92.817" cy="55.946" rx="1.714" ry="1.714" style="fill: rgb(170, 153, 97);"/>
+    <ellipse cx="109.024" cy="64.645" rx="1.714" ry="1.714" style="fill: rgb(170, 153, 97);"/>
+    <ellipse cx="66.303" cy="83.146" rx="1.714" ry="1.714" style="fill: rgb(170, 153, 97);"/>
+    <ellipse cx="81.617" cy="88.403" rx="1.714" ry="1.714" style="fill: rgb(170, 153, 97);"/>
+    <ellipse cx="96.246" cy="92.289" rx="1.714" ry="1.714" style="fill: rgb(170, 153, 97);"/>
+  </g>
+  <text transform="matrix(1, 0, 0, 1.000001, 21.867842, -30.672607)" style="fill: rgb(0, 102, 153); font-size: 40px; font-weight: 700; letter-spacing: 0.3px; line-height: 57.5999px; white-space: pre;" x="8.134" y="104.286">rvg</text>
+</svg>
