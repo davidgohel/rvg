@@ -8,7 +8,7 @@ std::string a_color::solid_fill()
 {
 
   char col_buf[ 100 ];
-  sprintf( col_buf, "%02X%02X%02X", R_RED(this->col), R_GREEN(this->col), R_BLUE(this->col));
+  snprintf( col_buf, 100, "#%02X%02X%02X", R_RED(this->col), R_GREEN(this->col), R_BLUE(this->col));
   std::string col_str = col_buf;
 
   std::stringstream os;
