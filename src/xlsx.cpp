@@ -32,6 +32,7 @@
 #include "main_tree.h"
 #include "a_prstgeom.h"
 #include "clipper.h"
+#include "raster.h"
 
 std::string xlsx_empty_body_text(){
   std::stringstream os;
@@ -470,17 +471,16 @@ static void xlsx_raster(unsigned int *raster, int w, int h,
   os.width(6);
   os << id_img_rel;
   os << ".png";
+  std::string s = os.str();
+  char* fil = new char[s.length() + 1];
+  std::copy(s.c_str(), s.c_str() + s.length() + 1, fil);
 
 
   if (height < 0)
     height = -height;
   xfrm xfrm_(xlsx_obj->offx + x, xlsx_obj->offy + y - height, width, height, -rot );
 
-  std::vector<unsigned int> raster_(w*h);
-  for (std::vector<unsigned int>::size_type i = 0 ; i < raster_.size(); ++i) {
-    raster_[i] = raster[i] ;
-  }
-  gdtools::raster_to_file(raster_, w, h, width*(25/6), height*(25/6), interpolate, os.str());
+  raster_to_file(raster, w, h, width, height, interpolate, fil);
   fputs("<xdr:pic>", xlsx_obj->file);
     fputs("<xdr:nvPicPr>", xlsx_obj->file);
       fprintf(xlsx_obj->file,
@@ -507,7 +507,7 @@ static SEXP xlsx_setPattern(SEXP pattern, pDevDesc dd) {
     return R_NilValue;
 }
 
-static void xlsx_releasePattern(SEXP ref, pDevDesc dd) {} 
+static void xlsx_releasePattern(SEXP ref, pDevDesc dd) {}
 
 static SEXP xlsx_setClipPath(SEXP path, SEXP ref, pDevDesc dd) {
     return R_NilValue;

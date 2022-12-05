@@ -1,5 +1,0 @@
-#!/bin/sh
-
-rm -f config.* src/Makevars src/cconfig.h
-rm -f src/*.o src/*.so
-rm -f *.svg

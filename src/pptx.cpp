@@ -32,6 +32,7 @@
 #include "main_tree.h"
 #include "a_prstgeom.h"
 #include "clipper.h"
+#include "raster.h"
 
 
 std::string pptx_empty_body_text(){
@@ -487,11 +488,11 @@ static void pptx_size(double *left, double *right, double *bottom, double *top,
 }
 
 static void pptx_raster(unsigned int *raster, int w, int h,
-                       double x, double y,
-                       double width, double height,
-                       double rot,
-                       Rboolean interpolate,
-                       const pGEcontext gc, pDevDesc dd)
+                        double x, double y,
+                        double width, double height,
+                        double rot,
+                        Rboolean interpolate,
+                        const pGEcontext gc, pDevDesc dd)
 {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
   std::stringstream os;
@@ -503,44 +504,45 @@ static void pptx_raster(unsigned int *raster, int w, int h,
   os.width(6);
   os << id_img_rel;
   os << ".png";
+  std::string s = os.str();
+  char* fil = new char[s.length() + 1];
+  std::copy(s.c_str(), s.c_str() + s.length() + 1, fil);
 
 
   if (height < 0)
     height = -height;
   xfrm xfrm_(pptx_obj->offx + x, pptx_obj->offy + y - height, width, height, -rot );
 
-  std::vector<unsigned int> raster_(w*h);
-  for (std::vector<unsigned int>::size_type i = 0 ; i < raster_.size(); ++i) {
-    raster_[i] = raster[i] ;
-  }
-  gdtools::raster_to_file(raster_, w, h, width*(25/6), height*(25/6), interpolate, os.str());
-  fputs("<p:pic>", pptx_obj->file);
-    fputs("<p:nvPicPr>", pptx_obj->file);
-      fprintf(pptx_obj->file,
-        "<p:cNvPr id=\"%d\" name=\"pic%d\"/>",
-        idx, idx );
-      fputs("<p:cNvPicPr/>", pptx_obj->file);
-      fputs("<p:nvPr/>", pptx_obj->file);
-    fputs("</p:nvPicPr>", pptx_obj->file);
-    fputs("<p:blipFill>", pptx_obj->file);
-    fprintf(pptx_obj->file,
-      "<a:blip r:embed=\"rId%d\" cstate=\"print\"/>",
-      id_img_rel);
-    fputs("<a:stretch><a:fillRect/></a:stretch>", pptx_obj->file);
-    fputs("</p:blipFill>", pptx_obj->file);
+  raster_to_file(raster, w, h, width, height, interpolate, fil);
 
-    fputs("<p:spPr>", pptx_obj->file);
-    fprintf(pptx_obj->file, "%s", xfrm_.xml().c_str());
-    fprintf(pptx_obj->file,"%s", a_prstgeom::a_tag("rect").c_str());
-    fputs("</p:spPr>", pptx_obj->file);
+  fputs("<p:pic>", pptx_obj->file);
+  fputs("<p:nvPicPr>", pptx_obj->file);
+  fprintf(pptx_obj->file,
+          "<p:cNvPr id=\"%d\" name=\"pic%d\"/>",
+            idx, idx );
+  fputs("<p:cNvPicPr/>", pptx_obj->file);
+  fputs("<p:nvPr/>", pptx_obj->file);
+  fputs("</p:nvPicPr>", pptx_obj->file);
+  fputs("<p:blipFill>", pptx_obj->file);
+  fprintf(pptx_obj->file,
+          "<a:blip r:embed=\"rId%d\" cstate=\"print\"/>",
+          id_img_rel);
+  fputs("<a:stretch><a:fillRect/></a:stretch>", pptx_obj->file);
+  fputs("</p:blipFill>", pptx_obj->file);
+
+  fputs("<p:spPr>", pptx_obj->file);
+  fprintf(pptx_obj->file, "%s", xfrm_.xml().c_str());
+  fprintf(pptx_obj->file,"%s", a_prstgeom::a_tag("rect").c_str());
+  fputs("</p:spPr>", pptx_obj->file);
   fputs("</p:pic>", pptx_obj->file);
 }
+
 
 static SEXP pptx_setPattern(SEXP pattern, pDevDesc dd) {
     return R_NilValue;
 }
 
-static void pptx_releasePattern(SEXP ref, pDevDesc dd) {} 
+static void pptx_releasePattern(SEXP ref, pDevDesc dd) {}
 
 static SEXP pptx_setClipPath(SEXP path, SEXP ref, pDevDesc dd) {
     return R_NilValue;
