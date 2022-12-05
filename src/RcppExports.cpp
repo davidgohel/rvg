@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // PPTX_
 bool PPTX_(std::string file, std::string bg_, double width, double height, double offx, double offy, int pointsize, Rcpp::List aliases, bool editable, int id, std::string raster_prefix, int last_rel_id, int standalone);
 RcppExport SEXP _rvg_PPTX_(SEXP fileSEXP, SEXP bg_SEXP, SEXP widthSEXP, SEXP heightSEXP, SEXP offxSEXP, SEXP offySEXP, SEXP pointsizeSEXP, SEXP aliasesSEXP, SEXP editableSEXP, SEXP idSEXP, SEXP raster_prefixSEXP, SEXP last_rel_idSEXP, SEXP standaloneSEXP) {
