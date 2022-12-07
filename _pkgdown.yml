@@ -24,8 +24,8 @@ navbar:
   title: rvg
   type: default
   left:
-  - text: Customizing rvg objects
-    href: articles/offcran/customizing.html
+  - text: User Documentation
+    href: https://ardata-fr.github.io/officeverse/
   - text: Function reference
     href: reference/index.html
   right:

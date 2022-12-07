@@ -36,4 +36,3 @@ URL: https://davidgohel.github.io/rvg
 BugReports: https://github.com/davidgohel/rvg/issues
 RoxygenNote: 7.2.2
 Roxygen: list(markdown = TRUE)
-VignetteBuilder: knitr
