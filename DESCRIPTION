@@ -1,7 +1,7 @@
 Package: rvg
 Type: Package
 Title: R Graphics Devices for Vector Graphics Output
-Version: 0.2.5
+Version: 0.3.0.001
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
       email = "david.gohel@ardata.fr"),
@@ -32,8 +32,7 @@ Suggests:
     testthat,
     covr,
     grid, knitr
-URL: https://davidgohel.github.io/rvg
+URL: https://ardata-fr.github.io/officeverse, https://davidgohel.github.io/rvg
 BugReports: https://github.com/davidgohel/rvg/issues
 RoxygenNote: 7.2.2
 Roxygen: list(markdown = TRUE)
-VignetteBuilder: knitr
