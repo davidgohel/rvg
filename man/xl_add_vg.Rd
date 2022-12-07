@@ -28,8 +28,10 @@ by \code{\link[officer]{read_xlsx}}.
 \donttest{
 library(officer)
 my_ws <- read_xlsx()
-my_ws <- xl_add_vg(my_ws, sheet = "Feuil1",
-  code = barplot(1:5, col = 2:6), width = 6, height = 6, left = 1, top = 2 )
+my_ws <- xl_add_vg(my_ws,
+  sheet = "Feuil1",
+  code = barplot(1:5, col = 2:6), width = 6, height = 6, left = 1, top = 2
+)
 fileout <- tempfile(fileext = ".xlsx")
 print(my_ws, target = fileout)
 }

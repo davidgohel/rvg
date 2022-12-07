@@ -12,11 +12,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-[![Travis-CI Build Status](https://travis-ci.org/davidgohel/rvg.svg?branch=master)](https://travis-ci.org/davidgohel/rvg)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/davidgohel/rvg?branch=master)](https://ci.appveyor.com/project/davidgohel/rvg/branch/master)
-[![CRAN status](https://www.r-pkg.org/badges/version/rvg)](https://cran.r-project.org/package=rvg)
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/davidgohel/rvg/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/davidgohel/rvg/actions/workflows/R-CMD-check.yaml)
+[![version](https://www.r-pkg.org/badges/version/rvg)](https://CRAN.R-project.org/package=rvg)
 ![cranlogs](https://cranlogs.r-pkg.org/badges/rvg)
-
+<!-- badges: end -->
 
 `rvg` is providing two graphics devices that produces Vector Graphics outputs in 
 DrawingML format for Microsoft PowerPoint with `dml_pptx` and for Microsoft Excel 

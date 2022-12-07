@@ -21,7 +21,7 @@ stored in a \code{\link{dml}} object and add the result in an \code{rpptx}
 object produced by \code{\link[officer]{read_pptx}}.
 }
 \examples{
-anyplot = dml(code = barplot(1:5, col = 2:6), bg = "wheat")
+anyplot <- dml(code = barplot(1:5, col = 2:6), bg = "wheat")
 
 library(officer)
 doc <- read_pptx()

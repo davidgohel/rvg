@@ -57,8 +57,8 @@ Graphics devices for Microsoft Excel DrawingML format.
 }
 \examples{
 \donttest{
-dml_xlsx( file = tempfile() )
-plot(1:11,(-5:5)^2, type='b', main="Simple Example")
+dml_xlsx(file = tempfile())
+plot(1:11, (-5:5)^2, type = "b", main = "Simple Example")
 dev.off()
 }
 }

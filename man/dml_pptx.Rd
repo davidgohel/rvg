@@ -62,8 +62,8 @@ Graphics devices for Microsoft PowerPoint DrawingML format.
 }
 \examples{
 \donttest{
-dml_pptx( file = tempfile() )
-plot(1:11,(-5:5)^2, type='b', main="Simple Example")
+dml_pptx(file = tempfile())
+plot(1:11, (-5:5)^2, type = "b", main = "Simple Example")
 dev.off()
 }
 }

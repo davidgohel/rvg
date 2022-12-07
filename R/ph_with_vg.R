@@ -1,13 +1,13 @@
-get_img_dir <- function(){
+get_img_dir <- function() {
   uid <- basename(tempfile(pattern = ""))
-  img_directory = file.path(getwd(), uid )
+  img_directory <- file.path(getwd(), uid)
   img_directory
 }
 
-list_raster_files <- function(img_dir){
+list_raster_files <- function(img_dir) {
   path_ <- dirname(img_dir)
   uid <- basename(img_dir)
-  list.files(path = path_, pattern = paste0("^", uid, "(.*)\\.png$"), full.names = TRUE )
+  list.files(path = path_, pattern = paste0("^", uid, "(.*)\\.png$"), full.names = TRUE)
 }
 
 
@@ -25,7 +25,7 @@ list_raster_files <- function(img_dir){
 #' @param bg,fonts,pointsize,editable Parameters passed to \code{\link{dml_pptx}}
 #' @param ... unused arguments
 #' @examples
-#' anyplot = dml(code = barplot(1:5, col = 2:6), bg = "wheat")
+#' anyplot <- dml(code = barplot(1:5, col = 2:6), bg = "wheat")
 #'
 #' library(officer)
 #' doc <- read_pptx()
@@ -64,7 +64,7 @@ dml <- function(code, ggobj = NULL,
 #' @param location a location for a placeholder.
 #' @param ... Arguments to be passed to methods
 #' @examples
-#' anyplot = dml(code = barplot(1:5, col = 2:6), bg = "wheat")
+#' anyplot <- dml(code = barplot(1:5, col = 2:6), bg = "wheat")
 #'
 #' library(officer)
 #' doc <- read_pptx()
@@ -73,9 +73,8 @@ dml <- function(code, ggobj = NULL,
 #'
 #' fileout <- tempfile(fileext = ".pptx")
 #' print(doc, target = fileout)
-ph_with.dml <- function( x, value, location, ... ){
-
-  img_directory = get_img_dir()
+ph_with.dml <- function(x, value, location, ...) {
+  img_directory <- get_img_dir()
   dml_file <- tempfile()
 
   pars <- list(...)
@@ -100,23 +99,25 @@ ph_with.dml <- function( x, value, location, ... ){
 
   do.call("dml_pptx", pars)
 
-  tryCatch({
-    if( !is.null(value$ggobj) ){
-      stopifnot(inherits(value$ggobj, "ggplot"))
-      print(value$ggobj)
-    } else
-      eval_tidy(value$code)
-  }, finally = dev.off() )
+  tryCatch(
+    {
+      if (!is.null(value$ggobj)) {
+        stopifnot(inherits(value$ggobj, "ggplot"))
+        print(value$ggobj)
+      } else {
+        eval_tidy(value$code)
+      }
+    },
+    finally = dev.off()
+  )
 
-  raster_files <- list_raster_files(img_dir = img_directory )
-  dml_str <- scan( dml_file, what = "character", quiet = T, sep = "\n", encoding = "UTF-8" )
-  if( length(raster_files) ){
+  raster_files <- list_raster_files(img_dir = img_directory)
+  dml_str <- scan(dml_file, what = "character", quiet = T, sep = "\n", encoding = "UTF-8")
+  if (length(raster_files)) {
     slide <- x$slide$get_slide(x$cursor)
     slide$reference_img(src = raster_files, dir_name = file.path(x$package_dir, "ppt/media"))
     unlink(raster_files, force = TRUE)
   }
   dml_str <- paste(dml_str, collapse = "")
-  ph_with(x = x, value = xml2::as_xml_document(dml_str), location = location, ... )
+  ph_with(x = x, value = xml2::as_xml_document(dml_str), location = location, ...)
 }
-
-

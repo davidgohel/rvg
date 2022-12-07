@@ -1,3 +1,6 @@
+#ifndef XFRM_TEXT_INCLUDED
+#define XFRM_TEXT_INCLUDED
+
 #include <Rcpp.h>
 
 using namespace Rcpp;
@@ -15,3 +18,5 @@ public:
   double height;
   double rot;
 };
+
+#endif

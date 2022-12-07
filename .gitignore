@@ -4,7 +4,6 @@
 src/*.o
 src/*.so
 src/*.dll
-.Rbuildignore
 rvg.Rproj
 todo.md
 revdep
