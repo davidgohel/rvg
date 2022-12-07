@@ -14,22 +14,25 @@
 #' \donttest{
 #' library(officer)
 #' my_ws <- read_xlsx()
-#' my_ws <- xl_add_vg(my_ws, sheet = "Feuil1",
-#'   code = barplot(1:5, col = 2:6), width = 6, height = 6, left = 1, top = 2 )
+#' my_ws <- xl_add_vg(my_ws,
+#'   sheet = "Feuil1",
+#'   code = barplot(1:5, col = 2:6), width = 6, height = 6, left = 1, top = 2
+#' )
 #' fileout <- tempfile(fileext = ".xlsx")
 #' print(my_ws, target = fileout)
 #' }
-xl_add_vg <- function( x, sheet, code, left, top, width, height, ... ){
-
+xl_add_vg <- function(x, sheet, code, left, top, width, height, ...) {
   stopifnot(inherits(x, "rxlsx"))
 
   sheet_id <- x$worksheets$get_sheet_id(sheet)
 
-  dir.create(file.path(x$package_dir, "xl/media"), showWarnings = FALSE, recursive = TRUE )
-  img_directory <- file.path(x$package_dir, "xl/media", basename( tempfile(pattern = "img_") ) )
+  dir.create(file.path(x$package_dir, "xl/media"), showWarnings = FALSE, recursive = TRUE)
+  img_directory <- file.path(x$package_dir, "xl/media", basename(tempfile(pattern = "img_")))
 
-  dml_file <- file.path( x$package_dir, "xl/drawings",
-                         basename( tempfile(pattern = "d", fileext = ".xml") ) )
+  dml_file <- file.path(
+    x$package_dir, "xl/drawings",
+    basename(tempfile(pattern = "d", fileext = ".xml"))
+  )
   dir.create(dirname(dml_file), showWarnings = FALSE)
   sheet <- x$sheets$get_sheet(sheet_id)
 
@@ -47,20 +50,21 @@ xl_add_vg <- function( x, sheet, code, left, top, width, height, ... ){
 
   do.call("dml_xlsx", pars)
 
-  tryCatch(code, finally = dev.off() )
-  raster_files <- list_raster_files(img_dir = img_directory )
+  tryCatch(code, finally = dev.off())
+  raster_files <- list_raster_files(img_dir = img_directory)
   rel <- sheet$relationship()
 
-  if( length(raster_files) ){
+  if (length(raster_files)) {
     rid <- paste0("rId", seq_along(raster_files))
     target <- paste0("../media/", basename(raster_files))
-    rel_file <- file.path( dirname(dml_file), "_rels", paste0( basename(dml_file), ".rels" ) )
-    dir.create(file.path( dirname(dml_file), "_rels"), showWarnings = FALSE, recursive = TRUE )
+    rel_file <- file.path(dirname(dml_file), "_rels", paste0(basename(dml_file), ".rels"))
+    dir.create(file.path(dirname(dml_file), "_rels"), showWarnings = FALSE, recursive = TRUE)
     cat("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n",
       "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">\n",
-      file = rel_file)
+      file = rel_file
+    )
     tmp <- "\t<Relationship Id=\"%s\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/image\" Target=\"%s\"/>"
-    tmp <- paste( sprintf(tmp, rid, target), collapse = "\n")
+    tmp <- paste(sprintf(tmp, rid, target), collapse = "\n")
     cat(tmp, file = rel_file, append = TRUE)
     cat("\n</Relationships>", file = rel_file, append = TRUE)
   }
@@ -69,17 +73,16 @@ xl_add_vg <- function( x, sheet, code, left, top, width, height, ... ){
   rel$add_drawing(src = dml_file, root_target = "../drawings")
 
   sheet_ <- x$sheets$get_sheet(sheet_id)
-  extLst <- xml_find_first(sheet_$get(), "d1:extLst", xml_ns(sheet_$get()) )
+  extLst <- xml_find_first(sheet_$get(), "d1:extLst", xml_ns(sheet_$get()))
 
   xml_elt <- xml_new_root("drawing")
   xml_attr(xml_elt, "r:id") <- sprintf("rId%.0f", dml_rid)
   xml_add_sibling(.x = extLst, .value = xml_elt, .where = "before")
 
-  override <- c("application/vnd.openxmlformats-officedocument.drawing+xml" )
+  override <- c("application/vnd.openxmlformats-officedocument.drawing+xml")
   names(override) <- paste0("/xl/drawings/", basename(dml_file))
   x$content_type$add_override(value = override)
   sheet_$save()
 
   x
 }
-

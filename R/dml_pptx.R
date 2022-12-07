@@ -31,8 +31,8 @@
 #'   xml header and namespaces.
 #' @examples
 #' \donttest{
-#' dml_pptx( file = tempfile() )
-#' plot(1:11,(-5:5)^2, type='b', main="Simple Example")
+#' dml_pptx(file = tempfile())
+#' plot(1:11, (-5:5)^2, type = "b", main = "Simple Example")
 #' dev.off()
 #' }
 #' @keywords device
@@ -45,14 +45,13 @@ dml_pptx <- function(file = "Rplots.dml", width = 6, height = 6,
                      fonts = list(),
                      pointsize = 12, editable = TRUE,
                      id = 1L, last_rel_id = 1L,
-                     raster_prefix = "raster_", standalone = TRUE ) {
-
-  system_fonts <- validate_fonts( fonts )
-  invisible(PPTX_(file, bg, width, height, offx = offx, offy = offy,
-              pointsize = pointsize,
-              aliases = list(system = system_fonts, user = list()),
-              editable = editable, id = id, raster_prefix = raster_prefix,
-              last_rel_id = last_rel_id, standalone = standalone
-            ))
+                     raster_prefix = "raster_", standalone = TRUE) {
+  system_fonts <- validate_fonts(fonts)
+  invisible(PPTX_(file, bg, width, height,
+    offx = offx, offy = offy,
+    pointsize = pointsize,
+    aliases = list(system = system_fonts),
+    editable = editable, id = id, raster_prefix = raster_prefix,
+    last_rel_id = last_rel_id, standalone = standalone
+  ))
 }
-

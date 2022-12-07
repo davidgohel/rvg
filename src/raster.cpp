@@ -6,6 +6,9 @@ extern "C" {
 #include <png.h>
 }
 #include "Rcpp.h"
+#include "ooxml_dev.h"
+#include "xfrm.h"
+#include "a_prstgeom.h"
 
 // This code has been copied from the package svglite maintained by Thomas Lin Pedersen
 void raster_to_file(unsigned int *raster, int w, int h, double width, double height, bool interpolate, char *file_name) {
@@ -83,3 +86,101 @@ void raster_to_file(unsigned int *raster, int w, int h, double width, double hei
   fclose(fp);
 }
 
+void pptx_raster(unsigned int *raster, int w, int h,
+                 double x, double y,
+                 double width, double height,
+                 double rot,
+                 Rboolean interpolate,
+                 const pGEcontext gc, pDevDesc dd)
+{
+  PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
+  std::stringstream os;
+  int idx = pptx_obj->new_id();
+  int id_img_rel = pptx_obj->nex_id_rel();
+
+  os << pptx_obj->raster_prefix << "rId";
+  os.fill('0');
+  os.width(6);
+  os << id_img_rel;
+  os << ".png";
+  std::string s = os.str();
+  char* fil = new char[s.length() + 1];
+  std::copy(s.c_str(), s.c_str() + s.length() + 1, fil);
+
+
+  if (height < 0)
+    height = -height;
+  xfrm xfrm_(pptx_obj->offx + x, pptx_obj->offy + y - height, width, height, -rot );
+
+  raster_to_file(raster, w, h, width, height, interpolate, fil);
+
+  fputs("<p:pic>", pptx_obj->file);
+  fputs("<p:nvPicPr>", pptx_obj->file);
+  fprintf(pptx_obj->file,
+          "<p:cNvPr id=\"%d\" name=\"pic%d\"/>",
+            idx, idx );
+  fputs("<p:cNvPicPr/>", pptx_obj->file);
+  fputs("<p:nvPr/>", pptx_obj->file);
+  fputs("</p:nvPicPr>", pptx_obj->file);
+  fputs("<p:blipFill>", pptx_obj->file);
+  fprintf(pptx_obj->file,
+          "<a:blip r:embed=\"rId%d\" cstate=\"print\"/>",
+          id_img_rel);
+  fputs("<a:stretch><a:fillRect/></a:stretch>", pptx_obj->file);
+  fputs("</p:blipFill>", pptx_obj->file);
+
+  fputs("<p:spPr>", pptx_obj->file);
+  fprintf(pptx_obj->file, "%s", xfrm_.xml().c_str());
+  fprintf(pptx_obj->file,"%s", a_prstgeom::a_tag("rect").c_str());
+  fputs("</p:spPr>", pptx_obj->file);
+  fputs("</p:pic>", pptx_obj->file);
+}
+
+void xlsx_raster(unsigned int *raster, int w, int h,
+                 double x, double y,
+                 double width, double height,
+                 double rot,
+                 Rboolean interpolate,
+                 const pGEcontext gc, pDevDesc dd)
+{
+  XLSX_dev *xlsx_obj = (XLSX_dev*) dd->deviceSpecific;
+  std::stringstream os;
+  int idx = xlsx_obj->new_id();
+  int id_img_rel = xlsx_obj->nex_id_rel();
+
+  os << xlsx_obj->raster_prefix << "rId";
+  os.fill('0');
+  os.width(6);
+  os << id_img_rel;
+  os << ".png";
+  std::string s = os.str();
+  char* fil = new char[s.length() + 1];
+  std::copy(s.c_str(), s.c_str() + s.length() + 1, fil);
+
+
+  if (height < 0)
+    height = -height;
+  xfrm xfrm_(xlsx_obj->offx + x, xlsx_obj->offy + y - height, width, height, -rot );
+
+  raster_to_file(raster, w, h, width, height, interpolate, fil);
+  fputs("<xdr:pic>", xlsx_obj->file);
+  fputs("<xdr:nvPicPr>", xlsx_obj->file);
+  fprintf(xlsx_obj->file,
+          "<xdr:cNvPr id=\"%d\" name=\"pic%d\"/>",
+          idx, idx );
+  fputs("<xdr:cNvPicPr/>", xlsx_obj->file);
+  fputs("<xdr:nvPr/>", xlsx_obj->file);
+  fputs("</xdr:nvPicPr>", xlsx_obj->file);
+  fputs("<xdr:blipFill>", xlsx_obj->file);
+  fprintf(xlsx_obj->file,
+          "<a:blip r:embed=\"rId%d\" cstate=\"print\"/>",
+          id_img_rel);
+  fputs("<a:stretch><a:fillRect/></a:stretch>", xlsx_obj->file);
+  fputs("</xdr:blipFill>", xlsx_obj->file);
+
+  fputs("<xdr:spPr>", xlsx_obj->file);
+  fprintf(xlsx_obj->file, "%s", xfrm_.xml().c_str());
+  fprintf(xlsx_obj->file,"%s", a_prstgeom::a_tag("rect").c_str());
+  fputs("</xdr:spPr>", xlsx_obj->file);
+  fputs("</xdr:pic>", xlsx_obj->file);
+}

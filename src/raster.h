@@ -4,6 +4,17 @@
 #ifndef RVG_RASTER_INCLUDED
 #define RVG_RASTER_INCLUDED
 
-void raster_to_file(unsigned int *raster, int w, int h, double width, double height, bool interpolate, char *file_name);
+void pptx_raster(unsigned int *raster, int w, int h,
+                 double x, double y,
+                 double width, double height,
+                 double rot,
+                 Rboolean interpolate,
+                 const pGEcontext gc, pDevDesc dd);
+void xlsx_raster(unsigned int *raster, int w, int h,
+                 double x, double y,
+                 double width, double height,
+                 double rot,
+                 Rboolean interpolate,
+                 const pGEcontext gc, pDevDesc dd);
 
 #endif // RVG_RASTER_INCLUDED

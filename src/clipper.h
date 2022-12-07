@@ -48,4 +48,3 @@ private:
   void extract_lines();
 
 };
-

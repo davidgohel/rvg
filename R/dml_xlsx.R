@@ -25,8 +25,8 @@
 #'   xml header and namespaces.
 #' @examples
 #' \donttest{
-#' dml_xlsx( file = tempfile() )
-#' plot(1:11,(-5:5)^2, type='b', main="Simple Example")
+#' dml_xlsx(file = tempfile())
+#' plot(1:11, (-5:5)^2, type = "b", main = "Simple Example")
 #' dev.off()
 #' }
 #' @keywords device
@@ -39,13 +39,12 @@ dml_xlsx <- function(file = "Rplots.dml", width = 6, height = 6,
                      pointsize = 12, editable = TRUE,
                      id = 1L, last_rel_id = 1L,
                      raster_prefix = "raster_", standalone = TRUE) {
-
-  system_fonts <- validate_fonts( fonts )
-  invisible(XLSX_(file, bg, width, height, offx = offx, offy = offy,
-              pointsize = pointsize,
-              aliases = list(system = system_fonts, user = list()),
-              editable = editable, id = id, raster_prefix = raster_prefix,
-              last_rel_id = last_rel_id, standalone = standalone
-            ))
+  system_fonts <- validate_fonts(fonts)
+  invisible(XLSX_(file, bg, width, height,
+    offx = offx, offy = offy,
+    pointsize = pointsize,
+    aliases = list(system = system_fonts),
+    editable = editable, id = id, raster_prefix = raster_prefix,
+    last_rel_id = last_rel_id, standalone = standalone
+  ))
 }
-
