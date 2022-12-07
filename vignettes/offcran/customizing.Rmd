@@ -2,7 +2,7 @@
 title: "Customizing rvg objects"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Customizing}
+  %\VignetteIndexEntry{Customizing rvg objects}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
