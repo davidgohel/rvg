@@ -32,6 +32,18 @@ an object of class 'dml' with a corresponding method \code{\link[officer]{ph_wit
 The function enable usage of any R plot with argument \code{code} and with
 ggplot objects with argument \code{ggobj}.
 }
+\section{background color}{
+
+When dealing with a ggplot object argument \code{bg} will have no effect
+because ggplot theme is specifying background color, don't forget
+to define the colors you want in the theme:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{theme(
+  panel.background = element_rect(fill = "#EFEFEF"),
+  plot.background = element_rect(fill = "wheat"))
+}\if{html}{\out{</div>}}
+}
+
 \examples{
 anyplot <- dml(code = barplot(1:5, col = 2:6), bg = "wheat")
 

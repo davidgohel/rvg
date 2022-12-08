@@ -1,7 +1,7 @@
 Package: rvg
 Type: Package
-Title: R Graphics Devices for Vector Graphics Output
-Version: 0.3.0.001
+Title: R Graphics Devices for 'Office' Vector Graphics Output
+Version: 0.3.0
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
       email = "david.gohel@ardata.fr"),
@@ -11,10 +11,10 @@ Authors@R: c(
       email = "francois.brunetti@lysis-consultants.fr",
       comment = "clipping algorithms")
     )
-Description: Vector Graphics devices for Microsoft 
-  PowerPoint and Excel. Functions extending package 'officer' are provided to 
-  embed 'DrawingML' graphics into 'Microsoft PowerPoint' presentations and 
-  'Microsoft Excel' workbooks.
+Description: Vector Graphics devices for 'Microsoft PowerPoint' and 
+ 'Microsoft Excel'. Functions extending package 'officer' are provided to 
+ embed 'DrawingML' graphics into 'Microsoft PowerPoint' presentations and 
+ 'Microsoft Excel' workbooks.
 License: GPL-3
 Encoding: UTF-8
 Depends:
@@ -26,13 +26,8 @@ Imports:
     gdtools (>= 0.2.1),
     xml2 (>= 1.0.0), rlang
 LinkingTo: Rcpp, gdtools
-Suggests:
-    rmarkdown,
-    htmltools,
-    testthat,
-    covr,
-    grid, knitr
-URL: https://ardata-fr.github.io/officeverse, https://davidgohel.github.io/rvg
+Suggests: testthat, grid
+URL: https://ardata-fr.github.io/officeverse/, https://davidgohel.github.io/rvg/
 BugReports: https://github.com/davidgohel/rvg/issues
 RoxygenNote: 7.2.2
 Roxygen: list(markdown = TRUE)

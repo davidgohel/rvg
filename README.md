@@ -41,9 +41,7 @@ print(doc, target = "vg.xlsx")
 ```
 
 By default, theses graphics are *editable*, element edition can be
-disabled with option `editable = FALSE`. For more details, read officer
-article
-[graphics](https://davidgohel.github.io/officer/articles/offcran/graphics.html).
+disabled with option `editable = FALSE`.
 
 ## Installation
 

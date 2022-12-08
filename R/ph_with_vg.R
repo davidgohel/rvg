@@ -18,7 +18,16 @@ list_raster_files <- function(img_dir) {
 #'
 #' The function enable usage of any R plot with argument `code` and with
 #' ggplot objects with argument `ggobj`.
+#' @section background color:
+#' When dealing with a ggplot object argument `bg` will have no effect
+#' because ggplot theme is specifying background color, don't forget
+#' to define the colors you want in the theme:
 #'
+#' ```
+#' theme(
+#'   panel.background = element_rect(fill = "#EFEFEF"),
+#'   plot.background = element_rect(fill = "wheat"))
+#' ```
 #' @param code plotting instructions
 #' @param ggobj ggplot object to print. argument code will be ignored if this
 #'   argument is supplied.

@@ -1,3 +1,14 @@
+# rvg 0.3.0
+
+## Issues
+
+* replace call to sprintf by call to snprintf
+
+## Changes
+
+* use png for rasters
+* refactor cpp file tree
+
 # rvg 0.2.5
 
 ## Changes
