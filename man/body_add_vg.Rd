@@ -15,3 +15,4 @@ Defunct Functions in Package rvg
 \details{
 \code{body_add_vg()} is removed and can be replaced by \code{officer::body_add_img}.
 }
+\keyword{internal}

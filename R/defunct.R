@@ -1,6 +1,5 @@
 #' @export
-#' @rdname rvg-defunct
-#' @keyword internal
+#' @keywords internal
 #' @title Defunct Functions in Package rvg
 #' @param ... unused argument
 #' @details `body_add_vg()` is removed and can be replaced by `officer::body_add_img`.
