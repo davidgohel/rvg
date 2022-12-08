@@ -5,17 +5,17 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>R Graphics Devices for Vector Graphics Output • rvg</title>
+<title>R Graphics Devices for Office Vector Graphics Output • rvg</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="R Graphics Devices for Vector Graphics Output">
-<meta property="og:description" content="Vector Graphics devices for Microsoft 
-  PowerPoint and Excel. Functions extending package officer are provided to 
-  embed DrawingML graphics into Microsoft PowerPoint presentations and 
-  Microsoft Excel workbooks.">
+<script src="pkgdown.js"></script><meta property="og:title" content="R Graphics Devices for Office Vector Graphics Output">
+<meta property="og:description" content="Vector Graphics devices for Microsoft PowerPoint and 
+ Microsoft Excel. Functions extending package officer are provided to 
+ embed DrawingML graphics into Microsoft PowerPoint presentations and 
+ Microsoft Excel workbooks.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rvg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0.001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -76,7 +76,7 @@
 <p><code>rvg</code> is providing two graphics devices that produces Vector Graphics outputs in DrawingML format for Microsoft PowerPoint with <code>dml_pptx</code> and for Microsoft Excel with <code>dml_xlsx</code>. Theses formats let users edit the graphic elements (<em>editable graphics</em>) within PowerPoint or Excel and have a very good rendering.</p>
 <p>These raw XML outputs cannot be used <em>as is</em>. Functions <code>dml</code> and <code><a href="https://davidgohel.github.io/officer/reference/ph_with.html" class="external-link">ph_with()</a></code> have to be used with package <code>officer</code> to add vector graphics in PowerPoint documents (<code>dml</code> function is a simple wrapper to mark the plot instructions as Vector Graphics instructions).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ardata-fr.github.io/officeverse" class="external-link">rvg</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ardata-fr.github.io/officeverse/" class="external-link">rvg</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ardata-fr.github.io/officeverse/" class="external-link">officer</a></span><span class="op">)</span></span>
 <span></span>
@@ -92,7 +92,7 @@
 <span><span class="va">doc</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/xl_add_vg.html">xl_add_vg</a></span><span class="op">(</span><span class="va">doc</span>, sheet <span class="op">=</span> <span class="st">"Feuil1"</span>, code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span>, </span>
 <span>  width <span class="op">=</span> <span class="fl">6</span>, height <span class="op">=</span> <span class="fl">6</span>, left <span class="op">=</span> <span class="fl">1</span>, top <span class="op">=</span> <span class="fl">2</span> <span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">doc</span>, target <span class="op">=</span> <span class="st">"vg.xlsx"</span><span class="op">)</span></span></code></pre></div>
-<p>By default, theses graphics are <em>editable</em>, element edition can be disabled with option <code>editable = FALSE</code>. For more details, read officer article <a href="https://davidgohel.github.io/officer/articles/offcran/graphics.html" class="external-link">graphics</a>.</p>
+<p>By default, theses graphics are <em>editable</em>, element edition can be disabled with option <code>editable = FALSE</code>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -155,7 +155,7 @@
 
       <footer><link href="ardata.css" rel="stylesheet">
 <div class="author">
-  <p>Version 0.3.0.001 - Developed by  - proudly brought to you by <a href="http://www.ardata.fr" class="external-link"><img alt="ardata" src="ardata-logo.svg" style="vertical-align:middle;height:24px;"></a>
+  <p>Version 0.3.0 - Developed by  - proudly brought to you by <a href="http://www.ardata.fr" class="external-link"><img alt="ardata" src="ardata-logo.svg" style="vertical-align:middle;height:24px;"></a>
   </p>
 </div>
 <div class="pkgdown">
