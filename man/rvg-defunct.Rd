@@ -7,6 +7,9 @@
 \usage{
 body_add_vg(...)
 }
+\arguments{
+\item{...}{unused argument}
+}
 \description{
 Defunct Functions in Package rvg
 }
