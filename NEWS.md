@@ -1,3 +1,10 @@
+# rvg 0.3.1
+
+## Issues
+
+* add field `SystemRequirements` in DESCRIPTION file 
+so that software dependancies can be managed automatically.
+
 # rvg 0.3.0
 
 ## Issues
