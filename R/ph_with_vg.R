@@ -1,9 +1,3 @@
-get_img_dir <- function() {
-  uid <- basename(tempfile(pattern = ""))
-  img_directory <- file.path(getwd(), uid)
-  img_directory
-}
-
 list_raster_files <- function(img_dir) {
   path_ <- dirname(img_dir)
   uid <- basename(img_dir)
@@ -83,7 +77,9 @@ dml <- function(code, ggobj = NULL,
 #' fileout <- tempfile(fileext = ".pptx")
 #' print(doc, target = fileout)
 ph_with.dml <- function(x, value, location, ...) {
-  img_directory <- get_img_dir()
+  img_directory <- tempfile()
+  dir.create(img_directory, recursive = TRUE, showWarnings = FALSE)
+
   dml_file <- tempfile()
 
   pars <- list(...)
@@ -103,7 +99,7 @@ ph_with.dml <- function(x, value, location, ...) {
   pars$file <- dml_file
   pars$id <- 0L
   pars$last_rel_id <- 1
-  pars$raster_prefix <- img_directory
+  pars$raster_prefix <- paste0(img_directory, "/raster-")
   pars$standalone <- FALSE
 
   do.call("dml_pptx", pars)
@@ -120,13 +116,11 @@ ph_with.dml <- function(x, value, location, ...) {
     finally = dev.off()
   )
 
-  raster_files <- list_raster_files(img_dir = img_directory)
+  raster_files <- list.files(path = img_directory, pattern = "\\.png$", full.names = TRUE)
   dml_str <- scan(dml_file, what = "character", quiet = T, sep = "\n", encoding = "UTF-8")
-  if (length(raster_files)) {
-    slide <- x$slide$get_slide(x$cursor)
-    slide$reference_img(src = raster_files, dir_name = file.path(x$package_dir, "ppt/media"))
+  on.exit({
     unlink(raster_files, force = TRUE)
-  }
+  })
   dml_str <- paste(dml_str, collapse = "")
   ph_with(x = x, value = xml2::as_xml_document(dml_str), location = location, ...)
 }

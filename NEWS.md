@@ -5,6 +5,11 @@
 * add field `SystemRequirements` in DESCRIPTION file 
 so that software dependancies can be managed automatically.
 
+## Changes
+
+* use new mechanisms of officer 0.5 and drop complex
+treatments of raster/images for pptx.
+
 # rvg 0.3.0
 
 ## Issues

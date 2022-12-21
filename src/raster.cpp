@@ -124,8 +124,8 @@ void pptx_raster(unsigned int *raster, int w, int h,
   fputs("</p:nvPicPr>", pptx_obj->file);
   fputs("<p:blipFill>", pptx_obj->file);
   fprintf(pptx_obj->file,
-          "<a:blip r:embed=\"rId%d\" cstate=\"print\"/>",
-          id_img_rel);
+          "<a:blip r:embed=\"%s\" cstate=\"print\"/>",
+          fil);
   fputs("<a:stretch><a:fillRect/></a:stretch>", pptx_obj->file);
   fputs("</p:blipFill>", pptx_obj->file);
 
