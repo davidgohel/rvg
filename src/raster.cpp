@@ -5,6 +5,7 @@
 extern "C" {
 #include <png.h>
 }
+#include <cstdint>
 #include "Rcpp.h"
 #include "ooxml_dev.h"
 #include "xfrm.h"

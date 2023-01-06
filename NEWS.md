@@ -1,3 +1,10 @@
+# rvg 0.3.2
+
+## Issues
+
+* use cstdint as required by the CRAN to let the package work 
+with GCC-13.
+
 # rvg 0.3.1
 
 ## Issues
