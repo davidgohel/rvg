@@ -116,11 +116,7 @@ ph_with.dml <- function(x, value, location, ...) {
     finally = dev.off()
   )
 
-  raster_files <- list.files(path = img_directory, pattern = "\\.png$", full.names = TRUE)
   dml_str <- scan(dml_file, what = "character", quiet = T, sep = "\n", encoding = "UTF-8")
-  on.exit({
-    unlink(raster_files, force = TRUE)
-  })
   dml_str <- paste(dml_str, collapse = "")
   ph_with(x = x, value = xml2::as_xml_document(dml_str), location = location, ...)
 }

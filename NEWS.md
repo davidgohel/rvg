@@ -1,3 +1,9 @@
+# rvg 0.3.3
+
+## Issues
+
+* fix issue with raster images that get deleted before being integrated by officer.
+
 # rvg 0.3.2
 
 ## Issues
