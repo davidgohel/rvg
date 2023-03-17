@@ -3,6 +3,7 @@
 ## Issues
 
 * fix issue with raster images that get deleted before being integrated by officer.
+* drop cpp11 specification
 
 # rvg 0.3.2
 

@@ -1,7 +1,7 @@
 Package: rvg
 Type: Package
 Title: R Graphics Devices for 'Office' Vector Graphics Output
-Version: 0.3.3.001
+Version: 0.3.3
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
       email = "david.gohel@ardata.fr"),
@@ -15,7 +15,7 @@ Description: Vector Graphics devices for 'Microsoft PowerPoint' and
  'Microsoft Excel'. Functions extending package 'officer' are provided to 
  embed 'DrawingML' graphics into 'Microsoft PowerPoint' presentations and 
  'Microsoft Excel' workbooks.
-SystemRequirements: C++11, libpng
+SystemRequirements: libpng
 License: GPL-3
 Encoding: UTF-8
 Depends:
