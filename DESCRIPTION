@@ -5,6 +5,7 @@ Version: 0.3.3
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
       email = "david.gohel@ardata.fr"),
+    person(given = "ArData", role = "cph"),
     person("Bob", "Rudis", role = c("ctb"),
       comment = "the javascript code used by function set_attr"),
     person("Francois", "Brunetti", role = c("ctb"),
@@ -23,8 +24,8 @@ Depends:
 Imports:
     grDevices,
     Rcpp (>= 0.12.12),
-    officer (>= 0.5.1), 
-    gdtools (>= 0.2.1),
+    officer (>= 0.6.2), 
+    gdtools (>= 0.3.3),
     xml2 (>= 1.0.0), rlang
 LinkingTo: Rcpp, gdtools
 Suggests: testthat, grid
