@@ -1,7 +1,7 @@
 Package: rvg
 Type: Package
 Title: R Graphics Devices for 'Office' Vector Graphics Output
-Version: 0.3.3
+Version: 0.3.4.001
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
       email = "david.gohel@ardata.fr"),
@@ -31,5 +31,5 @@ LinkingTo: Rcpp, gdtools
 Suggests: testthat, grid
 URL: https://ardata-fr.github.io/officeverse/, https://davidgohel.github.io/rvg/
 BugReports: https://github.com/davidgohel/rvg/issues
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)

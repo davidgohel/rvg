@@ -1,3 +1,9 @@
+# rvg 0.3.4
+
+## Issues
+
+* throw more informative error message when no plot is generated
+
 # rvg 0.3.3
 
 ## Issues

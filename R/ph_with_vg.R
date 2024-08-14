@@ -117,6 +117,11 @@ ph_with.dml <- function(x, value, location, ...) {
   )
 
   dml_str <- scan(dml_file, what = "character", quiet = T, sep = "\n", encoding = "UTF-8")
+
+  if (dml_str == "</p:grpSp>") {
+    stop("There was no plot output produced, can not add an empty plot to pptx document.")
+  }
+
   dml_str <- paste(dml_str, collapse = "")
   ph_with(x = x, value = xml2::as_xml_document(dml_str), location = location, ...)
 }
