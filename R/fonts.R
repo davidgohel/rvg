@@ -28,9 +28,8 @@ default_fontname <- function() {
     )
   }
 
-  def_fonts <- def_fonts[unlist(lapply(def_fonts, font_family_exists))]
-  missing_fonts <- setdiff(r_font_families, names(def_fonts))
-  def_fonts[missing_fonts] <- lapply(def_fonts[missing_fonts], match_family)
+  bool_family_exists <- sapply(def_fonts, font_family_exists)
+  def_fonts[!bool_family_exists] <- lapply(names(def_fonts)[!bool_family_exists], match_family)
   def_fonts
 }
 
