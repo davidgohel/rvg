@@ -1,3 +1,9 @@
+# rvg 0.3.5
+
+## Issues
+
+- Use png from the system/Rtools
+
 # rvg 0.3.4
 
 ## Issues

@@ -58,6 +58,7 @@ dml <- function(code, ggobj = NULL,
 #' @importFrom officer ph_with fortify_location
 #' @importFrom rlang eval_tidy enquo
 #' @export
+#' @method ph_with dml
 #' @title add a plot output as vector graphics into a PowerPoint object
 #' @description produces a vector graphics output from R plot instructions
 #' stored in a \code{\link{dml}} object and add the result in an \code{rpptx}
