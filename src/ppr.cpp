@@ -16,7 +16,7 @@ std::string ppr::a_tag()
   else
     os << " algn=\"r\"";
   os << " marL=\"0\" marR=\"0\" indent=\"0\">";
-  os << "<a:lnSpc><a:spcPts val=\"" << (int)(this->lineheight*100) << "\"/></a:lnSpc>";
+  os << "<a:lnSpc><a:spcPct val=\"100%\"/></a:lnSpc>";
   os << "<a:spcBef><a:spcPts val=\"0\"/></a:spcBef>";
   os << "<a:spcAft><a:spcPts val=\"0\"/></a:spcAft>";
   os << "</a:pPr>";
