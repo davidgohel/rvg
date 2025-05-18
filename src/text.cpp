@@ -195,7 +195,10 @@ double pptx_strheight_utf8(const char *str, const pGEcontext gc, pDevDesc dd) {
   std::string file = fontfile(gc->fontfamily, gc->fontface, pptx_obj->system_aliases);
   std::string name = fontname(gc->fontfamily, gc->fontface, pptx_obj->system_aliases);
   gdtools::context_set_font(pptx_obj->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
-  FontMetric fm = gdtools::context_extents(pptx_obj->cc, std::string(str));
+  FontMetric fm = gdtools::context_extents(pptx_obj->cc, std::string("HI")); 
+  // Forces the height of pptx textbox to be cap-height which ensures correct vertical placement 
+  // when the vertical alignment of pptx textbox is centered/middle
+  // At least it works with Arial
   return fm.height;
 }
 double xlsx_strheight_utf8(const char *str, const pGEcontext gc, pDevDesc dd) {
