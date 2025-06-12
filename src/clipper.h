@@ -20,6 +20,8 @@ public:
   std::vector<NumericVector> get_x_lines();
   std::vector<NumericVector> get_y_lines();
 
+  bool is_point_outside(double point_x, double point_y);
+
 
 private:
   NumericVector x;
