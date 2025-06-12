@@ -1,3 +1,9 @@
+# rvg 0.3.6
+
+## Issues
+
+- Prevent showing circles outside plots' limits
+
 # rvg 0.3.5
 
 ## Issues

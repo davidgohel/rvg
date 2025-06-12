@@ -536,5 +536,12 @@ void clipper::drop_neighbors(){
   dout_ = dout__;
 }
 
+bool clipper::is_point_outside(double point_x, double point_y) {
+  return point_x < clip_left ||
+    clip_right < point_x ||
+    point_y < clip_bottom ||
+    clip_top < point_y;
+}
+
 clipper::clipper (){
 }

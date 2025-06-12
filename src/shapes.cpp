@@ -234,6 +234,9 @@ void pptx_rect(double x0, double y0, double x1, double y1,
 void pptx_circle(double x, double y, double r, const pGEcontext gc,
                         pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
+  if (pptx_obj->clp->is_point_outside(x, y)) {
+    return;
+  }
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   a_color fill_( gc->fill );
   xfrm xfrm_(pptx_obj->offx + x -r, pptx_obj->offy + y - r, r * 2, r * 2 , 0.0 );
@@ -422,6 +425,9 @@ void xlsx_rect(double x0, double y0, double x1, double y1,
 void xlsx_circle(double x, double y, double r, const pGEcontext gc,
                         pDevDesc dd) {
   XLSX_dev *xlsx_obj = (XLSX_dev*) dd->deviceSpecific;
+  if (xlsx_obj->clp->is_point_outside(x, y)) {
+    return;
+  }
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   a_color fill_( gc->fill );
   xfrm xfrm_(xlsx_obj->offx + x -r, xlsx_obj->offy + y - r, r * 2, r * 2 , 0.0 );
