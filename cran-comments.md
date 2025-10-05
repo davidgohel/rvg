@@ -1,7 +1,7 @@
 ## Test environments
 
-- local OS X install (R 4.4.3)
-- ubuntu 22.04 (release)
+- local OS X install (R-4.5.1)
+- ubuntu (release and devel)
 - winbuilder (with release and devel) 
 
 ## R CMD check results

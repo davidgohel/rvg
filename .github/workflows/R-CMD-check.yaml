@@ -23,7 +23,6 @@ jobs:
           - {os: windows-latest, r: '4.3'}
           - {os: windows-latest, r: '4.4'}
           - {os: windows-2025,   r: 'devel'}
-          - {os: macOS-latest, r: 'release'}
           - {os: ubuntu-latest, r: 'devel'}
           - {os: ubuntu-latest, r: 'release'}
     env:
