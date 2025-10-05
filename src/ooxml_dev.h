@@ -1,5 +1,4 @@
 #include "clipper.h"
-#include "gdtools.h"
 #include "R_ext/GraphicsEngine.h"
 
 // SVG device metadata
@@ -20,7 +19,6 @@ public:
 
   bool editable;
   int standalone;
-  XPtrCairoContext cc;
   clipper *clp;
 
   PPTX_dev(std::string filename_,
@@ -36,8 +34,8 @@ public:
     raster_prefix(raster_prefix_), img_last_id(rel_last_id_),
     system_aliases(Rcpp::wrap(aliases_["system"])),
     editable(editable_),
-    standalone(standalone_),
-    cc(gdtools::context_create()){
+    standalone(standalone_)
+  {
 
     file = fopen(R_ExpandFileName(filename.c_str()), "w");
     clipleft = 0.0;
@@ -83,7 +81,6 @@ public:
 
   bool editable;
   int standalone;
-  XPtrCairoContext cc;
   clipper *clp;
 
   XLSX_dev(std::string filename_,
@@ -99,8 +96,8 @@ public:
     raster_prefix(raster_prefix_), img_last_id(rel_last_id_),
     system_aliases(Rcpp::wrap(aliases_["system"])),
     editable(editable_),
-    standalone(standalone_),
-    cc(gdtools::context_create()){
+    standalone(standalone_)
+  {
 
     file = fopen(R_ExpandFileName(filename.c_str()), "w");
     clipleft = 0.0;

@@ -1,3 +1,7 @@
+# rvg 0.4.0
+
+- migrate from gdtools to systemfonts
+
 # rvg 0.3.5
 
 ## Issues

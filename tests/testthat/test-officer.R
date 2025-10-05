@@ -21,7 +21,7 @@ test_that("ph_remove", {
   my_pres <- ph_with(my_pres, value = "A footer", location = ph_location_type(type = "ftr", newlabel = "ouaoui"))
   my_pres <- ph_with(my_pres, value = format(Sys.Date()), location = ph_location_type(type = "dt", newlabel = "ouaoue"))
   #slide 2
-  my_pres <- add_slide(my_pres)
+  my_pres <- add_slide(my_pres, layout = "Title and Content")
   my_pres <- ph_with(my_pres, value = dml(code = {boxplot(iris)}), location = ph_location_type("body", newlabel = "chart"))
 
   example_pptx <- print(my_pres, target = tempfile(fileext = ".pptx"))

@@ -1,5 +1,6 @@
 #' @useDynLib rvg,.registration = TRUE
 #' @importFrom Rcpp sourceCpp
+#' @import systemfonts
 
 r_font_families <- c("sans", "serif", "mono", "symbol")
 
