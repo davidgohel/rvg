@@ -30,7 +30,10 @@ default_fontname <- function() {
   }
 
   bool_family_exists <- sapply(def_fonts, font_family_exists)
-  def_fonts[!bool_family_exists] <- lapply(names(def_fonts)[!bool_family_exists], match_family)
+  def_fonts[!bool_family_exists] <- lapply(
+    names(def_fonts)[!bool_family_exists],
+    match_family
+  )
   def_fonts
 }
 
