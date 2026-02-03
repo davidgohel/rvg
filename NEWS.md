@@ -1,8 +1,12 @@
-# rvg 0.3.6
+# rvg 0.4.1
 
 ## Issues
 
 - Prevent showing circles outside plots' limits
+
+# rvg 0.4.0
+
+- migrate from gdtools to systemfonts
 
 # rvg 0.3.5
 

@@ -1,35 +1,40 @@
-Package: rvg
 Type: Package
+Package: rvg
 Title: R Graphics Devices for 'Office' Vector Graphics Output
-Version: 0.3.6
+Version: 0.4.1
 Authors@R: c(
-    person("David", "Gohel", role = c("aut", "cre"),
-      email = "david.gohel@ardata.fr"),
-    person(given = "ArData", role = "cph"),
-    person("Bob", "Rudis", role = c("ctb"),
-      comment = "the javascript code used by function set_attr"),
-    person("Francois", "Brunetti", role = c("ctb"),
-      email = "francois.brunetti@lysis-consultants.fr",
-      comment = "clipping algorithms")
-    )
-Description: Vector Graphics devices for 'Microsoft PowerPoint' and 
- 'Microsoft Excel'. Functions extending package 'officer' are provided to 
- embed 'DrawingML' graphics into 'Microsoft PowerPoint' presentations and 
- 'Microsoft Excel' workbooks.
-SystemRequirements: libpng
+    person("David", "Gohel", , "david.gohel@ardata.fr", role = c("aut", "cre")),
+    person("ArData", role = "cph"),
+    person("Bob", "Rudis", role = "ctb",
+           comment = "the javascript code used by function set_attr"),
+    person("Francois", "Brunetti", , "francois.brunetti@lysis-consultants.fr", role = "ctb",
+           comment = "clipping algorithms")
+  )
+Description: Vector Graphics devices for 'Microsoft PowerPoint' and
+    'Microsoft Excel'. Functions extending package 'officer' are provided
+    to embed 'DrawingML' graphics into 'Microsoft PowerPoint'
+    presentations and 'Microsoft Excel' workbooks.
 License: GPL-3
-Encoding: UTF-8
+URL: https://ardata-fr.github.io/officeverse/,
+    https://davidgohel.github.io/rvg/
+BugReports: https://github.com/davidgohel/rvg/issues
 Depends:
     R (>= 3.0)
 Imports:
-    grDevices,
-    Rcpp (>= 0.12.12),
-    officer (>= 0.6.2), 
     gdtools (>= 0.3.3),
-    xml2 (>= 1.0.0), rlang
-LinkingTo: Rcpp, gdtools
-Suggests: testthat, grid
-URL: https://ardata-fr.github.io/officeverse/, https://davidgohel.github.io/rvg/
-BugReports: https://github.com/davidgohel/rvg/issues
-RoxygenNote: 7.3.2
+    grDevices,
+    officer (>= 0.6.2),
+    Rcpp (>= 0.12.12),
+    rlang,
+    systemfonts,
+    xml2 (>= 1.0.0)
+Suggests: 
+    grid,
+    testthat
+LinkingTo: 
+    Rcpp,
+    systemfonts
+Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+SystemRequirements: libpng

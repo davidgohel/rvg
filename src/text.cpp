@@ -7,7 +7,7 @@
 #include "xfrm.h"
 #include "Rcpp.h"
 #include "a_prstgeom.h"
-#include <gdtools.h>
+#include <systemfonts.h>
 #include "write_nv_pr.h"
 #include <math.h>
 #include <iostream>
@@ -100,83 +100,87 @@ std::string fontfile(const char* family_, int face,
   return find_user_alias(family, aliases, face, "file");
 }
 
+// Copied from the package svglite maintained by Thomas Lin Pedersen
+FontSettings get_font_file(const char* family, int face) {
+  const char* fontfamily = family;
+  if (is_symbol(face)) {
+    fontfamily = "symbol";
+  } else if (strcmp(family, "") == 0) {
+    fontfamily = "sans";
+  }
+  return locate_font_with_features(fontfamily, is_italic(face), is_bold(face));
+}
+
 void pptx_metric_info(int c, const pGEcontext gc, double* ascent,
                              double* descent, double* width, pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
-  bool Unicode = mbcslocale;
+
   if (c < 0) {
-    Unicode = TRUE;
     c = -c;
   }
-  char str[16];
-  if (!c) {
-    str[0]='M'; str[1]='g'; str[2]=0;
-  } else if (Unicode) {
-    Rf_ucstoutf8(str, (unsigned int) c);
-  } else {
-    str[0] = (char) c;
-    str[1] = '\0';
+
+  std::string fontname_ = fontname(gc->fontfamily, gc->fontface, pptx_obj->system_aliases);
+  FontSettings font = get_font_file(fontname_.c_str(), gc->fontface);
+  int error = glyph_metrics(c, font.file, font.index, gc->ps * gc->cex, 1e4, ascent, descent, width);
+  if (error != 0) {
+    *ascent = 0;
+    *descent = 0;
+    *width = 0;
   }
 
-  std::string file = fontfile(gc->fontfamily, gc->fontface, pptx_obj->system_aliases);
-  std::string name = fontname(gc->fontfamily, gc->fontface, pptx_obj->system_aliases);
-  gdtools::context_set_font(pptx_obj->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
-  FontMetric fm = gdtools::context_extents(pptx_obj->cc, std::string(str));
-
-  *ascent = fm.ascent;
-  *descent = fm.descent;
-  *width = fm.width;
+  double mod = 72./1e4;
+  *ascent *= mod;
+  *descent *= mod;
+  *width *= mod;
 }
 
 void xlsx_metric_info(int c, const pGEcontext gc, double* ascent,
                              double* descent, double* width, pDevDesc dd) {
   XLSX_dev *xlsx_obj = (XLSX_dev*) dd->deviceSpecific;
 
-  bool Unicode = mbcslocale;
   if (c < 0) {
-    Unicode = TRUE;
     c = -c;
   }
-  char str[16];
-  if (!c) {
-    str[0]='M'; str[1]='g'; str[2]=0;
-  } else if (Unicode) {
-    Rf_ucstoutf8(str, (unsigned int) c);
-  } else {
-    str[0] = (char) c;
-    str[1] = '\0';
+
+  std::string fontname_ = fontname(gc->fontfamily, gc->fontface, xlsx_obj->system_aliases);
+  FontSettings font = get_font_file(fontname_.c_str(), gc->fontface);
+  int error = glyph_metrics(c, font.file, font.index, gc->ps * gc->cex, 1e4, ascent, descent, width);
+  if (error != 0) {
+    *ascent = 0;
+    *descent = 0;
+    *width = 0;
   }
 
-  std::string file = fontfile(gc->fontfamily, gc->fontface, xlsx_obj->system_aliases);
-  std::string name = fontname(gc->fontfamily, gc->fontface, xlsx_obj->system_aliases);
-  gdtools::context_set_font(xlsx_obj->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
-  FontMetric fm = gdtools::context_extents(xlsx_obj->cc, std::string(str));
-
-  *ascent = fm.ascent;
-  *descent = fm.descent;
-  *width = fm.width;
+  double mod = 72./1e4;
+  *ascent *= mod;
+  *descent *= mod;
+  *width *= mod;
 }
 
 double pptx_strwidth_utf8(const char *str, const pGEcontext gc, pDevDesc dd) {
-  PPTX_dev *xlsx_obj = (PPTX_dev*) dd->deviceSpecific;
 
-  std::string file = fontfile(gc->fontfamily, gc->fontface, xlsx_obj->system_aliases);
-  std::string name = fontname(gc->fontfamily, gc->fontface, xlsx_obj->system_aliases);
-  gdtools::context_set_font(xlsx_obj->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
-  FontMetric fm = gdtools::context_extents(xlsx_obj->cc, std::string(str));
-
-  return fm.width;
+  PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
+  std::string fontname_ = fontname(gc->fontfamily, gc->fontface, pptx_obj->system_aliases);
+  FontSettings font = get_font_file(fontname_.c_str(), gc->fontface);
+  double width = 0.0;
+  int error = string_width(str, font.file, font.index, gc->ps * gc->cex, 1e4, 1, &width);
+  if (error != 0) {
+    width = 0.0;
+  }
+  return width * 72. / 1e4;
 }
 
 double xlsx_strwidth_utf8(const char *str, const pGEcontext gc, pDevDesc dd) {
+
   XLSX_dev *xlsx_obj = (XLSX_dev*) dd->deviceSpecific;
-
-  std::string file = fontfile(gc->fontfamily, gc->fontface, xlsx_obj->system_aliases);
-  std::string name = fontname(gc->fontfamily, gc->fontface, xlsx_obj->system_aliases);
-  gdtools::context_set_font(xlsx_obj->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
-  FontMetric fm = gdtools::context_extents(xlsx_obj->cc, std::string(str));
-
-  return fm.width;
+  std::string fontname_ = fontname(gc->fontfamily, gc->fontface, xlsx_obj->system_aliases);
+  FontSettings font = get_font_file(fontname_.c_str(), gc->fontface);
+  double width = 0.0;
+  int error = string_width(str, font.file, font.index, gc->ps * gc->cex, 1e4, 1, &width);
+  if (error != 0) {
+    width = 0.0;
+  }
+  return width * 72. / 1e4;
 }
 
 
@@ -192,21 +196,29 @@ double xlsx_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
 
 double pptx_strheight_utf8(const char *str, const pGEcontext gc, pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
-  std::string file = fontfile(gc->fontfamily, gc->fontface, pptx_obj->system_aliases);
-  std::string name = fontname(gc->fontfamily, gc->fontface, pptx_obj->system_aliases);
-  gdtools::context_set_font(pptx_obj->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
-  FontMetric fm = gdtools::context_extents(pptx_obj->cc, std::string(str));
-  return fm.height;
+  std::string fontname_ = fontname(gc->fontfamily, gc->fontface, pptx_obj->system_aliases);
+  FontSettings font = get_font_file(fontname_.c_str(), gc->fontface);
+
+  // Use 'M' character to get font height
+  double ascent = 0.0, descent = 0.0, width = 0.0;
+  int error = glyph_metrics(77, font.file, font.index, gc->ps * gc->cex, 1e4, &ascent, &descent, &width);
+  if (error != 0) {
+    return 0.0;
+  }
+  return (ascent + descent) * 72. / 1e4;
 }
 double xlsx_strheight_utf8(const char *str, const pGEcontext gc, pDevDesc dd) {
   XLSX_dev *xlsx_obj = (XLSX_dev*) dd->deviceSpecific;
+  std::string fontname_ = fontname(gc->fontfamily, gc->fontface, xlsx_obj->system_aliases);
+  FontSettings font = get_font_file(fontname_.c_str(), gc->fontface);
 
-  std::string file = fontfile(gc->fontfamily, gc->fontface, xlsx_obj->system_aliases);
-  std::string name = fontname(gc->fontfamily, gc->fontface, xlsx_obj->system_aliases);
-  gdtools::context_set_font(xlsx_obj->cc, name, gc->cex * gc->ps, is_bold(gc->fontface), is_italic(gc->fontface), file);
-  FontMetric fm = gdtools::context_extents(xlsx_obj->cc, std::string(str));
-
-  return fm.height;
+  // Use 'M' character to get font height
+  double ascent = 0.0, descent = 0.0, width = 0.0;
+  int error = glyph_metrics(77, font.file, font.index, gc->ps * gc->cex, 1e4, &ascent, &descent, &width);
+  if (error != 0) {
+    return 0.0;
+  }
+  return (ascent + descent) * 72. / 1e4;
 }
 double translate_rotate_x(double x, double y, double rot, double h, double w, double hadj) {
   double pi = 3.141592653589793115997963468544185161590576171875;

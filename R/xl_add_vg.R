@@ -26,11 +26,20 @@ xl_add_vg <- function(x, sheet, code, left, top, width, height, ...) {
 
   sheet_id <- x$worksheets$get_sheet_id(sheet)
 
-  dir.create(file.path(x$package_dir, "xl/media"), showWarnings = FALSE, recursive = TRUE)
-  img_directory <- file.path(x$package_dir, "xl/media", basename(tempfile(pattern = "img_")))
+  dir.create(
+    file.path(x$package_dir, "xl/media"),
+    showWarnings = FALSE,
+    recursive = TRUE
+  )
+  img_directory <- file.path(
+    x$package_dir,
+    "xl/media",
+    basename(tempfile(pattern = "img_"))
+  )
 
   dml_file <- file.path(
-    x$package_dir, "xl/drawings",
+    x$package_dir,
+    "xl/drawings",
     basename(tempfile(pattern = "d", fileext = ".xml"))
   )
   dir.create(dirname(dml_file), showWarnings = FALSE)
@@ -57,9 +66,18 @@ xl_add_vg <- function(x, sheet, code, left, top, width, height, ...) {
   if (length(raster_files)) {
     rid <- paste0("rId", seq_along(raster_files))
     target <- paste0("../media/", basename(raster_files))
-    rel_file <- file.path(dirname(dml_file), "_rels", paste0(basename(dml_file), ".rels"))
-    dir.create(file.path(dirname(dml_file), "_rels"), showWarnings = FALSE, recursive = TRUE)
-    cat("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n",
+    rel_file <- file.path(
+      dirname(dml_file),
+      "_rels",
+      paste0(basename(dml_file), ".rels")
+    )
+    dir.create(
+      file.path(dirname(dml_file), "_rels"),
+      showWarnings = FALSE,
+      recursive = TRUE
+    )
+    cat(
+      "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n",
       "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">\n",
       file = rel_file
     )

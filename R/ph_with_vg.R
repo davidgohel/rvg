@@ -1,7 +1,11 @@
 list_raster_files <- function(img_dir) {
   path_ <- dirname(img_dir)
   uid <- basename(img_dir)
-  list.files(path = path_, pattern = paste0("^", uid, "(.*)\\.png$"), full.names = TRUE)
+  list.files(
+    path = path_,
+    pattern = paste0("^", uid, "(.*)\\.png$"),
+    full.names = TRUE
+  )
 }
 
 
@@ -39,9 +43,15 @@ list_raster_files <- function(img_dir) {
 #' print(doc, target = fileout)
 #' @export
 #' @seealso \code{\link{ph_with.dml}}
-dml <- function(code, ggobj = NULL,
-                bg = "white", fonts = list(),
-                pointsize = 12, editable = TRUE, ...) {
+dml <- function(
+  code,
+  ggobj = NULL,
+  bg = "white",
+  fonts = list(),
+  pointsize = 12,
+  editable = TRUE,
+  ...
+) {
   out <- list()
   out$code <- enquo(code)
   out$ggobj <- ggobj
@@ -117,12 +127,25 @@ ph_with.dml <- function(x, value, location, ...) {
     finally = dev.off()
   )
 
-  dml_str <- scan(dml_file, what = "character", quiet = T, sep = "\n", encoding = "UTF-8")
+  dml_str <- scan(
+    dml_file,
+    what = "character",
+    quiet = T,
+    sep = "\n",
+    encoding = "UTF-8"
+  )
 
   if (dml_str == "</p:grpSp>") {
-    stop("There was no plot output produced, can not add an empty plot to pptx document.")
+    stop(
+      "There was no plot output produced, can not add an empty plot to pptx document."
+    )
   }
 
   dml_str <- paste(dml_str, collapse = "")
-  ph_with(x = x, value = xml2::as_xml_document(dml_str), location = location, ...)
+  ph_with(
+    x = x,
+    value = xml2::as_xml_document(dml_str),
+    location = location,
+    ...
+  )
 }

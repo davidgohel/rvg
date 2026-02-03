@@ -1,5 +1,6 @@
 #' @useDynLib rvg,.registration = TRUE
 #' @importFrom Rcpp sourceCpp
+#' @import systemfonts
 
 r_font_families <- c("sans", "serif", "mono", "symbol")
 
@@ -29,7 +30,10 @@ default_fontname <- function() {
   }
 
   bool_family_exists <- sapply(def_fonts, font_family_exists)
-  def_fonts[!bool_family_exists] <- lapply(names(def_fonts)[!bool_family_exists], match_family)
+  def_fonts[!bool_family_exists] <- lapply(
+    names(def_fonts)[!bool_family_exists],
+    match_family
+  )
   def_fonts
 }
 

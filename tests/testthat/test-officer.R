@@ -5,24 +5,49 @@ library(officer)
 test_that("ph_with", {
   doc <- read_pptx()
   doc <- add_slide(doc, "Title and Content", "Office Theme")
-  doc <- ph_with(doc, dml(code = barplot(1:5, col = 2:6)), location = ph_location_type(type = "body"))
+  doc <- ph_with(
+    doc,
+    dml(code = barplot(1:5, col = 2:6)),
+    location = ph_location_type(type = "body")
+  )
 
   xmldoc <- doc$slide$get_slide(1)$get()
   node <- xml_find_all(xmldoc, "//p:spTree/p:grpSp/*")
-  expect_false( inherits(node, "xml_missing") )
+  expect_false(inherits(node, "xml_missing"))
 })
 
 test_that("ph_remove", {
-
   my_pres <- read_pptx()
   #slide 1
-  my_pres <- add_slide(my_pres, layout = "Title and Content", master = "Office Theme")
-  my_pres <- ph_with(my_pres, value = "Hello World", location = ph_location_type(type = "title", newlabel = "ouaoua"))
-  my_pres <- ph_with(my_pres, value = "A footer", location = ph_location_type(type = "ftr", newlabel = "ouaoui"))
-  my_pres <- ph_with(my_pres, value = format(Sys.Date()), location = ph_location_type(type = "dt", newlabel = "ouaoue"))
+  my_pres <- add_slide(
+    my_pres,
+    layout = "Title and Content",
+    master = "Office Theme"
+  )
+  my_pres <- ph_with(
+    my_pres,
+    value = "Hello World",
+    location = ph_location_type(type = "title", newlabel = "ouaoua")
+  )
+  my_pres <- ph_with(
+    my_pres,
+    value = "A footer",
+    location = ph_location_type(type = "ftr", newlabel = "ouaoui")
+  )
+  my_pres <- ph_with(
+    my_pres,
+    value = format(Sys.Date()),
+    location = ph_location_type(type = "dt", newlabel = "ouaoue")
+  )
   #slide 2
-  my_pres <- add_slide(my_pres)
-  my_pres <- ph_with(my_pres, value = dml(code = {boxplot(iris)}), location = ph_location_type("body", newlabel = "chart"))
+  my_pres <- add_slide(my_pres, layout = "Title and Content")
+  my_pres <- ph_with(
+    my_pres,
+    value = dml(code = {
+      boxplot(iris)
+    }),
+    location = ph_location_type("body", newlabel = "chart")
+  )
 
   example_pptx <- print(my_pres, target = tempfile(fileext = ".pptx"))
 
