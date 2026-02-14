@@ -7,9 +7,9 @@ rvg package
 [![version](https://www.r-pkg.org/badges/version/rvg)](https://CRAN.R-project.org/package=rvg)
 ![cranlogs](https://cranlogs.r-pkg.org/badges/rvg) <!-- badges: end -->
 
-`rvg` is providing two graphics devices that produces Vector Graphics
-outputs in DrawingML format for Microsoft PowerPoint with `dml_pptx` and
-for Microsoft Excel with `dml_xlsx`. Theses formats let users edit the
+`rvg` provides two graphics devices that produce Vector Graphics outputs
+in DrawingML format for Microsoft PowerPoint with `dml_pptx` and for
+Microsoft Excel with `dml_xlsx`. These formats let users edit the
 graphic elements (*editable graphics*) within PowerPoint or Excel and
 have a very good rendering.
 
@@ -40,7 +40,7 @@ doc <- xl_add_vg(doc, sheet = "Feuil1", code = print(gg),
 print(doc, target = "vg.xlsx")
 ```
 
-By default, theses graphics are *editable*, element edition can be
+By default, these graphics are *editable*, element edition can be
 disabled with option `editable = FALSE`.
 
 ## Installation

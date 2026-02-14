@@ -13,16 +13,15 @@ xl_add_vg(x, sheet, code, left, top, width, height, ...)
 
 \item{code}{plot instructions}
 
-\item{left, top}{left and top origin of the plot on the slide in inches.}
+\item{left, top}{left and top origin of the plot on the sheet in inches.}
 
 \item{height, width}{Height and width in inches.}
 
 \item{...}{arguments passed on to \code{\link{dml_xlsx}}.}
 }
 \description{
-produces a vector graphics output from R plot instructions
-and add the result in an Excel sheet.
-by \code{\link[officer]{read_xlsx}}.
+Produces a vector graphics output from R plot instructions
+and adds the result in an Excel sheet.
 }
 \examples{
 \donttest{

@@ -1,3 +1,13 @@
+# rvg 0.4.1
+
+- Font resolution now uses `gdtools::font_set_auto()` to detect
+  system fonts for `sans`, `serif`, `mono` and `symbol` aliases.
+  Minimum gdtools version bumped to 0.5.0.
+- `validate_fonts()` now warns when user-supplied font families
+  are not found on the system.
+- Documentation clarifies that fonts are not embedded in DrawingML
+  output and must be available on the reader's system.
+
 # rvg 0.4.0
 
 - migrate from gdtools to systemfonts

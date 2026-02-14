@@ -9,13 +9,19 @@
 #' @param bg Default background color for the plot (defaults to "white").
 #' @param fonts Named list of font names to be aliased with
 #'   fonts installed on your system. If unspecified, the R default
-#'   families \code{sans}, \code{serif}, \code{mono} and \code{symbol}
-#'   are aliased to the family returned by \code{\link[gdtools]{match_family}()}.
+#'   families `sans`, `serif`, `mono` and `symbol` are aliased
+#'   to the families detected by [gdtools::font_set_auto()].
 #'
-#' When you use specific fonts, you will need that font installed on your system.
-#' This can be check with package `gdtools` and function `gdtools::font_family_exists()`.
+#'   **Important:** fonts are referenced by name in the DrawingML output
+#'   and are **not embedded**. The reader of the PowerPoint file must also
+#'   have the same fonts installed, otherwise Office will substitute them.
+#'   For maximum portability, prefer fonts bundled with Microsoft Office
+#'   such as `"Arial"`, `"Times New Roman"` and `"Courier New"`.
 #'
-#' An example: `list(sans = "Roboto", serif = "Times", mono = "Courier")`.
+#'   Fonts must be installed on your system; use
+#'   `gdtools::font_family_exists()` to verify availability.
+#'
+#'   Example: `list(sans = "Arial", serif = "Times New Roman", mono = "Courier New")`.
 #'
 #' @param pointsize default point size.
 #' @param editable should vector graphics elements (points, text, etc.) be editable.

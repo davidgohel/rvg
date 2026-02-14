@@ -4,44 +4,27 @@
 
 r_font_families <- c("sans", "serif", "mono", "symbol")
 
-#' @importFrom gdtools font_family_exists
-default_fontname <- function() {
-  def_fonts <- if (Sys.info()["sysname"] == "Windows") {
-    c(
-      sans = "Arial",
-      serif = "Times New Roman",
-      mono = "Courier New",
-      symbol = "Symbol"
-    )
-  } else if (Sys.info()["sysname"] == "Darwin") {
-    c(
-      sans = "Helvetica",
-      serif = "Times",
-      mono = "Courier",
-      symbol = "Symbol"
-    )
-  } else {
-    c(
-      sans = "DejaVu Sans",
-      serif = "DejaVu serif",
-      mono = "DejaVu mono",
-      symbol = "DejaVu Sans"
+#' @importFrom gdtools font_family_exists font_set_auto
+validate_fonts <- function(system_fonts = list()) {
+  auto <- font_set_auto()
+  defaults <- c(
+    sans = auto$sans,
+    serif = auto$serif,
+    mono = auto$mono,
+    symbol = auto$symbol
+  )
+  found <- unlist(lapply(system_fonts, font_family_exists))
+  if (length(system_fonts) > 0 && any(!found)) {
+    not_found <- names(system_fonts)[!found]
+    warning(
+      "Font families not found on this system and replaced by defaults: ",
+      paste0('"', not_found, '"', collapse = ", "),
+      ". Use gdtools::font_family_exists() to check availability.",
+      call. = FALSE
     )
   }
-
-  bool_family_exists <- sapply(def_fonts, font_family_exists)
-  def_fonts[!bool_family_exists] <- lapply(
-    names(def_fonts)[!bool_family_exists],
-    match_family
-  )
-  def_fonts
-}
-
-
-#' @importFrom gdtools match_family
-validate_fonts <- function(system_fonts = list()) {
-  system_fonts <- system_fonts[unlist(lapply(system_fonts, font_family_exists))]
+  system_fonts <- system_fonts[found]
   missing_fonts <- setdiff(r_font_families, names(system_fonts))
-  system_fonts[missing_fonts] <- default_fontname()[missing_fonts]
+  system_fonts[missing_fonts] <- defaults[missing_fonts]
   system_fonts
 }

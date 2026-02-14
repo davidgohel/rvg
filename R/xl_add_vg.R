@@ -1,13 +1,12 @@
 #' @export
 #' @title add a plot output as vector graphics into an Excel object
-#' @description produces a vector graphics output from R plot instructions
-#' and add the result in an Excel sheet.
-#' by \code{\link[officer]{read_xlsx}}.
+#' @description Produces a vector graphics output from R plot instructions
+#' and adds the result in an Excel sheet.
 #' @param x an \code{rxlsx} object produced by \code{officer::read_xlsx}
 #' @param code plot instructions
 #' @param sheet sheet label/name
 #' @param height,width Height and width in inches.
-#' @param left,top left and top origin of the plot on the slide in inches.
+#' @param left,top left and top origin of the plot on the sheet in inches.
 #' @param ... arguments passed on to \code{\link{dml_xlsx}}.
 #' @importFrom xml2 xml_ns xml_new_root xml_attr<- xml_add_sibling
 #' @examples

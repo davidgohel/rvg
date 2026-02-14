@@ -9,12 +9,23 @@
 #' @param bg Default background color for the plot (defaults to "white").
 #' @param fonts Named list of font names to be aliased with
 #'   fonts installed on your system. If unspecified, the R default
-#'   families \code{sans}, \code{serif}, \code{mono} and \code{symbol}
-#'   are aliased to the family returned by \code{\link[gdtools]{match_family}()}.
+#'   families `sans`, `serif`, `mono` and `symbol` are aliased
+#'   to the families detected by [gdtools::font_set_auto()].
+#'
+#'   **Important:** fonts are referenced by name in the DrawingML output
+#'   and are **not embedded**. The reader of the Excel file must also
+#'   have the same fonts installed, otherwise Office will substitute them.
+#'   For maximum portability, prefer fonts bundled with Microsoft Office
+#'   such as `"Arial"`, `"Times New Roman"` and `"Courier New"`.
+#'
+#'   Fonts must be installed on your system; use
+#'   `gdtools::font_family_exists()` to verify availability.
+#'
+#'   Example: `list(sans = "Arial", serif = "Times New Roman", mono = "Courier New")`.
 #' @param pointsize default point size.
 #' @param editable should vector graphics elements (points, text, etc.) be editable.
-#' @param id specifies a unique identifier (integer) within the slide
-#' that will contain the DrawingML instructions.
+#' @param id specifies a unique identifier (integer) within the
+#' sheet that will contain the DrawingML instructions.
 #' @param last_rel_id specifies the last unique identifier (integer)
 #' within relationship file that will be used to reference embedded
 #' raster images if any.

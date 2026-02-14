@@ -31,13 +31,19 @@ dml_pptx(
 
 \item{fonts}{Named list of font names to be aliased with
 fonts installed on your system. If unspecified, the R default
-families \code{sans}, \code{serif}, \code{mono} and \code{symbol}
-are aliased to the family returned by \code{\link[gdtools]{match_family}()}.
+families \code{sans}, \code{serif}, \code{mono} and \code{symbol} are aliased
+to the families detected by \code{\link[gdtools:font_set_auto]{gdtools::font_set_auto()}}.
 
-When you use specific fonts, you will need that font installed on your system.
-This can be check with package \code{gdtools} and function \code{gdtools::font_family_exists()}.
+\strong{Important:} fonts are referenced by name in the DrawingML output
+and are \strong{not embedded}. The reader of the PowerPoint file must also
+have the same fonts installed, otherwise Office will substitute them.
+For maximum portability, prefer fonts bundled with Microsoft Office
+such as \code{"Arial"}, \code{"Times New Roman"} and \code{"Courier New"}.
 
-An example: \code{list(sans = "Roboto", serif = "Times", mono = "Courier")}.}
+Fonts must be installed on your system; use
+\code{gdtools::font_family_exists()} to verify availability.
+
+Example: \code{list(sans = "Arial", serif = "Times New Roman", mono = "Courier New")}.}
 
 \item{pointsize}{default point size.}
 

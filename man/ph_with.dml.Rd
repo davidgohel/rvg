@@ -16,8 +16,8 @@
 \item{...}{Arguments to be passed to methods}
 }
 \description{
-produces a vector graphics output from R plot instructions
-stored in a \code{\link{dml}} object and add the result in an \code{rpptx}
+Produces a vector graphics output from R plot instructions
+stored in a \code{\link{dml}} object and adds the result in an \code{rpptx}
 object produced by \code{\link[officer]{read_pptx}}.
 }
 \examples{

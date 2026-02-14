@@ -14,12 +14,16 @@ list_raster_files <- function(img_dir) {
 #' the plot instructions as Vector Graphics instructions. It produces
 #' an object of class 'dml' with a corresponding method \code{\link[officer]{ph_with}}.
 #'
-#' The function enable usage of any R plot with argument `code` and with
+#' The function enables usage of any R plot with argument `code` and with
 #' ggplot objects with argument `ggobj`.
+#'
+#' **Note:** the output is a vector graphic, not a native Microsoft Office
+#' chart. The underlying data is not embedded in the document.
 #' @section background color:
-#' When dealing with a ggplot object argument `bg` will have no effect
-#' because ggplot theme is specifying background color, don't forget
-#' to define the colors you want in the theme:
+#' When dealing with a ggplot object, the `bg` parameter sets the
+#' device background but the ggplot theme's `plot.background` will
+#' typically draw over it. To control the background appearance,
+#' set it in the theme instead:
 #'
 #' ```
 #' theme(
@@ -29,7 +33,8 @@ list_raster_files <- function(img_dir) {
 #' @param code plotting instructions
 #' @param ggobj ggplot object to print. argument code will be ignored if this
 #'   argument is supplied.
-#' @param bg,fonts,pointsize,editable Parameters passed to \code{\link{dml_pptx}}
+#' @param bg,fonts,pointsize,editable Parameters stored and
+#'   later passed to \code{\link{dml_pptx}} by \code{\link{ph_with.dml}}.
 #' @param ... unused arguments
 #' @examples
 #' anyplot <- dml(code = barplot(1:5, col = 2:6), bg = "wheat")
@@ -70,8 +75,8 @@ dml <- function(
 #' @export
 #' @method ph_with dml
 #' @title add a plot output as vector graphics into a PowerPoint object
-#' @description produces a vector graphics output from R plot instructions
-#' stored in a \code{\link{dml}} object and add the result in an \code{rpptx}
+#' @description Produces a vector graphics output from R plot instructions
+#' stored in a \code{\link{dml}} object and adds the result in an \code{rpptx}
 #' object produced by \code{\link[officer]{read_pptx}}.
 #' @param x a pptx device
 #' @param value \code{\link{dml}} object
@@ -137,7 +142,7 @@ ph_with.dml <- function(x, value, location, ...) {
 
   if (dml_str == "</p:grpSp>") {
     stop(
-      "There was no plot output produced, can not add an empty plot to pptx document."
+      "There was no plot output produced, cannot add an empty plot to pptx document."
     )
   }
 

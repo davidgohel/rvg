@@ -20,7 +20,8 @@ dml(
 \item{ggobj}{ggplot object to print. argument code will be ignored if this
 argument is supplied.}
 
-\item{bg, fonts, pointsize, editable}{Parameters passed to \code{\link{dml_pptx}}}
+\item{bg, fonts, pointsize, editable}{Parameters stored and
+later passed to \code{\link{dml_pptx}} by \code{\link{ph_with.dml}}.}
 
 \item{...}{unused arguments}
 }
@@ -29,14 +30,18 @@ A simple wrapper to mark
 the plot instructions as Vector Graphics instructions. It produces
 an object of class 'dml' with a corresponding method \code{\link[officer]{ph_with}}.
 
-The function enable usage of any R plot with argument \code{code} and with
+The function enables usage of any R plot with argument \code{code} and with
 ggplot objects with argument \code{ggobj}.
+
+\strong{Note:} the output is a vector graphic, not a native Microsoft Office
+chart. The underlying data is not embedded in the document.
 }
 \section{background color}{
 
-When dealing with a ggplot object argument \code{bg} will have no effect
-because ggplot theme is specifying background color, don't forget
-to define the colors you want in the theme:
+When dealing with a ggplot object, the \code{bg} parameter sets the
+device background but the ggplot theme's \code{plot.background} will
+typically draw over it. To control the background appearance,
+set it in the theme instead:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{theme(
   panel.background = element_rect(fill = "#EFEFEF"),
