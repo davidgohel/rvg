@@ -4,8 +4,7 @@ library(xml2)
 
 test_that("raster is generated", {
   file <- tempfile()
-  uid <- basename(tempfile())
-  dml_xlsx(file = file, raster_prefix = uid, bg = "transparent")
+  dml_xlsx(file = file, bg = "transparent")
   pushViewport(viewport(width = 0.8, height = 0.5, name = "vp1"))
   grid.rect()
   pushViewport(viewport(width = 0.8, height = 0.5, name = "vp2", angle = 10))
@@ -13,8 +12,13 @@ test_that("raster is generated", {
   grid.raster(redGradient)
   dev.off()
 
+  xml_raw <- paste0(readLines(file, warn = FALSE), collapse = "")
+  m <- regmatches(xml_raw, regexpr("<!-- rvg_raster_prefix:(.+?) -->", xml_raw, perl = TRUE))
+  expect_length(m, 1L)
+  raster_prefix <- sub("<!-- rvg_raster_prefix:(.+?) -->", "\\1", m, perl = TRUE)
   raster_files <- list.files(
-    pattern = paste0("^", uid, "(.*)\\.png$"),
+    path = dirname(raster_prefix),
+    pattern = paste0("^", basename(raster_prefix), "(.*)\\.png$"),
     full.names = TRUE
   )
   expect_equal(length(raster_files), expected = 1)
@@ -40,4 +44,3 @@ test_that("pic tag can be found", {
   expect_is(blip_node, "xml_node")
 })
 
-unlink(list.files(pattern = "\\.png"), force = TRUE)

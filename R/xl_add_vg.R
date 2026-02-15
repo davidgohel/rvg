@@ -30,11 +30,6 @@ xl_add_vg <- function(x, sheet, code, left, top, width, height, ...) {
     showWarnings = FALSE,
     recursive = TRUE
   )
-  img_directory <- file.path(
-    x$package_dir,
-    "xl/media",
-    basename(tempfile(pattern = "img_"))
-  )
 
   dml_file <- file.path(
     x$package_dir,
@@ -49,7 +44,6 @@ xl_add_vg <- function(x, sheet, code, left, top, width, height, ...) {
   pars$file <- dml_file
   pars$id <- 0L
   pars$last_rel_id <- sheet$relationship()$get_next_id() - 1
-  pars$raster_prefix <- img_directory
   pars$standalone <- TRUE
   pars$width <- width
   pars$height <- height
@@ -59,10 +53,21 @@ xl_add_vg <- function(x, sheet, code, left, top, width, height, ...) {
   do.call("dml_xlsx", pars)
 
   tryCatch(code, finally = dev.off())
-  raster_files <- list_raster_files(img_dir = img_directory)
+
+  # extract raster_prefix from XML comment written by xlsx_close()
+  xml_raw <- paste0(readLines(dml_file, warn = FALSE), collapse = "")
+  m <- regmatches(xml_raw, regexpr("<!-- rvg_raster_prefix:(.+?) -->", xml_raw, perl = TRUE))
+  raster_files <- character(0)
+  if (length(m) == 1L) {
+    raster_prefix <- sub("<!-- rvg_raster_prefix:(.+?) -->", "\\1", m, perl = TRUE)
+    raster_files <- list_raster_files(img_dir = raster_prefix)
+  }
+
   rel <- sheet$relationship()
 
   if (length(raster_files)) {
+    media_dir <- file.path(x$package_dir, "xl/media")
+    file.copy(raster_files, media_dir)
     rid <- paste0("rId", seq_along(raster_files))
     target <- paste0("../media/", basename(raster_files))
     rel_file <- file.path(

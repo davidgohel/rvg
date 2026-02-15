@@ -15,6 +15,11 @@
 
 ## changes
 
+- `dml_xlsx()` no longer exposes the `raster_prefix` argument; raster
+  files are now written to an internal temporary directory. The prefix
+  is embedded in the output as an XML comment
+  (`<!-- rvg_raster_prefix:... -->`), which callers can read after
+  `dev.off()` to locate the PNG files.
 - Implement `xlsx_path` callback for the XLSX device, enabling
   `geom_path` and path-based geometries in Excel output.
 - Compound paths (`pptx_path`/`xlsx_path`) now combine all

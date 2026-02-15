@@ -16,7 +16,6 @@ dml_xlsx(
   editable = TRUE,
   id = 1L,
   last_rel_id = 1L,
-  raster_prefix = "raster_",
   standalone = TRUE
 )
 }
@@ -55,10 +54,6 @@ sheet that will contain the DrawingML instructions.}
 \item{last_rel_id}{specifies the last unique identifier (integer)
 within relationship file that will be used to reference embedded
 raster images if any.}
-
-\item{raster_prefix}{string value used as prefix for png
-files produced when raster objects are printed on the
-graphical device.}
 
 \item{standalone}{produce a standalone drawingml file? If \code{FALSE}, omits
 xml header and namespaces.}

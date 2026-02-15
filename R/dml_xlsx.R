@@ -29,9 +29,6 @@
 #' @param last_rel_id specifies the last unique identifier (integer)
 #' within relationship file that will be used to reference embedded
 #' raster images if any.
-#' @param raster_prefix string value used as prefix for png
-#' files produced when raster objects are printed on the
-#' graphical device.
 #' @param standalone produce a standalone drawingml file? If \code{FALSE}, omits
 #'   xml header and namespaces.
 #' @examples
@@ -55,9 +52,12 @@ dml_xlsx <- function(
   editable = TRUE,
   id = 1L,
   last_rel_id = 1L,
-  raster_prefix = "raster_",
   standalone = TRUE
 ) {
+  img_directory <- tempfile()
+  dir.create(img_directory, recursive = TRUE, showWarnings = FALSE)
+  raster_prefix <- paste0(img_directory, "/raster-")
+
   system_fonts <- validate_fonts(fonts)
   invisible(XLSX_(
     file,
