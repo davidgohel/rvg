@@ -49,6 +49,25 @@ set it in the theme instead:
 }\if{html}{\out{</div>}}
 }
 
+\section{Limitations}{
+
+The DrawingML format does not support the following R graphics features:
+\itemize{
+\item \strong{Patterns and gradients}: grid patterns (\code{GridPattern}),
+linear and radial gradients used as fill are not translated into
+DrawingML. ggplot2 will emit a warning when these are used.
+\item \strong{Rich text (ggtext/gridtext)}: packages such as \code{ggtext} render
+HTML/Markdown into composite grid grobs. The rvg device can only
+capture low-level primitives (text strings, lines, polygons), so
+the rich formatting (inline images, coloured spans, HTML markup)
+is lost. Use standard ggplot2 text functions or apply formatting
+after export in PowerPoint.
+\item \strong{Clipping paths, masks, compositing and transformations}:
+these R >= 4.1 features have no DrawingML equivalent and are
+silently ignored.
+}
+}
+
 \examples{
 anyplot <- dml(code = barplot(1:5, col = 2:6), bg = "wheat")
 

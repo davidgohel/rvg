@@ -30,6 +30,22 @@ list_raster_files <- function(img_dir) {
 #'   panel.background = element_rect(fill = "#EFEFEF"),
 #'   plot.background = element_rect(fill = "wheat"))
 #' ```
+#' @section Limitations:
+#' The DrawingML format does not support the following R graphics features:
+#'
+#' - **Patterns and gradients**: grid patterns (`GridPattern`),
+#'   linear and radial gradients used as fill are not translated into
+#'   DrawingML. ggplot2 will emit a warning when these are used.
+#' - **Rich text (ggtext/gridtext)**: packages such as `ggtext` render
+#'   HTML/Markdown into composite grid grobs. The rvg device can only
+#'   capture low-level primitives (text strings, lines, polygons), so
+#'   the rich formatting (inline images, coloured spans, HTML markup)
+#'   is lost. Use standard ggplot2 text functions or apply formatting
+#'   after export in PowerPoint.
+#' - **Clipping paths, masks, compositing and transformations**:
+#'   these R >= 4.1 features have no DrawingML equivalent and are
+#'   silently ignored.
+#'
 #' @param code plotting instructions
 #' @param ggobj ggplot object to print. argument code will be ignored if this
 #'   argument is supplied.
