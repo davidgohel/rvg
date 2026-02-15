@@ -92,3 +92,24 @@ pptx_alpha <- read_pptx() |>
   ph_with(dml(ggobj = plot_alpha), location = ph_location_type())
 
 print(pptx_alpha, "test_alpha.pptx")
+
+# -- Test circle clipping (#61) -----------------------------------------------
+# Point at (3,1) is outside xlim [0,2]: should be hidden entirely.
+# Point at (1.8,1) has a large size: center is inside but circle edge
+# extends past the right limit — it should still be visible.
+
+plot_circle_clip <- ggplot(
+  data.frame(x = c(1, 1.8, 3), y = 1, sz = c(5, 30, 5)),
+  aes(x, y, size = sz)
+) +
+  geom_point(colour = "steelblue") +
+  scale_size_identity() +
+  coord_cartesian(xlim = c(0, 2), ylim = c(0, 2), expand = FALSE) +
+  theme_minimal() +
+  ggtitle("Circle clip: (3,1) hidden, (1.8,1) large visible, (1,1) normal")
+
+pptx_clip_test <- read_pptx() |>
+  add_slide(layout = "Title and Content", master = "Office Theme") |>
+  ph_with(dml(ggobj = plot_circle_clip), location = ph_location_type())
+
+print(pptx_clip_test, "test_circle_clip.pptx")

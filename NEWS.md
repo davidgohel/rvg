@@ -7,6 +7,8 @@
 - Shapes without fill now emit explicit `<a:noFill/>` instead of omitting
   the fill element, preventing unintended theme fill inheritance in
   PowerPoint/Excel.
+- Circles (points) outside the clipping region are now skipped,
+  preventing data points from appearing beyond plot limits.
 
 ## changes
 

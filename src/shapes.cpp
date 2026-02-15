@@ -316,6 +316,12 @@ void pptx_rect(double x0, double y0, double x1, double y1,
 void pptx_circle(double x, double y, double r, const pGEcontext gc,
                         pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
+
+  // Skip circle if its bounding box is entirely outside the clipping region
+  if (x + r < pptx_obj->clipleft || x - r > pptx_obj->clipright ||
+      y + r < pptx_obj->cliptop  || y - r > pptx_obj->clipbottom)
+    return;
+
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   a_color fill_( gc->fill );
   xfrm xfrm_(pptx_obj->offx + x -r, pptx_obj->offy + y - r, r * 2, r * 2 , 0.0 );
@@ -508,6 +514,12 @@ void xlsx_rect(double x0, double y0, double x1, double y1,
 void xlsx_circle(double x, double y, double r, const pGEcontext gc,
                         pDevDesc dd) {
   XLSX_dev *xlsx_obj = (XLSX_dev*) dd->deviceSpecific;
+
+  // Skip circle if its bounding box is entirely outside the clipping region
+  if (x + r < xlsx_obj->clipleft || x - r > xlsx_obj->clipright ||
+      y + r < xlsx_obj->cliptop  || y - r > xlsx_obj->clipbottom)
+    return;
+
   line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
   a_color fill_( gc->fill );
   xfrm xfrm_(xlsx_obj->offx + x -r, xlsx_obj->offy + y - r, r * 2, r * 2 , 0.0 );
