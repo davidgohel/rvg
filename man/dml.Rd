@@ -62,6 +62,11 @@ capture low-level primitives (text strings, lines, polygons), so
 the rich formatting (inline images, coloured spans, HTML markup)
 is lost. Use standard ggplot2 text functions or apply formatting
 after export in PowerPoint.
+\item \strong{Plotmath expressions}: R's graphics engine decomposes
+\code{expression()} into individual text primitives before the device
+sees them. Compound expressions (e.g. \code{expression("a" * "b")},
+superscripts, subscripts) are rendered as separate text boxes,
+causing vertical misalignment.
 \item \strong{Clipping paths, masks, compositing and transformations}:
 these R >= 4.1 features have no DrawingML equivalent and are
 silently ignored.

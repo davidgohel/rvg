@@ -42,6 +42,11 @@ list_raster_files <- function(img_dir) {
 #'   the rich formatting (inline images, coloured spans, HTML markup)
 #'   is lost. Use standard ggplot2 text functions or apply formatting
 #'   after export in PowerPoint.
+#' - **Plotmath expressions**: R's graphics engine decomposes
+#'   `expression()` into individual text primitives before the device
+#'   sees them. Compound expressions (e.g. `expression("a" * "b")`,
+#'   superscripts, subscripts) are rendered as separate text boxes,
+#'   causing vertical misalignment.
 #' - **Clipping paths, masks, compositing and transformations**:
 #'   these R >= 4.1 features have no DrawingML equivalent and are
 #'   silently ignored.
