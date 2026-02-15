@@ -10,9 +10,9 @@
 - Implement `xlsx_path` callback for the XLSX device, enabling
   `geom_path` and path-based geometries in Excel output.
 - Compound paths (`pptx_path`/`xlsx_path`) now combine all
-  sub-polygons into a single `<a:custGeom>` shape with multiple
-  `<a:path>` elements, so holes (donuts, cut-out polygons) render
-  correctly.
+  sub-polygons into a single `<a:path>` element within `<a:custGeom>`,
+  so holes (donuts, cut-out polygons) render correctly via winding
+  rule.
 - Bump `deviceVersion` from v13 to v14 (`R_GE_deviceClip`) on
   R >= 4.2, avoiding redundant double-clipping by the graphics
   engine.

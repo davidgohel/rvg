@@ -46,6 +46,29 @@ std::string a_path(NumericVector x, NumericVector y, bool close)
   return os.str();
 }
 
+std::string a_subpath(NumericVector x, NumericVector y, bool close,
+                      double origin_x, double origin_y)
+{
+  std::stringstream os;
+
+  os << "<a:moveTo>";
+  os << "<a:pt ";
+  os << "x=\"" << (int)((x[0] - origin_x)*12700) << "\" ";
+  os << "y=\"" <<  (int)((y[0] - origin_y)*12700) << "\"/>";
+  os << "</a:moveTo>";
+
+  for ( int i = 1; i < x.size(); i++) {
+    os << "<a:lnTo>";
+    os << "<a:pt x=\"" << (int)((x[i] - origin_x)*12700) << "\" y=\"" <<  (int)((y[i] - origin_y)*12700) << "\"/>";
+    os << "</a:lnTo>";
+  }
+
+  if( close > 0 )
+    os << "<a:close/>";
+
+  return os.str();
+}
+
 
 void pptx_do_polyline(NumericVector x, NumericVector y, const pGEcontext gc,
                       pDevDesc dd) {
@@ -213,8 +236,13 @@ void pptx_path(double *x, double *y,
   write_nv_pr_pptx(dd, "ph");
   fputs("<p:spPr>", pptx_obj->file);
   fprintf(pptx_obj->file, "%s", xfrm_.xml().c_str());
+  double global_w = global_maxx - global_minx;
+  double global_h = global_maxy - global_miny;
+
   fputs("<a:custGeom><a:avLst/>", pptx_obj->file);
   fputs("<a:pathLst>", pptx_obj->file);
+  fprintf(pptx_obj->file, "<a:path w=\"%d\" h=\"%d\">",
+          (int)(global_w * 12700), (int)(global_h * 12700));
 
   for (size_t i = 0; i < clipped_x.size(); i++) {
     NumericVector sx = clipped_x[i];
@@ -223,9 +251,11 @@ void pptx_path(double *x, double *y,
       sx[j] += pptx_obj->offx;
       sy[j] += pptx_obj->offy;
     }
-    fprintf(pptx_obj->file, "%s", a_path(sx, sy, 1).c_str());
+    fprintf(pptx_obj->file, "%s",
+            a_subpath(sx, sy, 1, global_minx, global_miny).c_str());
   }
 
+  fputs("</a:path>", pptx_obj->file);
   fputs("</a:pathLst>", pptx_obj->file);
   fputs("</a:custGeom>", pptx_obj->file);
   if (fill_.is_visible() > 0)
@@ -540,8 +570,13 @@ void xlsx_path(double *x, double *y,
   write_nv_pr_xlsx(dd, "ph");
   fputs("<xdr:spPr>", xlsx_obj->file);
   fprintf(xlsx_obj->file, "%s", xfrm_.xml().c_str());
+  double global_w = global_maxx - global_minx;
+  double global_h = global_maxy - global_miny;
+
   fputs("<a:custGeom><a:avLst/>", xlsx_obj->file);
   fputs("<a:pathLst>", xlsx_obj->file);
+  fprintf(xlsx_obj->file, "<a:path w=\"%d\" h=\"%d\">",
+          (int)(global_w * 12700), (int)(global_h * 12700));
 
   for (size_t i = 0; i < clipped_x.size(); i++) {
     NumericVector sx = clipped_x[i];
@@ -550,9 +585,11 @@ void xlsx_path(double *x, double *y,
       sx[j] += xlsx_obj->offx;
       sy[j] += xlsx_obj->offy;
     }
-    fprintf(xlsx_obj->file, "%s", a_path(sx, sy, 1).c_str());
+    fprintf(xlsx_obj->file, "%s",
+            a_subpath(sx, sy, 1, global_minx, global_miny).c_str());
   }
 
+  fputs("</a:path>", xlsx_obj->file);
   fputs("</a:pathLst>", xlsx_obj->file);
   fputs("</a:custGeom>", xlsx_obj->file);
   if (fill_.is_visible() > 0)
