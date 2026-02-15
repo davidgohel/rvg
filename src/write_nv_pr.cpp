@@ -14,7 +14,6 @@ char* x_tag(int id, int editable, std::string label)
   } else {
     os << "<xdr:cNvSpPr/>";
   }
-  os << "<xdr:nvPr/>";
   os << "</xdr:nvSpPr>";
 
   std::string s = os.str();

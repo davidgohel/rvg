@@ -3,25 +3,25 @@ library(rvg)
 library(officer)
 
 
-# plot <- ggplot(mtcars, aes(x = disp, y = mpg)) +
-#   geom_point()
-#
-# plot_rvg <- dml(ggobj = plot)
-#
-# ppt_template <- read_pptx("new_template.pptx") %>%
-#   add_slide(layout = "standard", master = "default") %>%
-#   ph_with(plot, location = ph_location(left = 1.09, top = 3.03, height = 3.7, width = 9.4)) %>%
-#   add_slide(layout = "standard", master = "default") %>%
-#   ph_with(plot_rvg, location = ph_location(left = 1.09, top = 3.03, height = 3.7, width = 9.4))
-#
-# print(ppt_template, "sample_report_template.pptx")
-#
-#
-# ppt_default <- read_pptx() %>%
-#   add_slide(layout = "Title and Content", master = "Office Theme") %>%
-#   ph_with(plot_rvg, location = ph_location_type())
-#
-# print(ppt_default, "sample_report_default.pptx")
+plot <- ggplot(mtcars, aes(x = disp, y = mpg)) +
+  geom_point()
+
+plot_rvg <- dml(ggobj = plot)
+
+ppt_template <- read_pptx() %>%
+  add_slide() %>%
+  ph_with(plot, location = ph_location(left = 1.09, top = 3.03, height = 3.7, width = 9.4)) %>%
+  add_slide() %>%
+  ph_with(plot_rvg, location = ph_location(left = 1.09, top = 3.03, height = 3.7, width = 9.4))
+
+print(ppt_template, tempfile(fileext = ".pptx")) |> browseURL()
+
+
+ppt_default <- read_pptx() %>%
+  add_slide(layout = "Title and Content", master = "Office Theme") %>%
+  ph_with(plot_rvg, location = ph_location_type())
+
+print(ppt_default, tempfile(fileext = ".pptx")) |> browseURL()
 
 
 # -- Test compound paths (donut with hole) ------------------------------------
@@ -64,7 +64,7 @@ pptx_path_test <- read_pptx() %>%
   add_slide(layout = "Title and Content", master = "Office Theme") %>%
   ph_with(dml(ggobj = plot_path2), location = ph_location_type())
 
-print(pptx_path_test, "test_compound_path.pptx")
+print(pptx_path_test, tempfile(fileext = ".pptx")) |> browseURL()
 
 # XLSX output
 wb <- read_xlsx()
@@ -91,7 +91,7 @@ pptx_alpha <- read_pptx() |>
   add_slide(layout = "Title and Content", master = "Office Theme") |>
   ph_with(dml(ggobj = plot_alpha), location = ph_location_type())
 
-print(pptx_alpha, "test_alpha.pptx")
+print(pptx_alpha, tempfile(fileext = ".pptx")) |> browseURL()
 
 # -- Test circle clipping (#61) -----------------------------------------------
 # Point at (3,1) is outside xlim [0,2]: should be hidden entirely.
@@ -112,4 +112,4 @@ pptx_clip_test <- read_pptx() |>
   add_slide(layout = "Title and Content", master = "Office Theme") |>
   ph_with(dml(ggobj = plot_circle_clip), location = ph_location_type())
 
-print(pptx_clip_test, "test_circle_clip.pptx")
+print(pptx_clip_test, tempfile(fileext = ".pptx")) |> browseURL()

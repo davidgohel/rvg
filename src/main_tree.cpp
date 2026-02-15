@@ -95,7 +95,6 @@ std::string main_tree::x_opening_tag()
     os << "<xdr:nvGrpSpPr>";
     os << "<xdr:cNvPr id=\"" << this->group_id << "\" name=\"grp" << this->group_id << "\"/>";
     os << "<xdr:cNvGrpSpPr/>";
-    os << "<xdr:nvPr/>";
     os << "</xdr:nvGrpSpPr>";
 
     os << "<xdr:grpSpPr>";

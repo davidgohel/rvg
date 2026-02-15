@@ -170,7 +170,6 @@ void xlsx_raster(unsigned int *raster, int w, int h,
           "<xdr:cNvPr id=\"%d\" name=\"pic%d\"/>",
           idx, idx );
   fputs("<xdr:cNvPicPr/>", xlsx_obj->file);
-  fputs("<xdr:nvPr/>", xlsx_obj->file);
   fputs("</xdr:nvPicPr>", xlsx_obj->file);
   fputs("<xdr:blipFill>", xlsx_obj->file);
   fprintf(xlsx_obj->file,
