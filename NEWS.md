@@ -16,9 +16,12 @@
   sub-polygons into a single `<a:path>` element within `<a:custGeom>`,
   so holes (donuts, cut-out polygons) render correctly via winding
   rule.
-- Bump `deviceVersion` from v13 to v14 (`R_GE_deviceClip`) on
-  R >= 4.2, avoiding redundant double-clipping by the graphics
-  engine.
+- Bump `deviceVersion` to v15 (`R_GE_group`) on R >= 4.2, avoiding
+  redundant double-clipping by the graphics engine and enabling
+  the `capabilities` callback so that `dev.capabilities()` reports
+  explicitly unsupported features (patterns, masks, clipping paths,
+  compositing, transformations). This eliminates the "Unable to
+  check capabilities" warning from ggplot2.
 - Font resolution now uses `gdtools::font_set_auto()` to detect
   system fonts for `sans`, `serif`, `mono` and `symbol` aliases.
   Minimum gdtools version bumped to 0.5.0.

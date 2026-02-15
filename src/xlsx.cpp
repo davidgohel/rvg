@@ -76,6 +76,32 @@ static SEXP xlsx_setMask(SEXP path, SEXP ref, pDevDesc dd) {
 
 static void xlsx_releaseMask(SEXP ref, pDevDesc dd) {}
 
+#if R_GE_version >= 15
+static SEXP xlsx_defineGroup(SEXP source, int op, SEXP destination, pDevDesc dd) {
+    return R_NilValue;
+}
+static void xlsx_useGroup(SEXP ref, SEXP trans, pDevDesc dd) {}
+static void xlsx_releaseGroup(SEXP ref, pDevDesc dd) {}
+static void xlsx_stroke(SEXP path, const pGEcontext gc, pDevDesc dd) {}
+static void xlsx_fill(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {}
+static void xlsx_fillStroke(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {}
+static SEXP xlsx_capabilities(SEXP capabilities) {
+    SET_VECTOR_ELT(capabilities, R_GE_capability_patterns,
+                   Rf_ScalarInteger(0));
+    SET_VECTOR_ELT(capabilities, R_GE_capability_clippingPaths,
+                   Rf_ScalarInteger(0));
+    SET_VECTOR_ELT(capabilities, R_GE_capability_masks,
+                   Rf_ScalarInteger(0));
+    SET_VECTOR_ELT(capabilities, R_GE_capability_compositing,
+                   Rf_ScalarInteger(0));
+    SET_VECTOR_ELT(capabilities, R_GE_capability_transformations,
+                   Rf_ScalarInteger(0));
+    SET_VECTOR_ELT(capabilities, R_GE_capability_paths,
+                   Rf_ScalarInteger(0));
+    return capabilities;
+}
+#endif
+
 static void xlsx_new_page(const pGEcontext gc, pDevDesc dd) {
   XLSX_dev *xlsx_obj = (XLSX_dev*) dd->deviceSpecific;
 
@@ -159,6 +185,15 @@ pDevDesc xlsx_driver_new(std::string filename, int bg, double width, double heig
   dd->setMask         = xlsx_setMask;
   dd->releaseMask     = xlsx_releaseMask;
 #endif
+#if R_GE_version >= 15
+  dd->defineGroup     = xlsx_defineGroup;
+  dd->useGroup        = xlsx_useGroup;
+  dd->releaseGroup    = xlsx_releaseGroup;
+  dd->stroke          = xlsx_stroke;
+  dd->fill            = xlsx_fill;
+  dd->fillStroke      = xlsx_fillStroke;
+  dd->capabilities    = xlsx_capabilities;
+#endif
 
   // UTF-8 support
   dd->wantSymbolUTF8 = (Rboolean) 1;
@@ -192,7 +227,10 @@ pDevDesc xlsx_driver_new(std::string filename, int bg, double width, double heig
   dd->haveTransparency = 2;
   dd->haveTransparentBg = 2;
 
-#if R_GE_version >= 14
+#if R_GE_version >= 15
+        dd->deviceVersion = R_GE_group;
+        dd->deviceClip = TRUE;
+#elif R_GE_version >= 14
         dd->deviceVersion = R_GE_deviceClip;
         dd->deviceClip = TRUE;
 #elif R_GE_version >= 13

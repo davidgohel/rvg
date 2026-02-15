@@ -76,6 +76,32 @@ static SEXP pptx_setMask(SEXP path, SEXP ref, pDevDesc dd) {
 
 static void pptx_releaseMask(SEXP ref, pDevDesc dd) {}
 
+#if R_GE_version >= 15
+static SEXP pptx_defineGroup(SEXP source, int op, SEXP destination, pDevDesc dd) {
+    return R_NilValue;
+}
+static void pptx_useGroup(SEXP ref, SEXP trans, pDevDesc dd) {}
+static void pptx_releaseGroup(SEXP ref, pDevDesc dd) {}
+static void pptx_stroke(SEXP path, const pGEcontext gc, pDevDesc dd) {}
+static void pptx_fill(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {}
+static void pptx_fillStroke(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {}
+static SEXP pptx_capabilities(SEXP capabilities) {
+    SET_VECTOR_ELT(capabilities, R_GE_capability_patterns,
+                   Rf_ScalarInteger(0));
+    SET_VECTOR_ELT(capabilities, R_GE_capability_clippingPaths,
+                   Rf_ScalarInteger(0));
+    SET_VECTOR_ELT(capabilities, R_GE_capability_masks,
+                   Rf_ScalarInteger(0));
+    SET_VECTOR_ELT(capabilities, R_GE_capability_compositing,
+                   Rf_ScalarInteger(0));
+    SET_VECTOR_ELT(capabilities, R_GE_capability_transformations,
+                   Rf_ScalarInteger(0));
+    SET_VECTOR_ELT(capabilities, R_GE_capability_paths,
+                   Rf_ScalarInteger(0));
+    return capabilities;
+}
+#endif
+
 static void pptx_new_page(const pGEcontext gc, pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
 
@@ -159,6 +185,15 @@ pDevDesc pptx_driver_new(std::string filename, int bg, double width, double heig
   dd->setMask         = pptx_setMask;
   dd->releaseMask     = pptx_releaseMask;
 #endif
+#if R_GE_version >= 15
+  dd->defineGroup     = pptx_defineGroup;
+  dd->useGroup        = pptx_useGroup;
+  dd->releaseGroup    = pptx_releaseGroup;
+  dd->stroke          = pptx_stroke;
+  dd->fill            = pptx_fill;
+  dd->fillStroke      = pptx_fillStroke;
+  dd->capabilities    = pptx_capabilities;
+#endif
 
   // UTF-8 support
   dd->wantSymbolUTF8 = (Rboolean) 1;
@@ -192,7 +227,10 @@ pDevDesc pptx_driver_new(std::string filename, int bg, double width, double heig
   dd->haveTransparency = 2;
   dd->haveTransparentBg = 2;
 
-#if R_GE_version >= 14
+#if R_GE_version >= 15
+        dd->deviceVersion = R_GE_group;
+        dd->deviceClip = TRUE;
+#elif R_GE_version >= 14
         dd->deviceVersion = R_GE_deviceClip;
         dd->deviceClip = TRUE;
 #elif R_GE_version >= 13
