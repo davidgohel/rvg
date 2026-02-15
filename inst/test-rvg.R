@@ -73,3 +73,22 @@ wb <- xl_add_vg(wb, sheet = "Feuil1",
   width = 6, height = 6, left = 1, top = 1)
 print(wb, "test_compound_path.xlsx")
 
+# -- Test fill opacity / noFill (#52) -----------------------------------------
+# Points with alpha but no explicit color: fill should be semi-transparent
+# Points with explicit fill: fill alpha should be preserved
+# Open shapes (pch 1): should have no fill (transparent)
+
+plot_alpha <- ggplot(mtcars[1:3, ], aes(wt, mpg)) +
+  geom_point(alpha = 0.5, size = 10) +
+  geom_point(aes(y = mpg - 2), alpha = 0.5, size = 10, colour = "red") +
+  geom_point(aes(y = mpg - 4), alpha = 0.5, size = 10, shape = 21,
+             fill = "steelblue", colour = "black") +
+  geom_point(aes(y = mpg - 6), size = 10, shape = 1, colour = "black") +
+  theme_minimal() +
+  ggtitle("Alpha test: filled, colored, shape 21, open circle")
+
+pptx_alpha <- read_pptx() |>
+  add_slide(layout = "Title and Content", master = "Office Theme") |>
+  ph_with(dml(ggobj = plot_alpha), location = ph_location_type())
+
+print(pptx_alpha, "test_alpha.pptx")

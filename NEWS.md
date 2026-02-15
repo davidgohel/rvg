@@ -4,6 +4,9 @@
 
 - Text no longer inherits bold/italic style from PowerPoint/Excel templates;
   `b` and `i` attributes are now always set explicitly in run properties.
+- Shapes without fill now emit explicit `<a:noFill/>` instead of omitting
+  the fill element, preventing unintended theme fill inheritance in
+  PowerPoint/Excel.
 
 ## changes
 

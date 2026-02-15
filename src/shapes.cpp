@@ -177,6 +177,8 @@ void pptx_polygon(int n, double *x, double *y, const pGEcontext gc,
   fputs("</a:custGeom>", pptx_obj->file );
   if( fill_.is_visible() > 0 )
     fprintf(pptx_obj->file, "%s", fill_.solid_fill().c_str());
+  else
+    fputs("<a:noFill/>", pptx_obj->file);
   fprintf(pptx_obj->file, "%s", line_style_.a_tag().c_str());
   fputs("</p:spPr>", pptx_obj->file);
   fprintf(pptx_obj->file, "%s",pptx_empty_body_text().c_str());
@@ -260,6 +262,8 @@ void pptx_path(double *x, double *y,
   fputs("</a:custGeom>", pptx_obj->file);
   if (fill_.is_visible() > 0)
     fprintf(pptx_obj->file, "%s", fill_.solid_fill().c_str());
+  else
+    fputs("<a:noFill/>", pptx_obj->file);
   fprintf(pptx_obj->file, "%s", line_style_.a_tag().c_str());
   fputs("</p:spPr>", pptx_obj->file);
   fprintf(pptx_obj->file, "%s", pptx_empty_body_text().c_str());
@@ -301,6 +305,8 @@ void pptx_rect(double x0, double y0, double x1, double y1,
   fprintf(pptx_obj->file,"%s", a_prstgeom::a_tag("rect").c_str());
   if( fill_.is_visible() > 0 )
     fprintf(pptx_obj->file, "%s", fill_.solid_fill().c_str());
+  else
+    fputs("<a:noFill/>", pptx_obj->file);
   fprintf(pptx_obj->file, "%s", line_style_.a_tag().c_str());
   fputs("</p:spPr>", pptx_obj->file);
   fprintf(pptx_obj->file, "%s",pptx_empty_body_text().c_str());
@@ -449,6 +455,8 @@ void xlsx_polygon(int n, double *x, double *y, const pGEcontext gc,
   fputs("</a:custGeom>", xlsx_obj->file );
   if( fill_.is_visible() > 0 )
     fprintf(xlsx_obj->file, "%s", fill_.solid_fill().c_str());
+  else
+    fputs("<a:noFill/>", xlsx_obj->file);
   fprintf(xlsx_obj->file, "%s", line_style_.a_tag().c_str());
   fputs("</xdr:spPr>", xlsx_obj->file);
   fprintf(xlsx_obj->file, "%s",xlsx_empty_body_text().c_str());
@@ -489,6 +497,8 @@ void xlsx_rect(double x0, double y0, double x1, double y1,
   fprintf(xlsx_obj->file,"%s", a_prstgeom::a_tag("rect").c_str());
   if( fill_.is_visible() > 0 )
     fprintf(xlsx_obj->file, "%s", fill_.solid_fill().c_str());
+  else
+    fputs("<a:noFill/>", xlsx_obj->file);
   fprintf(xlsx_obj->file, "%s", line_style_.a_tag().c_str());
   fputs("</xdr:spPr>", xlsx_obj->file);
   fprintf(xlsx_obj->file, "%s",xlsx_empty_body_text().c_str());
@@ -594,6 +604,8 @@ void xlsx_path(double *x, double *y,
   fputs("</a:custGeom>", xlsx_obj->file);
   if (fill_.is_visible() > 0)
     fprintf(xlsx_obj->file, "%s", fill_.solid_fill().c_str());
+  else
+    fputs("<a:noFill/>", xlsx_obj->file);
   fprintf(xlsx_obj->file, "%s", line_style_.a_tag().c_str());
   fputs("</xdr:spPr>", xlsx_obj->file);
   fprintf(xlsx_obj->file, "%s", xlsx_empty_body_text().c_str());
