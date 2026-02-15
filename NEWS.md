@@ -9,6 +9,9 @@
   PowerPoint/Excel.
 - Circles (points) outside the clipping region are now skipped,
   preventing data points from appearing beyond plot limits.
+- Text is no longer vertically shifted in PowerPoint/Excel output;
+  removed explicit line spacing that conflicted with the centered
+  anchor of text boxes.
 
 ## changes
 

@@ -1,7 +1,7 @@
 Type: Package
 Package: rvg
 Title: R Graphics Devices for 'Office' Vector Graphics Output
-Version: 0.4.1.007
+Version: 0.4.1.008
 Authors@R: c(
     person("David", "Gohel", , "david.gohel@ardata.fr", role = c("aut", "cre")),
     person("ArData", role = "cph"),
