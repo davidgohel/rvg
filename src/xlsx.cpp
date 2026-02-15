@@ -42,6 +42,10 @@ static void xlsx_clip(double x0, double x1, double y0, double y1, pDevDesc dd) {
 
 static void xlsx_close(pDevDesc dd) {
   XLSX_dev *xlsx_obj = (XLSX_dev*) dd->deviceSpecific;
+  if (!xlsx_obj->raster_prefix.empty()) {
+    fprintf(xlsx_obj->file, "<!-- rvg_raster_prefix:%s -->",
+            xlsx_obj->raster_prefix.c_str());
+  }
   fprintf( xlsx_obj->file, "%s", main_tree::x_closing_tag().c_str() );
   delete(xlsx_obj);
 }

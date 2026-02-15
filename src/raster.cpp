@@ -150,8 +150,6 @@ void xlsx_raster(unsigned int *raster, int w, int h,
   int id_img_rel = xlsx_obj->nex_id_rel();
 
   os << xlsx_obj->raster_prefix << "rId";
-  os.fill('0');
-  os.width(6);
   os << id_img_rel;
   os << ".png";
   std::string s = os.str();
