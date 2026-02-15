@@ -146,7 +146,7 @@ pDevDesc xlsx_driver_new(std::string filename, int bg, double width, double heig
   dd->circle = xlsx_circle;
   dd->polygon = xlsx_polygon;
   dd->polyline = xlsx_polyline;
-  dd->path = NULL;
+  dd->path = xlsx_path;
   dd->mode = NULL;
   dd->metricInfo = xlsx_metric_info;
   dd->cap = NULL;
@@ -192,7 +192,10 @@ pDevDesc xlsx_driver_new(std::string filename, int bg, double width, double heig
   dd->haveTransparency = 2;
   dd->haveTransparentBg = 2;
 
-#if R_GE_version >= 13
+#if R_GE_version >= 14
+        dd->deviceVersion = R_GE_deviceClip;
+        dd->deviceClip = TRUE;
+#elif R_GE_version >= 13
         dd->deviceVersion = R_GE_definitions;
 #endif
 

@@ -165,29 +165,75 @@ void pptx_path(double *x, double *y,
                       Rboolean winding,
                       const pGEcontext gc, pDevDesc dd) {
   PPTX_dev *pptx_obj = (PPTX_dev*) dd->deviceSpecific;
+
+  // Clip each sub-polygon and collect results
+  std::vector<NumericVector> clipped_x;
+  std::vector<NumericVector> clipped_y;
   int index = 0;
   for (int i = 0; i < npoly; i++) {
     Rcpp::NumericVector x_(nper[i]);
     Rcpp::NumericVector y_(nper[i]);
-
-    for(int p = 0 ; p < nper[i] ; p++ ){
+    for (int p = 0; p < nper[i]; p++) {
       x_[p] = x[index];
       y_[p] = y[index];
       index++;
     }
     pptx_obj->clp->set_data(x_, y_);
-    pptx_obj->clp->clip_polyline();
-
-    std::vector<NumericVector> x_array = pptx_obj->clp->get_x_lines();
-    std::vector<NumericVector> y_array = pptx_obj->clp->get_y_lines();
-
-    for( size_t l = 0 ; l < x_array.size() ; l++ ){
-      double *tempx = x_array.at(l).begin();
-      double *tempy = y_array.at(l).begin();
-      pptx_polygon(nper[i], tempx, tempy, gc, dd);
+    pptx_obj->clp->clip_polygon();
+    Rcpp::NumericVector cx = pptx_obj->clp->get_x();
+    Rcpp::NumericVector cy = pptx_obj->clp->get_y();
+    if (cx.size() > 0) {
+      clipped_x.push_back(cx);
+      clipped_y.push_back(cy);
     }
   }
 
+  if (clipped_x.empty()) return;
+
+  // Compute global bounding box across all sub-polygons
+  double global_minx = clipped_x[0][0], global_maxx = clipped_x[0][0];
+  double global_miny = clipped_y[0][0], global_maxy = clipped_y[0][0];
+  for (size_t i = 0; i < clipped_x.size(); i++) {
+    for (int j = 0; j < clipped_x[i].size(); j++) {
+      double vx = clipped_x[i][j] + pptx_obj->offx;
+      double vy = clipped_y[i][j] + pptx_obj->offy;
+      if (vx < global_minx) global_minx = vx;
+      if (vx > global_maxx) global_maxx = vx;
+      if (vy < global_miny) global_miny = vy;
+      if (vy > global_maxy) global_maxy = vy;
+    }
+  }
+
+  xfrm xfrm_(global_minx, global_miny, global_maxx - global_minx,
+              global_maxy - global_miny, 0.0);
+  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
+  a_color fill_(gc->fill);
+
+  fputs("<p:sp>", pptx_obj->file);
+  write_nv_pr_pptx(dd, "ph");
+  fputs("<p:spPr>", pptx_obj->file);
+  fprintf(pptx_obj->file, "%s", xfrm_.xml().c_str());
+  fputs("<a:custGeom><a:avLst/>", pptx_obj->file);
+  fputs("<a:pathLst>", pptx_obj->file);
+
+  for (size_t i = 0; i < clipped_x.size(); i++) {
+    NumericVector sx = clipped_x[i];
+    NumericVector sy = clipped_y[i];
+    for (int j = 0; j < sx.size(); j++) {
+      sx[j] += pptx_obj->offx;
+      sy[j] += pptx_obj->offy;
+    }
+    fprintf(pptx_obj->file, "%s", a_path(sx, sy, 1).c_str());
+  }
+
+  fputs("</a:pathLst>", pptx_obj->file);
+  fputs("</a:custGeom>", pptx_obj->file);
+  if (fill_.is_visible() > 0)
+    fprintf(pptx_obj->file, "%s", fill_.solid_fill().c_str());
+  fprintf(pptx_obj->file, "%s", line_style_.a_tag().c_str());
+  fputs("</p:spPr>", pptx_obj->file);
+  fprintf(pptx_obj->file, "%s", pptx_empty_body_text().c_str());
+  fputs("</p:sp>", pptx_obj->file);
 }
 
 
@@ -438,6 +484,82 @@ void xlsx_circle(double x, double y, double r, const pGEcontext gc,
   fputs("</xdr:spPr>", xlsx_obj->file);
   fprintf(xlsx_obj->file, "%s",xlsx_empty_body_text().c_str());
 
+  fputs("</xdr:sp>", xlsx_obj->file);
+}
+
+void xlsx_path(double *x, double *y,
+                      int npoly, int *nper,
+                      Rboolean winding,
+                      const pGEcontext gc, pDevDesc dd) {
+  XLSX_dev *xlsx_obj = (XLSX_dev*) dd->deviceSpecific;
+
+  // Clip each sub-polygon and collect results
+  std::vector<NumericVector> clipped_x;
+  std::vector<NumericVector> clipped_y;
+  int index = 0;
+  for (int i = 0; i < npoly; i++) {
+    Rcpp::NumericVector x_(nper[i]);
+    Rcpp::NumericVector y_(nper[i]);
+    for (int p = 0; p < nper[i]; p++) {
+      x_[p] = x[index];
+      y_[p] = y[index];
+      index++;
+    }
+    xlsx_obj->clp->set_data(x_, y_);
+    xlsx_obj->clp->clip_polygon();
+    Rcpp::NumericVector cx = xlsx_obj->clp->get_x();
+    Rcpp::NumericVector cy = xlsx_obj->clp->get_y();
+    if (cx.size() > 0) {
+      clipped_x.push_back(cx);
+      clipped_y.push_back(cy);
+    }
+  }
+
+  if (clipped_x.empty()) return;
+
+  // Compute global bounding box across all sub-polygons
+  double global_minx = clipped_x[0][0], global_maxx = clipped_x[0][0];
+  double global_miny = clipped_y[0][0], global_maxy = clipped_y[0][0];
+  for (size_t i = 0; i < clipped_x.size(); i++) {
+    for (int j = 0; j < clipped_x[i].size(); j++) {
+      double vx = clipped_x[i][j] + xlsx_obj->offx;
+      double vy = clipped_y[i][j] + xlsx_obj->offy;
+      if (vx < global_minx) global_minx = vx;
+      if (vx > global_maxx) global_maxx = vx;
+      if (vy < global_miny) global_miny = vy;
+      if (vy > global_maxy) global_maxy = vy;
+    }
+  }
+
+  xfrm xfrm_(global_minx, global_miny, global_maxx - global_minx,
+              global_maxy - global_miny, 0.0);
+  line_style line_style_(gc->lwd, gc->col, gc->lty, gc->ljoin, gc->lend);
+  a_color fill_(gc->fill);
+
+  fputs("<xdr:sp>", xlsx_obj->file);
+  write_nv_pr_xlsx(dd, "ph");
+  fputs("<xdr:spPr>", xlsx_obj->file);
+  fprintf(xlsx_obj->file, "%s", xfrm_.xml().c_str());
+  fputs("<a:custGeom><a:avLst/>", xlsx_obj->file);
+  fputs("<a:pathLst>", xlsx_obj->file);
+
+  for (size_t i = 0; i < clipped_x.size(); i++) {
+    NumericVector sx = clipped_x[i];
+    NumericVector sy = clipped_y[i];
+    for (int j = 0; j < sx.size(); j++) {
+      sx[j] += xlsx_obj->offx;
+      sy[j] += xlsx_obj->offy;
+    }
+    fprintf(xlsx_obj->file, "%s", a_path(sx, sy, 1).c_str());
+  }
+
+  fputs("</a:pathLst>", xlsx_obj->file);
+  fputs("</a:custGeom>", xlsx_obj->file);
+  if (fill_.is_visible() > 0)
+    fprintf(xlsx_obj->file, "%s", fill_.solid_fill().c_str());
+  fprintf(xlsx_obj->file, "%s", line_style_.a_tag().c_str());
+  fputs("</xdr:spPr>", xlsx_obj->file);
+  fprintf(xlsx_obj->file, "%s", xlsx_empty_body_text().c_str());
   fputs("</xdr:sp>", xlsx_obj->file);
 }
 

@@ -15,8 +15,8 @@ std::string rpr::a_tag()
   os << "<a:rPr sz=\"";
   os << (int)(this->size*100);
   os << "\"";
-  if( this->italic ) os << " i=\"1\"";
-  if( this->bold ) os << " b=\"1\"";
+  os << " i=\"" << (this->italic ? "1" : "0") << "\"";
+  os << " b=\"" << (this->bold ? "1" : "0") << "\"";
   os << ">";
   os << col_.solid_fill();
   os << "<a:latin typeface=\"" << this->fontname << "\"/>";

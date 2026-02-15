@@ -1,5 +1,21 @@
 # rvg 0.4.1
 
+## Issues
+
+- Text no longer inherits bold/italic style from PowerPoint/Excel templates;
+  `b` and `i` attributes are now always set explicitly in run properties.
+
+## changes
+
+- Implement `xlsx_path` callback for the XLSX device, enabling
+  `geom_path` and path-based geometries in Excel output.
+- Compound paths (`pptx_path`/`xlsx_path`) now combine all
+  sub-polygons into a single `<a:custGeom>` shape with multiple
+  `<a:path>` elements, so holes (donuts, cut-out polygons) render
+  correctly.
+- Bump `deviceVersion` from v13 to v14 (`R_GE_deviceClip`) on
+  R >= 4.2, avoiding redundant double-clipping by the graphics
+  engine.
 - Font resolution now uses `gdtools::font_set_auto()` to detect
   system fonts for `sans`, `serif`, `mono` and `symbol` aliases.
   Minimum gdtools version bumped to 0.5.0.

@@ -120,8 +120,8 @@ test_that("font sets weight/style", {
   x <- read_xml(file)
   ns <- xml_ns(x)
   rPr <- xml_find_all(x, ".//p:sp/p:txBody/a:p/a:r/a:rPr", ns = ns)
-  expect_equal(xml_attr(rPr, "b"), c(NA, "1", NA, "1"))
-  expect_equal(xml_attr(rPr, "i"), c(NA, NA, "1", "1"))
+  expect_equal(xml_attr(rPr, "b"), c("0", "1", "0", "1"))
+  expect_equal(xml_attr(rPr, "i"), c("0", "0", "1", "1"))
 })
 
 
