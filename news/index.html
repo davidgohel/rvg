@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rvg</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +31,29 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.4.0" id="rvg-040">rvg 0.4.0<a class="anchor" aria-label="anchor" href="#rvg-040"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.4.1" id="rvg-041">rvg 0.4.1<a class="anchor" aria-label="anchor" href="#rvg-041"></a></h2>
+<div class="section level3">
+<h3 id="issues-0-4-1">Issues<a class="anchor" aria-label="anchor" href="#issues-0-4-1"></a></h3>
+<ul><li>Text no longer inherits bold/italic style from PowerPoint/Excel templates; <code>b</code> and <code>i</code> attributes are now always set explicitly in run properties.</li>
+<li>Shapes without fill now emit explicit <code>&lt;a:noFill/&gt;</code> instead of omitting the fill element, preventing unintended theme fill inheritance in PowerPoint/Excel.</li>
+<li>Circles (points) outside the clipping region are now skipped, preventing data points from appearing beyond plot limits.</li>
+<li>Text is no longer vertically shifted in PowerPoint/Excel output; removed explicit line spacing that conflicted with the centered anchor of text boxes.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="changes-0-4-1">changes<a class="anchor" aria-label="anchor" href="#changes-0-4-1"></a></h3>
+<ul><li>
+<code><a href="../reference/dml_xlsx.html">dml_xlsx()</a></code> no longer exposes the <code>raster_prefix</code> argument; raster files are now written to an internal temporary directory. The prefix is embedded in the output as an XML comment (<code>&lt;!-- rvg_raster_prefix:... --&gt;</code>), which callers can read after <code><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off()</a></code> to locate the PNG files.</li>
+<li>Implement <code>xlsx_path</code> callback for the XLSX device, enabling <code>geom_path</code> and path-based geometries in Excel output.</li>
+<li>Compound paths (<code>pptx_path</code>/<code>xlsx_path</code>) now combine all sub-polygons into a single <code>&lt;a:path&gt;</code> element within <code>&lt;a:custGeom&gt;</code>, so holes (donuts, cut-out polygons) render correctly via winding rule.</li>
+<li>Bump <code>deviceVersion</code> to v15 (<code>R_GE_group</code>) on R &gt;= 4.2, avoiding redundant double-clipping by the graphics engine and enabling the <code>capabilities</code> callback so that <code><a href="https://rdrr.io/r/grDevices/dev.capabilities.html" class="external-link">dev.capabilities()</a></code> reports explicitly unsupported features (patterns, masks, clipping paths, compositing, transformations). This eliminates the “Unable to check capabilities” warning from ggplot2.</li>
+<li>Font resolution now uses <code><a href="https://davidgohel.github.io/gdtools/reference/font_set_auto.html" class="external-link">gdtools::font_set_auto()</a></code> to detect system fonts for <code>sans</code>, <code>serif</code>, <code>mono</code> and <code>symbol</code> aliases. Minimum gdtools version bumped to 0.5.0.</li>
+<li>
+<code>validate_fonts()</code> now warns when user-supplied font families are not found on the system.</li>
+<li>Documentation clarifies that fonts are not embedded in DrawingML output and must be available on the reader’s system.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.0" id="rvg-040">rvg 0.4.0<a class="anchor" aria-label="anchor" href="#rvg-040"></a></h2><p class="text-muted">CRAN release: 2025-10-06</p>
 <ul><li>migrate from gdtools to systemfonts</li>
 </ul></div>
     <div class="section level2">
@@ -235,7 +257,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

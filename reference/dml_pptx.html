@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rvg</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,11 +77,16 @@
 <dt id="arg-fonts">fonts<a class="anchor" aria-label="anchor" href="#arg-fonts"></a></dt>
 <dd><p>Named list of font names to be aliased with
 fonts installed on your system. If unspecified, the R default
-families <code>sans</code>, <code>serif</code>, <code>mono</code> and <code>symbol</code>
-are aliased to the family returned by <code><a href="https://davidgohel.github.io/gdtools/reference/match_family.html" class="external-link">match_family</a>()</code>.</p>
-<p>When you use specific fonts, you will need that font installed on your system.
-This can be check with package <code>gdtools</code> and function <code><a href="https://davidgohel.github.io/gdtools/reference/font_family_exists.html" class="external-link">gdtools::font_family_exists()</a></code>.</p>
-<p>An example: <code>list(sans = "Roboto", serif = "Times", mono = "Courier")</code>.</p></dd>
+families <code>sans</code>, <code>serif</code>, <code>mono</code> and <code>symbol</code> are aliased
+to the families detected by <code><a href="https://davidgohel.github.io/gdtools/reference/font_set_auto.html" class="external-link">gdtools::font_set_auto()</a></code>.</p>
+<p><strong>Important:</strong> fonts are referenced by name in the DrawingML output
+and are <strong>not embedded</strong>. The reader of the PowerPoint file must also
+have the same fonts installed, otherwise Office will substitute them.
+For maximum portability, prefer fonts bundled with Microsoft Office
+such as <code>"Arial"</code>, <code>"Times New Roman"</code> and <code>"Courier New"</code>.</p>
+<p>Fonts must be installed on your system; use
+<code><a href="https://davidgohel.github.io/gdtools/reference/font_family_exists.html" class="external-link">gdtools::font_family_exists()</a></code> to verify availability.</p>
+<p>Example: <code>list(sans = "Arial", serif = "Times New Roman", mono = "Courier New")</code>.</p></dd>
 
 
 <dt id="arg-pointsize">pointsize<a class="anchor" aria-label="anchor" href="#arg-pointsize"></a></dt>
@@ -139,7 +144,7 @@ xml header and namespaces.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
