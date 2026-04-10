@@ -1,3 +1,15 @@
+# rvg 0.4.2
+
+## Features
+
+- new method `sheet_add_drawing.dml()` to add vector graphics to an
+Excel sheet via `officer::sheet_add_drawing()`. This provides a unified
+API for adding drawings to xlsx workbooks.
+
+## Changes
+
+- `xl_add_vg()` is now deprecated in favour of `sheet_add_drawing()`.
+
 # rvg 0.4.1
 
 ## Issues

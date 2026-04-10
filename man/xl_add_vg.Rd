@@ -20,16 +20,16 @@ xl_add_vg(x, sheet, code, left, top, width, height, ...)
 \item{...}{arguments passed on to \code{\link{dml_xlsx}}.}
 }
 \description{
-Produces a vector graphics output from R plot instructions
-and adds the result in an Excel sheet.
+Deprecated, use \code{\link[officer:sheet_add_drawing]{officer::sheet_add_drawing()}} with a \code{\link[=dml]{dml()}} object instead.
 }
 \examples{
 \donttest{
 library(officer)
 my_ws <- read_xlsx()
-my_ws <- xl_add_vg(my_ws,
+my_ws <- sheet_add_drawing(my_ws,
+  value = dml(code = barplot(1:5, col = 2:6)),
   sheet = "Feuil1",
-  code = barplot(1:5, col = 2:6), width = 6, height = 6, left = 1, top = 2
+  width = 6, height = 6, left = 1, top = 2
 )
 fileout <- tempfile(fileext = ".xlsx")
 print(my_ws, target = fileout)
