@@ -110,7 +110,11 @@ static void xlsx_new_page(const pGEcontext gc, pDevDesc dd) {
   XLSX_dev *xlsx_obj = (XLSX_dev*) dd->deviceSpecific;
 
   if (xlsx_obj->pageno > 0) {
-    Rf_error("xlsx device only supports one page");
+    // (Rf_error)(...) bypasses Rcpp's macro override: this is a device
+    // callback (C ABI, no C++ RAII to unwind), so the longjmp-based
+    // Rf_error path is the correct one -- Rcpp::stop would throw a C++
+    // exception through R's C graphics engine frames. See rvg #66.
+    (Rf_error)("xlsx device only supports one page");
   }
 
   xlsx_obj->clp->set_clipping_region(0.0, 0.0, dd->right, dd->bottom);

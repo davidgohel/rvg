@@ -9,6 +9,11 @@ API for adding drawings to xlsx workbooks.
 ## Changes
 
 - `xl_add_vg()` is now deprecated in favour of `sheet_add_drawing()`.
+- Wrapped the two `Rf_error()` calls in `pptx_new_page()` and
+  `xlsx_new_page()` with parentheses (`(Rf_error)(...)`) so they remain
+  direct C-ABI calls instead of going through the Rcpp override
+  (#66). These are device callbacks where `Rf_error`'s longjmp is the
+  correct signalling mechanism.
 
 # rvg 0.4.1
 
