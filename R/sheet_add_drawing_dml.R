@@ -10,8 +10,8 @@
 #' @param width,height width and height in inches
 #' @param ... additional arguments passed to [dml_xlsx()]
 #' @return the rxlsx object (invisibly)
-#' @importFrom officer sheet_add_drawing
-#' @importFrom xml2 xml_ns xml_new_root xml_attr<- xml_add_sibling xml_add_child xml_find_first read_xml
+#' @importFrom officer sheet_add_drawing xlsx_drawing
+#' @importFrom xml2 xml_add_child xml_find_all read_xml
 #' @method sheet_add_drawing dml
 #' @examples
 #' \donttest{
@@ -35,7 +35,7 @@ sheet_add_drawing.dml <- function(
 
   package_dir <- x$package_dir
 
-  # create media dir for rasters
+  # ensure media dir exists (rasters referenced by the dml go there)
   media_dir <- file.path(package_dir, "xl/media")
   dir.create(media_dir, showWarnings = FALSE, recursive = TRUE)
 
@@ -43,18 +43,23 @@ sheet_add_drawing.dml <- function(
   sheet_idx <- which(x$worksheets$sheet_names() == sheet)
   sheet_obj <- x$sheets$get_sheet(sheet_idx)
 
-  # render the dml to a temporary drawing file
-  drawings_dir <- file.path(package_dir, "xl/drawings")
-  dir.create(drawings_dir, showWarnings = FALSE, recursive = TRUE)
-  dml_file <- file.path(
-    drawings_dir,
-    basename(tempfile(pattern = "d", fileext = ".xml"))
+  # Get (or create) the shared drawing part for this sheet. Anchors
+  # produced below will be appended to it so that a sheet never ends
+  # up with more than one <drawing> reference.
+  drawing <- officer::xlsx_drawing$new(
+    package_dir, sheet_obj, x$content_type
   )
 
+  # Render the dml to a throw-away file; we only want its <xdr:*Anchor>
+  # children and the list of raster files it produced.
+  tmp_dml_file <- tempfile(pattern = "rvg_dml_", fileext = ".xml")
+
   pars <- list(...)
-  pars$file <- dml_file
+  pars$file <- tmp_dml_file
   pars$id <- 0L
-  pars$last_rel_id <- sheet_obj$relationship()$get_next_id() - 1
+  # Raster rIds written inside the dml XML must slot into the shared
+  # drawing's rels, so start numbering from the drawing's next id.
+  pars$last_rel_id <- drawing$relationship()$get_next_id() - 1
   pars$standalone <- TRUE
   pars$width <- width
   pars$height <- height
@@ -80,8 +85,8 @@ sheet_add_drawing.dml <- function(
   }
   dev.off()
 
-  # extract raster_prefix from XML comment
-  xml_raw <- paste0(readLines(dml_file, warn = FALSE), collapse = "")
+  # Extract the raster file list (if any) from the marker comment.
+  xml_raw <- paste0(readLines(tmp_dml_file, warn = FALSE), collapse = "")
   m <- regmatches(
     xml_raw,
     regexpr("<!-- rvg_raster_prefix:(.+?) -->", xml_raw, perl = TRUE)
@@ -94,48 +99,32 @@ sheet_add_drawing.dml <- function(
     raster_files <- list_raster_files(img_dir = raster_prefix)
   }
 
-  # handle raster images
-  rel <- sheet_obj$relationship()
+  # Copy rasters into xl/media/ and register them as rels on the
+  # shared drawing. rIds are assigned in the same order dml_xlsx
+  # allocated them (incrementing from `last_rel_id`), so the
+  # `r:embed="rIdN"` attributes inside the anchors resolve correctly.
   if (length(raster_files)) {
     file.copy(raster_files, media_dir)
-    rels_dir <- file.path(drawings_dir, "_rels")
-    dir.create(rels_dir, showWarnings = FALSE, recursive = TRUE)
-    rel_file <- file.path(rels_dir, paste0(basename(dml_file), ".rels"))
+    for (rf in basename(raster_files)) {
+      drawing$add_image_rel(rf)
+    }
+  }
 
-    rid <- paste0("rId", seq_along(raster_files))
-    target <- paste0("../media/", basename(raster_files))
-    rel_entries <- sprintf(
-      "\t<Relationship Id=\"%s\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/image\" Target=\"%s\"/>",
-      rid, target
+  # Append every anchor produced by dml_xlsx to the shared drawing.
+  dml_doc <- read_xml(tmp_dml_file)
+  anchors <- xml_find_all(
+    dml_doc,
+    "xdr:absoluteAnchor | xdr:oneCellAnchor | xdr:twoCellAnchor",
+    ns = c(
+      xdr = "http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing"
     )
-    writeLines(c(
-      "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>",
-      "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">",
-      rel_entries,
-      "</Relationships>"
-    ), rel_file, useBytes = TRUE)
+  )
+  for (a in anchors) {
+    xml_add_child(drawing$get(), a)
   }
+  drawing$save()
 
-  # link sheet to drawing
-  dml_rid <- rel$get_next_id()
-  rel$add_drawing(src = dml_file, root_target = "../drawings")
-
-  ns <- c(d1 = "http://schemas.openxmlformats.org/spreadsheetml/2006/main")
-  ext_lst <- xml_find_first(sheet_obj$get(), "d1:extLst", ns = ns)
-
-  xml_elt <- xml_new_root("drawing")
-  xml_attr(xml_elt, "r:id") <- sprintf("rId%.0f", dml_rid)
-  if (!inherits(ext_lst, "xml_missing")) {
-    xml_add_sibling(.x = ext_lst, .value = xml_elt, .where = "before")
-  } else {
-    xml_add_child(sheet_obj$get(), xml_elt)
-  }
-
-  # content type
-  override <- "application/vnd.openxmlformats-officedocument.drawing+xml"
-  names(override) <- paste0("/xl/drawings/", basename(dml_file))
-  x$content_type$add_override(value = override)
-  sheet_obj$save()
+  unlink(tmp_dml_file)
 
   invisible(x)
 }
