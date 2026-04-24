@@ -27,8 +27,13 @@
 #' print(x, target = tempfile(fileext = ".xlsx"))
 #' }
 sheet_add_drawing.dml <- function(
-  x, value, sheet,
-  left = 1, top = 1, width = 6, height = 6,
+  x,
+  value,
+  sheet,
+  left = 1,
+  top = 1,
+  width = 6,
+  height = 6,
   ...
 ) {
   stopifnot(inherits(x, "rxlsx"))
@@ -47,7 +52,9 @@ sheet_add_drawing.dml <- function(
   # produced below will be appended to it so that a sheet never ends
   # up with more than one <drawing> reference.
   drawing <- officer::xlsx_drawing$new(
-    package_dir, sheet_obj, x$content_type
+    package_dir,
+    sheet_obj,
+    x$content_type
   )
 
   # Render the dml to a throw-away file; we only want its <xdr:*Anchor>
@@ -65,12 +72,18 @@ sheet_add_drawing.dml <- function(
   pars$height <- height
   pars$offx <- left
   pars$offy <- top
-  if (!is.null(value$bg)) pars$bg <- value$bg
+  if (!is.null(value$bg)) {
+    pars$bg <- value$bg
+  }
   if (!is.null(value$fonts) && length(value$fonts) > 0) {
     pars$fonts <- value$fonts
   }
-  if (!is.null(value$pointsize)) pars$pointsize <- value$pointsize
-  if (!is.null(value$editable)) pars$editable <- value$editable
+  if (!is.null(value$pointsize)) {
+    pars$pointsize <- value$pointsize
+  }
+  if (!is.null(value$editable)) {
+    pars$editable <- value$editable
+  }
 
   do.call("dml_xlsx", pars)
 
@@ -79,7 +92,10 @@ sheet_add_drawing.dml <- function(
     print(value$ggobj)
   } else {
     tryCatch(
-      eval(rlang::quo_get_expr(value$code), envir = rlang::quo_get_env(value$code)),
+      eval(
+        rlang::quo_get_expr(value$code),
+        envir = rlang::quo_get_env(value$code)
+      ),
       finally = NULL
     )
   }
@@ -94,7 +110,10 @@ sheet_add_drawing.dml <- function(
   raster_files <- character(0)
   if (length(m) == 1L) {
     raster_prefix <- sub(
-      "<!-- rvg_raster_prefix:(.+?) -->", "\\1", m, perl = TRUE
+      "<!-- rvg_raster_prefix:(.+?) -->",
+      "\\1",
+      m,
+      perl = TRUE
     )
     raster_files <- list_raster_files(img_dir = raster_prefix)
   }

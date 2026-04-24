@@ -22,10 +22,13 @@
 #' }
 xl_add_vg <- function(x, sheet, code, left, top, width, height, ...) {
   .Deprecated("sheet_add_drawing")
-  sheet_add_drawing(x,
+  sheet_add_drawing(
+    x,
     value = dml(code = code, ...),
     sheet = sheet,
-    left = left, top = top,
-    width = width, height = height
+    left = left,
+    top = top,
+    width = width,
+    height = height
   )
 }

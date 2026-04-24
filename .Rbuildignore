@@ -11,3 +11,5 @@
 ^docs$
 ^vignettes/offcran$
 ^\.github$
+^\.positai$
+^\.claude$

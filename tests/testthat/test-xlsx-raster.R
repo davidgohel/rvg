@@ -13,9 +13,17 @@ test_that("raster is generated", {
   dev.off()
 
   xml_raw <- paste0(readLines(file, warn = FALSE), collapse = "")
-  m <- regmatches(xml_raw, regexpr("<!-- rvg_raster_prefix:(.+?) -->", xml_raw, perl = TRUE))
+  m <- regmatches(
+    xml_raw,
+    regexpr("<!-- rvg_raster_prefix:(.+?) -->", xml_raw, perl = TRUE)
+  )
   expect_length(m, 1L)
-  raster_prefix <- sub("<!-- rvg_raster_prefix:(.+?) -->", "\\1", m, perl = TRUE)
+  raster_prefix <- sub(
+    "<!-- rvg_raster_prefix:(.+?) -->",
+    "\\1",
+    m,
+    perl = TRUE
+  )
   raster_files <- list.files(
     path = dirname(raster_prefix),
     pattern = paste0("^", basename(raster_prefix), "(.*)\\.png$"),
@@ -43,4 +51,3 @@ test_that("pic tag can be found", {
   blip_node <- xml_find_first(pic_node, ".//a:blip", ns = xml_ns(doc))
   expect_is(blip_node, "xml_node")
 })
-
