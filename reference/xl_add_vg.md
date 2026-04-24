@@ -1,7 +1,9 @@
 # add a plot output as vector graphics into an Excel object
 
-Produces a vector graphics output from R plot instructions and adds the
-result in an Excel sheet.
+Deprecated, use
+[`officer::sheet_add_drawing()`](https://davidgohel.github.io/officer/reference/sheet_add_drawing.html)
+with a [`dml()`](https://davidgohel.github.io/rvg/reference/dml.md)
+object instead.
 
 ## Usage
 
@@ -43,9 +45,10 @@ xl_add_vg(x, sheet, code, left, top, width, height, ...)
 # \donttest{
 library(officer)
 my_ws <- read_xlsx()
-my_ws <- xl_add_vg(my_ws,
+my_ws <- sheet_add_drawing(my_ws,
+  value = dml(code = barplot(1:5, col = 2:6)),
   sheet = "Feuil1",
-  code = barplot(1:5, col = 2:6), width = 6, height = 6, left = 1, top = 2
+  width = 6, height = 6, left = 1, top = 2
 )
 fileout <- tempfile(fileext = ".xlsx")
 print(my_ws, target = fileout)

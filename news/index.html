@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rvg</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +31,25 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.4.1" id="rvg-041">rvg 0.4.1<a class="anchor" aria-label="anchor" href="#rvg-041"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.4.2" id="rvg-042">rvg 0.4.2<a class="anchor" aria-label="anchor" href="#rvg-042"></a></h2>
+<div class="section level3">
+<h3 id="features-0-4-2">Features<a class="anchor" aria-label="anchor" href="#features-0-4-2"></a></h3>
+<ul><li>new method <code><a href="../reference/sheet_add_drawing.dml.html">sheet_add_drawing.dml()</a></code> to add vector graphics to an Excel sheet via <code><a href="https://davidgohel.github.io/officer/reference/sheet_add_drawing.html" class="external-link">officer::sheet_add_drawing()</a></code>. This provides a unified API for adding drawings to xlsx workbooks.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="issues-0-4-2">Issues<a class="anchor" aria-label="anchor" href="#issues-0-4-2"></a></h3>
+<ul><li>
+<code><a href="../reference/sheet_add_drawing.dml.html">sheet_add_drawing.dml()</a></code> now appends its anchor to the sheet’s existing drawing part (via <code><a href="https://davidgohel.github.io/officer/reference/xlsx_drawing.html" class="external-link">officer::xlsx_drawing</a></code>) instead of creating a second drawing part and a second <code>&lt;drawing&gt;</code> reference on the worksheet. Mixing <code>dml</code> with other <code><a href="https://davidgohel.github.io/officer/reference/sheet_add_drawing.html" class="external-link">sheet_add_drawing()</a></code> methods (<code>external_img</code>, <code>gg</code>, <code>ms_chart</code>) on the same sheet now produces a valid xlsx.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="changes-0-4-2">Changes<a class="anchor" aria-label="anchor" href="#changes-0-4-2"></a></h3>
+<ul><li>
+<code><a href="../reference/xl_add_vg.html">xl_add_vg()</a></code> is now deprecated in favour of <code><a href="https://davidgohel.github.io/officer/reference/sheet_add_drawing.html" class="external-link">sheet_add_drawing()</a></code>.</li>
+<li>Wrapped the two <code>Rf_error()</code> calls in <code>pptx_new_page()</code> and <code>xlsx_new_page()</code> with parentheses (<code>(Rf_error)(...)</code>) so they remain direct C-ABI calls instead of going through the Rcpp override (<a href="https://github.com/davidgohel/rvg/issues/66" class="external-link">#66</a>). These are device callbacks where <code>Rf_error</code>’s longjmp is the correct signalling mechanism.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.1" id="rvg-041">rvg 0.4.1<a class="anchor" aria-label="anchor" href="#rvg-041"></a></h2><p class="text-muted">CRAN release: 2026-02-16</p>
 <div class="section level3">
 <h3 id="issues-0-4-1">Issues<a class="anchor" aria-label="anchor" href="#issues-0-4-1"></a></h3>
 <ul><li>Text no longer inherits bold/italic style from PowerPoint/Excel templates; <code>b</code> and <code>i</code> attributes are now always set explicitly in run properties.</li>
