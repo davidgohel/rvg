@@ -18,13 +18,13 @@ Source:
 [`DESCRIPTION`](https://github.com/davidgohel/rvg/blob/master/DESCRIPTION)
 
 Gohel D (2026). *rvg: R Graphics Devices for 'Office' Vector Graphics
-Output*. R package version 0.4.1.011,
+Output*. R package version 0.4.2.003,
 <https://ardata-fr.github.io/officeverse/>.
 
     @Manual{,
       title = {rvg: R Graphics Devices for 'Office' Vector Graphics Output},
       author = {David Gohel},
       year = {2026},
-      note = {R package version 0.4.1.011},
+      note = {R package version 0.4.2.003},
       url = {https://ardata-fr.github.io/officeverse/},
     }

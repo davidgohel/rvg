@@ -1,6 +1,41 @@
 # Changelog
 
+## rvg 0.4.2
+
+### Features
+
+- new method
+  [`sheet_add_drawing.dml()`](https://davidgohel.github.io/rvg/dev/reference/sheet_add_drawing.dml.md)
+  to add vector graphics to an Excel sheet via
+  [`officer::sheet_add_drawing()`](https://davidgohel.github.io/officer/reference/sheet_add_drawing.html).
+  This provides a unified API for adding drawings to xlsx workbooks.
+
+### Issues
+
+- [`sheet_add_drawing.dml()`](https://davidgohel.github.io/rvg/dev/reference/sheet_add_drawing.dml.md)
+  now appends its anchor to the sheet’s existing drawing part (via
+  [`officer::xlsx_drawing`](https://davidgohel.github.io/officer/reference/xlsx_drawing.html))
+  instead of creating a second drawing part and a second `<drawing>`
+  reference on the worksheet. Mixing `dml` with other
+  [`sheet_add_drawing()`](https://davidgohel.github.io/officer/reference/sheet_add_drawing.html)
+  methods (`external_img`, `gg`, `ms_chart`) on the same sheet now
+  produces a valid xlsx.
+
+### Changes
+
+- [`xl_add_vg()`](https://davidgohel.github.io/rvg/dev/reference/xl_add_vg.md)
+  is now deprecated in favour of
+  [`sheet_add_drawing()`](https://davidgohel.github.io/officer/reference/sheet_add_drawing.html).
+- Wrapped the two `Rf_error()` calls in `pptx_new_page()` and
+  `xlsx_new_page()` with parentheses (`(Rf_error)(...)`) so they remain
+  direct C-ABI calls instead of going through the Rcpp override
+  ([\#66](https://github.com/davidgohel/rvg/issues/66)). These are
+  device callbacks where `Rf_error`’s longjmp is the correct signalling
+  mechanism.
+
 ## rvg 0.4.1
+
+CRAN release: 2026-02-16
 
 ### Issues
 

@@ -93,7 +93,7 @@ dml_xlsx(
 dml_xlsx(file = tempfile())
 plot(1:11, (-5:5)^2, type = "b", main = "Simple Example")
 dev.off()
-#> agg_record_31749990 
-#>                   2 
+#> agg_record_1aca123667d 
+#>                      2 
 # }
 ```
