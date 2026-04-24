@@ -27,8 +27,9 @@ reference:
       - dml_pptx
   - title: Excel content
     contents:
-      - xl_add_vg
+      - sheet_add_drawing.dml
       - dml_xlsx
+      - xl_add_vg
 
 navbar:
   title: rvg
