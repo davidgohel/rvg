@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://davidgohel.github.io/rvg/
+    about: The documentation covers most common use cases.
+  - name: Usage question (not a bug)
+    url: https://stackoverflow.com/questions/tagged/r
+    about: For "how do I do X with rvg", please ask on Stack Overflow with the [r] tag.

@@ -1,0 +1,29 @@
+name: 'Lock threads'
+
+on:
+  schedule:
+    # weekly, Thursday 5 AM
+    - cron: '0 5 * * 4'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: lock-threads
+  cancel-in-progress: false
+
+jobs:
+  lock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dessant/lock-threads@v5
+        with:
+          issue-inactive-days: '30'
+          issue-comment: >
+            This old thread has been automatically locked. If you think you
+            have found something related to this, please open a new issue and
+            link to this old issue if necessary.
+          issue-lock-reason: 'resolved'
+          pr-inactive-days: '30'
