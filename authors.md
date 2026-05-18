@@ -15,7 +15,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/davidgohel/rvg/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/davidgohel/rvg/blob/main/DESCRIPTION)
 
 Gohel D (2026). *rvg: R Graphics Devices for 'Office' Vector Graphics
 Output*. R package version 0.4.2,

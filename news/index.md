@@ -2,6 +2,8 @@
 
 ## rvg 0.4.2
 
+CRAN release: 2026-04-24
+
 ### Features
 
 - new method
