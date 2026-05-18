@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Briefly describe your problem and what output you expect. If you have a question, please don't use this form, ask on [Stack Overflow](https://stackoverflow.com/questions/tagged/r) with the `[r]` tag instead.
+        Briefly describe your problem and what output you expect. If you have a question, please don't use this form, ask on [Stack Overflow](https://stackoverflow.com/questions/tagged/r) instead.
 
         Please include a minimal reproducible example (a [reprex](https://reprex.tidyverse.org/)). If you've never made one before, start with <https://www.tidyverse.org/help/#reprex>.
 

@@ -2,17 +2,12 @@ name: 'Lock threads'
 
 on:
   schedule:
-    # weekly, Thursday 5 AM
-    - cron: '0 5 * * 4'
-  workflow_dispatch:
+    # chaque semaine le jeudi a 4 AM
+    - cron: '0 4 * * 4'
 
 permissions:
   issues: write
   pull-requests: write
-
-concurrency:
-  group: lock-threads
-  cancel-in-progress: false
 
 jobs:
   lock:
@@ -20,10 +15,11 @@ jobs:
     steps:
       - uses: dessant/lock-threads@v5
         with:
-          issue-inactive-days: '30'
+          github-token: ${{ github.token }}
+          issue-inactive-days: '180'
           issue-comment: >
-            This old thread has been automatically locked. If you think you
-            have found something related to this, please open a new issue and
-            link to this old issue if necessary.
+            This old thread has been automatically locked. If you think you have
+            found something related to this, please open a new issue and link to this
+            old issue if necessary.
           issue-lock-reason: 'resolved'
-          pr-inactive-days: '30'
+          pr-inactive-days: '180'
