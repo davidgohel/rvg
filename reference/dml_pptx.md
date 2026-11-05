@@ -99,7 +99,7 @@ dml_pptx(
 dml_pptx(file = tempfile())
 plot(1:11, (-5:5)^2, type = "b", main = "Simple Example")
 dev.off()
-#> agg_record_1a0b673c09aa 
+#> agg_record_1ac92b19eb17 
 #>                       2 
 # }
 ```
